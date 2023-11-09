@@ -1,14 +1,9 @@
 <?php
-
 include_once __DIR__ . '../../partials/boostrap.php';
-
 include_once __DIR__ . '../../partials/header.php';
-
 require_once __DIR__ . '../../partials/connect.php';
 
-
 if (isset($_POST['add_to_wishlist'])) {
-
    $pid = $_POST['pid'];
    $pid = filter_var($pid, FILTER_SANITIZE_STRING);
    $p_name = $_POST['p_name'];
@@ -61,8 +56,7 @@ if (isset($_POST['add_to_cart'])) {
        $insert_cart->execute([$user_id, $pid, $p_name, $p_price, $p_qty, $p_image]);
        $message[] = 'added to cart!';
     }
- }
- 
+}
 
 ?>
 
@@ -80,7 +74,8 @@ if (isset($_POST['add_to_cart'])) {
          <div class="row mt-5">
             <?php
             $pid = $_GET['pid'];
-            $select_products = $pdo->prepare("SELECT * FROM `products` WHERE id = ?");
+            $select_products = $pdo->prepare("SELECT products.*, category.name as category_name FROM `products` 
+            JOIN category ON products.category_id = category.id WHERE products.id = ?");
             $select_products->execute([$pid]);
             if ($select_products->rowCount() > 0) {
                while ($fetch_products = $select_products->fetch(PDO::FETCH_ASSOC)) {
@@ -90,12 +85,11 @@ if (isset($_POST['add_to_cart'])) {
                         id="mainImg" />
                   </div>
 
-
                   <div class="col-lg-6 col-md-12 col-12">
                      <form action="" method="POST">
                         <div class="category">
                            <h6 class="text-capitalize mt-3">
-                              <?= $fetch_products['category']; ?>
+                              <?= $fetch_products['category_name']; ?>
                            </h6>
                         </div>
                         <div class="name">
@@ -132,6 +126,7 @@ if (isset($_POST['add_to_cart'])) {
             }
             ?>
          </div>
+      </div>
    </section>
    <!-- end of quick-view -->
 
