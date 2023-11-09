@@ -62,7 +62,7 @@
 </li>
 
 <!-- Nav Item - Collapse Menu -->
-<li class="nav-item">
+<!-- <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
         <i class="fa-solid fa-dollar-sign"></i>
         <span>Quản lý doanh thu</span>
@@ -70,10 +70,10 @@
     <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Quản lý doanh thu:</h6>
-            <a class="collapse-item" href="list_oders.php">Doanh số bán hàng</a>
+            <a class="collapse-item" href="list_orders.php">Doanh số bán hàng</a>
         </div>
     </div>
-</li>
+</li> -->
 <!-- Divider -->
 <hr class="sidebar-divider">
 
@@ -91,8 +91,8 @@
     <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header"> Quản lý tài khoản:</h6>
-            <a class="collapse-item" href="list_customer.php">Khách hàng</a>
-            <a class="collapse-item" href="list_staff.php">Nhân viên</a>
+            <a class="collapse-item" href="list_customers.php">Khách hàng</a>
+            <a class="collapse-item" href="list_staffs.php">Nhân viên</a>
         </div>
     </div>
 </li>
