@@ -88,7 +88,7 @@ if (isset($message)) {
                                 $select_info = $pdo->prepare("
             SELECT user.name, user.email, user.phone, user.address,
                    orders.placed_on, orders.check_date, orders.total_products,
-                   orders.total_price, orders.method, orders.payment_status
+                   orders.total_price, orders.method, orders.payment_status, orders.id
             FROM user
             INNER JOIN orders ON user.id = orders.user_id
         ");
@@ -142,6 +142,7 @@ if (isset($message)) {
                                                 <a class="btn btn-danger" data-id="<?= htmlspecialchars($row['id']); ?>"
                                                     data-toggle="modal" data-target="#deleteConfirmationModal">delete</a>
                                             </td>
+                                            
                                         </tr>
                                         <?php
                                     }
