@@ -1,5 +1,5 @@
 <!-- navbar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top ">
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
     <div class="container">
         <button class="navbar-toggler btn-primary d-lg-none border-0" type="button" data-bs-toggle="offcanvas"
             data-bs-target="#offcanvasResponsive" aria-controls="offcanvasResponsive">
@@ -86,7 +86,6 @@
                             </button>';
                     }
                     ?>
-
                     <button class="btn position-relative" type="button">
                         <a href="cart.php" style="color:#222;"><i class="fa fa-shopping-cart"></i></a>
                     </button>
@@ -97,4 +96,3 @@
     </div>
 </nav>
 <!-- end of navbar -->
-<html>

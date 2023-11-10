@@ -181,12 +181,12 @@ if (isset($_POST['add_to_cart'])) {
                            <div class="card-body">
                               <form action="" method="POST" onsubmit="return addToCart();">
                                  <div class="row">
-                                    <div class="col-8">
+                                    <div class="col-11">
                                        <h2 class="card-text text-capitalize fw-bold">
                                           <?= htmlspecialchars($fetch_products['name']); ?>
                                        </h2>
                                     </div>
-                                    <div class="col-4 text-end"><a href="wishlist.php"><i
+                                    <div class="col-1 text-end"><a href="wishlist.php"><i
                                              class="fa-regular fa-heart fa-lg text-dark heart"></i></a></div>
                                  </div>
                                  <p class="h3">$
@@ -302,7 +302,7 @@ if (isset($_POST['add_to_cart'])) {
                         }
                         ?>
                     </div>
-                    
+
                     <?php
                     } else {
                         echo '<p class="empty">no products added yet!</p>';

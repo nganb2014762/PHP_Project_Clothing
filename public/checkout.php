@@ -13,19 +13,18 @@ $fetch_profile = $user_profile_query->fetch(PDO::FETCH_ASSOC);
 
 // Tiếp theo, bạn có thể kiểm tra xem dữ liệu có tồn tại hay không
 if ($fetch_profile) {
-    // Hiển thị thông tin hồ sơ người dùng
-    $user_name = isset($fetch_profile['name']) ? $fetch_profile['name'] : '';
-    $user_phone = isset($fetch_profile['phone']) ? $fetch_profile['phone'] : '';
-    $user_email = isset($fetch_profile['email']) ? $fetch_profile['email'] : '';
-    $user_address = isset($fetch_profile['address']) ? $fetch_profile['address'] : '';
+  // Hiển thị thông tin hồ sơ người dùng
+  $user_name = isset($fetch_profile['name']) ? $fetch_profile['name'] : '';
+  $user_phone = isset($fetch_profile['phone']) ? $fetch_profile['phone'] : '';
+  $user_email = isset($fetch_profile['email']) ? $fetch_profile['email'] : '';
+  $user_address = isset($fetch_profile['address']) ? $fetch_profile['address'] : '';
 } else {
-    // Xử lý trường hợp không tìm thấy thông tin hồ sơ người dùng
-    echo "Không thể tìm thấy thông tin hồ sơ người dùng.";
+  // Xử lý trường hợp không tìm thấy thông tin hồ sơ người dùng
+  echo "Không thể tìm thấy thông tin hồ sơ người dùng.";
 }
 
 
 if (isset($_POST['order'])) {
-
 
   $method = $_POST['method'];
   $method = filter_var($method, FILTER_SANITIZE_STRING);
@@ -71,17 +70,17 @@ if (isset($_POST['order'])) {
 if (isset($message)) {
   foreach ($message as $message) {
     // echo '<script>alert(" ' . $message . ' ");</script>';
-    echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
-          ' . htmlspecialchars($message) . '
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-           </div>';
+    echo '<div class="alert alert-warning alert-dismissible fade show col-4 offset-4" role="alert" tabindex="-1">
+              ' . htmlspecialchars($message) . '
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>';
   }
 }
 ?>
 
 <div class="container">
   <main>
-    <div class=" my-5 py-5 text-center">
+    <div class="my-5 pt-5 text-center">
       <div class="container title text-center mt-3 pt-5">
         <h2 class="position-relative d-inline-block">Checkout form</h2>
       </div>
@@ -89,13 +88,10 @@ if (isset($message)) {
     </div>
 
     <div class="row g-5">
-
-
-
+      
       <div class="col-md-5 col-lg-4 order-md-last">
         <h4 class="d-flex justify-content-between align-items-center mb-3">
-          <span class="text-primary">Your cart</span>
-
+          <span class="text-primary ">Your cart</span>
         </h4>
         <?php
         $cart_grand_total = 0;
@@ -148,15 +144,15 @@ if (isset($message)) {
           </span>
         </li>
       </div>
-
-      <div class="col-md-7 col-lg-8">
+      
+      <div class="col-md-7 col-lg-8 border-end">
         <h4 class="mb-3 text-primary">Billing address</h4>
         <form class="needs-validation" validate method="POST">
           <div class="row g-3">
             <div class="col-sm-6">
               <label class="form-label">Your name</label>
-              <div class="form-control"  name="name">
-              <?= isset($fetch_profile['name']) ? $fetch_profile['name'] : ''; ?>
+              <div class="form-control" name="name">
+                <?= isset($fetch_profile['name']) ? $fetch_profile['name'] : ''; ?>
 
               </div>
               <div class="invalid-feedback">
@@ -166,7 +162,7 @@ if (isset($message)) {
 
             <div class="col-sm-6">
               <label class="form-label">Phone</label>
-              <div class="form-control"  name="phone">
+              <div class="form-control" name="phone">
                 <?= $fetch_profile['phone']; ?>
 
               </div>
@@ -178,7 +174,7 @@ if (isset($message)) {
 
             <div class="col-12">
               <label for="email" class="form-label">Email </label>
-              <div class="form-control"  name="email">
+              <div class="form-control" name="email">
                 <?= $fetch_profile['email']; ?>
 
               </div>
@@ -189,7 +185,7 @@ if (isset($message)) {
 
             <div class="col-12">
               <label for="address" class="form-label">Address</label>
-              <div class="form-control"  name="address">
+              <div class="form-control" name="address">
                 <?= $fetch_profile['address']; ?>
 
               </div>
@@ -199,7 +195,7 @@ if (isset($message)) {
             </div>
             <hr class="my-4">
 
-            
+
 
 
             <hr class="my-4">
