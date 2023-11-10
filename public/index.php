@@ -68,7 +68,8 @@ if (isset($_POST['add_to_cart'])) {
         $message[] = 'added to cart!';
     }
 
-};
+}
+;
 
 if (isset($message)) {
     foreach ($message as $message) {
@@ -78,7 +79,8 @@ if (isset($message)) {
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
              </div>';
     }
-  };
+}
+;
 ?>
 <title>Fashion</title>
 </head>
@@ -184,8 +186,8 @@ if (isset($message)) {
                             <div class="col">
                                 <div class="card shadow rounded">
                                     <div class="collection-img position-relative">
-                                        <img class="rounded-top p-0" src="admin/uploaded_img/<?= htmlspecialchars($fetch_products['image']); ?>"
-                                            alt="">
+                                        <img class="rounded-top p-0"
+                                            src="admin/uploaded_img/<?= htmlspecialchars($fetch_products['image']); ?>" alt="">
                                         <span
                                             class="position-absolute d-flex align-items-center justify-content-center sale">New</span>
                                     </div>

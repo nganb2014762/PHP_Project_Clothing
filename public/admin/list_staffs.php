@@ -1,14 +1,14 @@
 <?php
 include_once __DIR__ . "../../../partials/admin_boostrap.php";
-
+session_start();
 require_once __DIR__ . '../../../partials/connect.php';
 
-// $admin_id = $_SESSION['admin_id'];
+$admin_id = $_SESSION['admin_id'];
 
-// if (!isset($admin_id)) {
-//    header('location:login.php');
-// }
-// ;
+if (!isset($admin_id)) {
+    header('location:login.php');
+}
+;
 
 if (isset($_GET['delete'])) {
 
