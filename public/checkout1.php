@@ -41,16 +41,17 @@ if (isset($_POST['order'])) {
 
   $total_products = implode(', ', $cart_products);
 
-  $order_query = $pdo->prepare("SELECT * FROM `orders` WHERE  method = ?  AND total_products = ? AND total_price = ?");
-  $order_query->execute([ $method,$total_products, $cart_total]);
+  $order_query = $pdo->prepare("SELECT * FROM orders WHERE user_id = ? AND number = ? AND email = ? AND method = ? AND address = ? AND total_products = ? AND total_price = ?");
+
+  $order_query->execute([$name, $number, $email, $method, $address, $total_products, $cart_total]);
 
   if ($cart_total == 0) {
     $message[] = 'your cart is empty';
   } elseif ($order_query->rowCount() > 0) {
     $message[] = 'order placed already!';
   } else {
-    $insert_order = $pdo->prepare("INSERT INTO `orders`(user_id,method,total_products, total_price, placed_on) VALUES(?,?,?,?,?)");
-    $insert_order->execute([$user_id, $method,$total_products, $cart_total, $placed_on]);
+    $insert_order = $pdo->prepare("INSERT INTO `orders`(user_id, name, number, email, method, address, total_products, total_price, placed_on, future_date) VALUES(?,?,?,?,?,?,?,?,?,?)");
+    $insert_order->execute([$user_id, $name, $number, $email, $method, $address, $total_products, $cart_total, $placed_on, $future_date,]);
     $delete_cart = $pdo->prepare("DELETE FROM `cart` WHERE user_id = ?");
     $delete_cart->execute([$user_id]);
     $message[] = 'order placed successfully!';
@@ -177,7 +178,7 @@ if (isset($message)) {
             </div>
             <hr class="my-4">
 
-            <div class="form-check">
+            <!-- <div class="form-check">
               <input type="checkbox" class="form-check-input" id="same-address">
               <label class="form-check-label" for="same-address">Shipping address is the same as my billing
                 address</label>
@@ -186,7 +187,7 @@ if (isset($message)) {
             <div class="form-check">
               <input type="checkbox" class="form-check-input" id="save-info">
               <label class="form-check-label" for="save-info">Save this information for next time</label>
-            </div>
+            </div> -->
 
             <hr class="my-4">
 

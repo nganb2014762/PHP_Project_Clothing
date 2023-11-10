@@ -6,26 +6,27 @@ require_once __DIR__ . '../../../partials/connect.php';
 $admin_id = $_SESSION['admin_id'];
 
 if (!isset($admin_id)) {
-   header('location:login.php');
+    header('location:login.php');
+    exit(); // Đảm bảo ngừng việc thực thi mã ngay sau lệnh header
 }
-;
 
 if (isset($_GET['delete'])) {
     $delete_id = $_GET['delete'];
     $delete_orders = $pdo->prepare("DELETE FROM `orders` WHERE id = ?");
     $delete_orders->execute([$delete_id]);
     header('location:list_orders.php');
+    exit(); // Đảm bảo ngừng việc thực thi mã ngay sau lệnh header
 }
 
 if (isset($message)) {
     foreach ($message as $message) {
-        // echo '<script>alert(" ' . $message . ' ");</script>';
         echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
             ' . htmlspecialchars($message) . '
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
              </div>';
     }
 }
+
 ?>
 
 <title>List Orders</title>
@@ -84,71 +85,71 @@ if (isset($message)) {
                             <tbody class="table-group-divider">
                                 <?php
                                 $i = 1;
-                                $select_orders = $pdo->prepare("SELECT * FROM `orders`");
-                                $select_orders->execute();
-                                if ($select_orders->rowCount() > 0) {
-                                    while ($fetch_orders = $select_orders->fetch(PDO::FETCH_ASSOC)) {
+                                $select_info = $pdo->prepare("
+            SELECT user.name, user.email, user.phone, user.address,
+                   orders.placed_on, orders.check_date, orders.total_products,
+                   orders.total_price, orders.method, orders.payment_status
+            FROM user
+            INNER JOIN orders ON user.id = orders.user_id
+        ");
+                                $select_info->execute();
+
+                                if ($select_info->rowCount() > 0) {
+                                    while ($row = $select_info->fetch(PDO::FETCH_ASSOC)) {
                                         ?>
-                                <tr>
-                                    <td class="pt-4">
-                                        <b><?= htmlspecialchars($i++); ?></b>
-                                    </td>
-
-                                    <td class="pt-4">
-                                        <?= htmlspecialchars($fetch_orders['name']); ?>
-                                    </td>
-
-                                    <td class="pt-4">
-                                        <?= htmlspecialchars($fetch_orders['email']); ?>
-                                    </td>
-
-                                    <td class="pt-4">
-                                        <?= htmlspecialchars($fetch_orders['number']); ?>
-                                    </td>
-
-                                    <td class="pt-4">
-                                        <?= htmlspecialchars($fetch_orders['address']); ?>
-                                    </td>
-
-                                    <td class="pt-4">
-                                        <?= htmlspecialchars($fetch_orders['placed_on']); ?>
-                                    </td>
-                                    
-                                    <td class="pt-4">
-                                        <?= htmlspecialchars($fetch_orders['future_date']); ?>
-                                    </td>
-
-                                    <td class="pt-4">
-                                        <?= htmlspecialchars($fetch_orders['total_products']); ?>
-                                    </td>
-
-                                    <td class="pt-4">
-                                        <?= htmlspecialchars($fetch_orders['total_price']); ?>
-                                    </td>
-                                    <td class="pt-4">
-                                        <?= htmlspecialchars($fetch_orders['method']); ?>
-                                    </td>
-                                    <td class="pt-4 text-success">
-                                        <?= htmlspecialchars($fetch_orders['payment_status']); ?>
-                                    </td>
-
-                                    <td class="pt-4">
-                                        <a class="btn btn-primary"
-                                            href="edit_orders.php?update=<?= htmlspecialchars($fetch_orders['id']); ?>"
-                                            class="option-btn">edit</a>
-                                    </td>
-
-                                    <td class="pt-4">
-                                        <a class="btn btn-danger" data-id="<?= htmlspecialchars($fetch_orders['id']); ?>"
-                                            data-toggle="modal" data-target="#deleteConfirmationModal">delete</a>
-                                    </td>
-
-                                </tr>
-                            </tbody>
-                            <?php
+                                        <tr>
+                                            <td class="pt-4">
+                                                <b>
+                                                    <?= htmlspecialchars($i++); ?>
+                                                </b>
+                                            </td>
+                                            <td class="pt-4">
+                                                <?= htmlspecialchars($row['name']); ?>
+                                            </td>
+                                            <td class="pt-4">
+                                                <?= htmlspecialchars($row['email']); ?>
+                                            </td>
+                                            <td class="pt-4">
+                                                <?= htmlspecialchars($row['phone']); ?>
+                                            </td>
+                                            <td class="pt-4">
+                                                <?= htmlspecialchars($row['address']); ?>
+                                            </td>
+                                            <td class="pt-4">
+                                                <?= htmlspecialchars($row['placed_on']); ?>
+                                            </td>
+                                            <!-- <td class="pt-4">
+                                                <?= htmlspecialchars($row['check_date']); ?>
+                                            </td> -->
+                                            <td class="pt-4">
+                                                <?= htmlspecialchars($row['total_products']); ?>
+                                            </td>
+                                            <td class="pt-4">
+                                                <?= htmlspecialchars($row['total_price']); ?>
+                                            </td>
+                                            <td class="pt-4">
+                                                <?= htmlspecialchars($row['method']); ?>
+                                            </td>
+                                            <td class="pt-4 text-success">
+                                                <?= htmlspecialchars($row['payment_status']); ?>
+                                            </td>
+                                            <td class="pt-4">
+                                                <a class="btn btn-primary"
+                                                    href="edit_orders.php?update=<?= htmlspecialchars($row['id']); ?>"
+                                                    class="option-btn">edit</a>
+                                            </td>
+                                            <td class="pt-4">
+                                                <a class="btn btn-danger" data-id="<?= htmlspecialchars($row['id']); ?>"
+                                                    data-toggle="modal" data-target="#deleteConfirmationModal">delete</a>
+                                            </td>
+                                        </tr>
+                                        <?php
                                     }
+                                } else {
+                                    echo "<tr><td colspan='12'>Không có dữ liệu.</td></tr>";
                                 }
                                 ?>
+                            </tbody>
                         </table>
                     </div>
 
@@ -203,19 +204,19 @@ if (isset($message)) {
         </div>
     </div>
 
-    
-    <script>
-    // JavaScript code to handle delete from modal
-    $(document).ready(function() {
-        $('#deleteConfirmationModal').on('show.bs.modal', function(event) {
-            var button = $(event.relatedTarget);
-            var Id = button.data('id');
 
-            // Set the delete button link with productId
-            var deleteLink = 'list_orders.php?delete=' + Id;
-            $('#deleteLink').attr('href', deleteLink);
+    <script>
+        // JavaScript code to handle delete from modal
+        $(document).ready(function () {
+            $('#deleteConfirmationModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                var Id = button.data('id');
+
+                // Set the delete button link with productId
+                var deleteLink = 'list_orders.php?delete=' + Id;
+                $('#deleteLink').attr('href', deleteLink);
+            });
         });
-    });
     </script>
 
     <?php
