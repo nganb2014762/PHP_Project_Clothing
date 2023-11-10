@@ -3,11 +3,6 @@ include_once __DIR__ . '../../partials/boostrap.php';
 include_once __DIR__ . '../../partials/header.php';
 require_once __DIR__ . '../../partials/connect.php';
 
-// $user_id = $_SESSION['user_id'];
-
-// if (!isset($user_id)) {
-//    header('location:login.php');
-// };
 
 if (isset($_POST['add_to_wishlist'])) {
    $pid = $_POST['pid'];
@@ -39,42 +34,34 @@ if (isset($_POST['add_to_wishlist'])) {
 }
 
 if (isset($_POST['add_to_cart'])) {
-   $pid = $_POST['pid'];
-   $pid = filter_var($pid, FILTER_SANITIZE_STRING);
-   $p_name = $_POST['p_name'];
-   $p_name = filter_var($p_name, FILTER_SANITIZE_STRING);
-   $p_price = $_POST['p_price'];
-   $p_price = filter_var($p_price, FILTER_SANITIZE_STRING);
-   $p_image = $_POST['p_image'];
-   $p_image = filter_var($p_image, FILTER_SANITIZE_STRING);
-   $p_qty = $_POST['p_qty'];
-   $p_qty = filter_var($p_qty, FILTER_SANITIZE_STRING);
+    $pid = $_POST['pid'];
+    $pid = filter_var($pid, FILTER_SANITIZE_STRING);
+    $p_name = $_POST['p_name'];
+    $p_name = filter_var($p_name, FILTER_SANITIZE_STRING);
+    $p_price = $_POST['p_price'];
+    $p_price = filter_var($p_price, FILTER_SANITIZE_STRING);
+    $p_image = $_POST['p_image'];
+    $p_image = filter_var($p_image, FILTER_SANITIZE_STRING);
+    $p_qty = $_POST['p_qty'];
+    $p_qty = filter_var($p_qty, FILTER_SANITIZE_STRING);
+ 
+    $check_cart_numbers = $pdo->prepare("SELECT * FROM `cart` WHERE name = ? AND user_id = ?");
+    $check_cart_numbers->execute([$p_name, $user_id]);
+ 
+    if ($check_cart_numbers->rowCount() > 0) {
+       // Sản phẩm đã tồn tại trong giỏ hàng, cập nhật số lượng
+       $update_qty = $pdo->prepare("UPDATE `cart` SET quantity = quantity + ? WHERE name = ? AND user_id = ?");
+       $update_qty->execute([$p_qty, $p_name, $user_id]);
+       $message[] = 'Quantity updated in cart!';
+    } else {
+       // Sản phẩm chưa có trong giỏ hàng, thêm mới
+       $insert_cart = $pdo->prepare("INSERT INTO `cart`(user_id, pid, name, price, quantity, image) VALUES(?,?,?,?,?,?)");
+       $insert_cart->execute([$user_id, $pid, $p_name, $p_price, $p_qty, $p_image]);
+       $message[] = 'added to cart!';
+    }
+ }
+ 
 
-   $check_cart_numbers = $pdo->prepare("SELECT * FROM `cart` WHERE name = ? AND user_id = ?");
-   $check_cart_numbers->execute([$p_name, $user_id]);
-
-   if ($check_cart_numbers->rowCount() > 0) {
-      // Sản phẩm đã tồn tại trong giỏ hàng, cập nhật số lượng
-      $update_qty = $pdo->prepare("UPDATE `cart` SET quantity = quantity + ? WHERE name = ? AND user_id = ?");
-      $update_qty->execute([$p_qty, $p_name, $user_id]);
-      $message[] = 'Quantity updated in cart!';
-   } else {
-      // Sản phẩm chưa có trong giỏ hàng, thêm mới
-      $insert_cart = $pdo->prepare("INSERT INTO `cart`(user_id, pid, name, price, quantity, image) VALUES(?,?,?,?,?,?)");
-      $insert_cart->execute([$user_id, $pid, $p_name, $p_price, $p_qty, $p_image]);
-      $message[] = 'added to cart!';
-   }
-}
-
-if (isset($message)) {
-   foreach ($message as $message) {
-       // echo '<script>alert(" ' . $message . ' ");</script>';
-       echo '<div class="alert alert-warning alert-dismissible fade show col-sm-6 offset-3 mt-5 z-3" role="alert">
-           ' . htmlspecialchars($message) . '
-           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>';
-   }
- };
 ?>
 
 <title>Features Product</title>
@@ -323,8 +310,6 @@ if (isset($message)) {
             }
             ?>
          </div>
-
-      </div>
    </section>
    <!-- end of quick-view -->
    <!-- Trên đầu trang HTML -->

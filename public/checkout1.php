@@ -6,26 +6,16 @@ include_once __DIR__ . '../../partials/header.php';
 
 require_once __DIR__ . '../../partials/connect.php';
 
-// Đoạn mã để lấy thông tin hồ sơ người dùng từ cơ sở dữ liệu
-$user_profile_query = $pdo->prepare("SELECT * FROM `user` WHERE id = ?");
-$user_profile_query->execute([$user_id]);
-$fetch_profile = $user_profile_query->fetch(PDO::FETCH_ASSOC);
-
-// Tiếp theo, bạn có thể kiểm tra xem dữ liệu có tồn tại hay không
-if ($fetch_profile) {
-    // Hiển thị thông tin hồ sơ người dùng
-    $user_name = isset($fetch_profile['name']) ? $fetch_profile['name'] : '';
-    $user_phone = isset($fetch_profile['phone']) ? $fetch_profile['phone'] : '';
-    $user_email = isset($fetch_profile['email']) ? $fetch_profile['email'] : '';
-    $user_address = isset($fetch_profile['address']) ? $fetch_profile['address'] : '';
-} else {
-    // Xử lý trường hợp không tìm thấy thông tin hồ sơ người dùng
-    echo "Không thể tìm thấy thông tin hồ sơ người dùng.";
-}
-
 
 if (isset($_POST['order'])) {
 
+  $name = $_POST['name'];
+  $name = filter_var($name, FILTER_SANITIZE_STRING);
+  $number = $_POST['number'];
+  $number = filter_var($number, FILTER_SANITIZE_STRING);
+  $email = $_POST['email'];
+  $email = filter_var($email, FILTER_SANITIZE_STRING);
+  $address = $_POST['address'];
 
   $method = $_POST['method'];
   $method = filter_var($method, FILTER_SANITIZE_STRING);
@@ -51,27 +41,27 @@ if (isset($_POST['order'])) {
 
   $total_products = implode(', ', $cart_products);
 
-  $order_query = $pdo->prepare("SELECT * FROM `orders` WHERE  method = ?  AND total_products = ? AND total_price = ?");
-  $order_query->execute([$method, $total_products, $cart_total]);
+  $order_query = $pdo->prepare("SELECT * FROM orders WHERE user_id = ? AND number = ? AND email = ? AND method = ? AND address = ? AND total_products = ? AND total_price = ?");
+
+  $order_query->execute([$name, $number, $email, $method, $address, $total_products, $cart_total]);
 
   if ($cart_total == 0) {
     $message[] = 'your cart is empty';
   } elseif ($order_query->rowCount() > 0) {
     $message[] = 'order placed already!';
   } else {
-    $insert_order = $pdo->prepare("INSERT INTO `orders`(user_id,method,total_products, total_price, placed_on) VALUES(?,?,?,?,?)");
-    $insert_order->execute([$user_id, $method, $total_products, $cart_total, $placed_on]);
+    $insert_order = $pdo->prepare("INSERT INTO `orders`(user_id, name, number, email, method, address, total_products, total_price, placed_on, future_date) VALUES(?,?,?,?,?,?,?,?,?,?)");
+    $insert_order->execute([$user_id, $name, $number, $email, $method, $address, $total_products, $cart_total, $placed_on, $future_date,]);
     $delete_cart = $pdo->prepare("DELETE FROM `cart` WHERE user_id = ?");
     $delete_cart->execute([$user_id]);
     $message[] = 'order placed successfully!';
   }
-}
-;
+};
 
 if (isset($message)) {
   foreach ($message as $message) {
-    // echo '<script>alert(" ' . $message . ' ");</script>';
-    echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+      // echo '<script>alert(" ' . $message . ' ");</script>';
+      echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
           ' . htmlspecialchars($message) . '
           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
            </div>';
@@ -155,10 +145,7 @@ if (isset($message)) {
           <div class="row g-3">
             <div class="col-sm-6">
               <label class="form-label">Your name</label>
-              <div class="form-control"  name="name">
-              <?= isset($fetch_profile['name']) ? $fetch_profile['name'] : ''; ?>
-
-              </div>
+              <input type="text" class="form-control" id="firstName" name="name" placeholder="enter your name" required>
               <div class="invalid-feedback">
                 Valid first name is required.
               </div>
@@ -166,10 +153,8 @@ if (isset($message)) {
 
             <div class="col-sm-6">
               <label class="form-label">Phone</label>
-              <div class="form-control"  name="phone">
-                <?= $fetch_profile['phone']; ?>
-
-              </div>
+              <input type="text" class="form-control" id="lastName" name="number" placeholder="enter your number"
+                required>
               <div class="invalid-feedback">
                 Valid last name is required.
               </div>
@@ -177,11 +162,8 @@ if (isset($message)) {
 
 
             <div class="col-12">
-              <label for="email" class="form-label">Email </label>
-              <div class="form-control"  name="email">
-                <?= $fetch_profile['email']; ?>
-
-              </div>
+              <label for="email" class="form-label">Email <span class="text-muted">(Optional)</span></label>
+              <input type="email" class="form-control" id="email" name="email" placeholder="enter your email" >
               <div class="invalid-feedback">
                 Please enter a valid email address for shipping updates.
               </div>
@@ -189,18 +171,23 @@ if (isset($message)) {
 
             <div class="col-12">
               <label for="address" class="form-label">Address</label>
-              <div class="form-control"  name="address">
-                <?= $fetch_profile['address']; ?>
-
-              </div>
+              <input type="text" class="form-control" id="address" name="address" placeholder="your address" required>
               <div class="invalid-feedback">
                 Please enter your shipping address.
               </div>
             </div>
             <hr class="my-4">
 
-            
+            <!-- <div class="form-check">
+              <input type="checkbox" class="form-check-input" id="same-address">
+              <label class="form-check-label" for="same-address">Shipping address is the same as my billing
+                address</label>
+            </div>
 
+            <div class="form-check">
+              <input type="checkbox" class="form-check-input" id="save-info">
+              <label class="form-check-label" for="save-info">Save this information for next time</label>
+            </div> -->
 
             <hr class="my-4">
 
@@ -212,17 +199,13 @@ if (isset($message)) {
               <option value="Zalo Pay">Zalo Pay</option>
             </select>
 
+
             <hr class="my-4">
             <br>
-            <div class="col-12">
-              <a style="text-decoration: none;" href="user_edit_account.php">Change your information? Click here</a>
-
-            </div>
 
 
             <button class="w-100 btn btn-primary btn-lg  <?= ($cart_grand_total > 1) ? '' : 'disabled'; ?>" name="order"
-              type="submit">Continue to order </button>
-
+              type="submit">Continue to checkout</button>
         </form>
       </div>
     </div>
