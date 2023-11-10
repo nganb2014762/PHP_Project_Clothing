@@ -31,28 +31,28 @@ require_once __DIR__ . '../../partials/connect.php';
                                     <div class="collection-img position-relative">
                                         <img class="rounded-top p-0" src="admin/uploaded_img/<?= $fetch_products['image']; ?>"
                                             alt="">
-
-                                        <span
-                                            class="position-absolute d-flex align-items-center justify-content-center btn-primary"></span>
                                     </div>
 
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-8">
-                                                <p class="card-text text-capitalize mt-2 text-truncate fw-bold">
+                                                <p class="card-text text-capitalize text-truncate fw-bold">
                                                     <?= $fetch_products['name']; ?>
                                                 </p>
                                             </div>
-                                            <div class="col-4 text-end"><a href="#"><i class="fa-regular fa-heart fa-lg text-dark"></i></a></div>
+                                            <div class="col-4 text-end"><a href="#"><i
+                                                        class="fa-regular fa-heart fa-lg text-dark heart"></i></a></div>
                                         </div>
-                                        <p class="text-truncate"><?= $fetch_products['details']; ?></p>
+                                        <p class="text-truncate">
+                                            <?= $fetch_products['details']; ?>
+                                        </p>
                                         <div class="d-flex justify-content-between align-items-center">
-                                            <span class="fw-bold d-block h5 mt-3">$
+                                            <span class="fw-bold d-block h5">$
                                                 <?= $fetch_products['price']; ?>
                                             </span>
                                             <div class="btn-group">
                                                 <a href="view_page.php?pid=<?= $fetch_products['id']; ?>"
-                                                    class="btn btn-primary mt-3">View</a>
+                                                    class="btn btn-primary">View</a>
                                             </div>
                                         </div>
                                     </div>

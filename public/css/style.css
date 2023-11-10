@@ -420,30 +420,6 @@ footer img {
 
 /* end-home */
 
-/* single-product */
-
-/* .small-img-group {
-    display: flex;
-    justify-content: space-between;
-}
-
-.small-img-col {
-    flex-basis: 24%;
-    cursor: pointer;
-}
-
-.single-product input {
-    width: 70px;
-    height: 40px;
-    padding-left: 10px;
-    font-size: 16px;
-    margin-right: 10px;
-}
-
-.single-product input:focus {
-    outline: none;
-} */
-
 /* Cart */
 
 #cart table {
@@ -536,20 +512,6 @@ th:last-child {
     text-decoration: none;
 }
 
-/* Account */
-/* #account-form{
-    width: 70%;
-}
-
-#account-form input{
-    margin: 5px auto;
-}
-
-.account-info #orders-btn,#logout-btn{
-    color: #00b9b3;
-    text-decoration: none;
-} */
-
 /* checkout */
 #checkout-form .checkout-small-element {
     display: inline-block;
@@ -568,10 +530,8 @@ th:last-child {
 }
 
 
-/* contac.php */
-
-
-.form-area{
+/* contact.php */
+/* .form-area{
     padding-top: 7%;
 }
 
@@ -614,4 +574,4 @@ th:last-child {
     font-size: 16px;
     margin-top: 20px;
     cursor: pointer;
-}
+} */
