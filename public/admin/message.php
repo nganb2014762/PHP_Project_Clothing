@@ -21,11 +21,6 @@ if (isset($message)) {
     }
 }
 
-// if (isset($message)) {
-//     foreach ($message as $message) {
-//        echo '<script>alert(" ' . $message . ' ");</script><alert>';
-//     }
-//  }
 
 if (isset($_GET['delete'])) {
 
@@ -37,7 +32,6 @@ if (isset($_GET['delete'])) {
 
 
 
-?>
 ?>
 
 <title>Message</title>

@@ -117,7 +117,7 @@
                 <h6 class="dropdown-header">
                     Message Center
                 </h6>
-                <!-- <a class="dropdown-item d-flex align-items-center" href="#">
+                <a class="dropdown-item d-flex align-items-center" href="#">
                 <div class="dropdown-list-image mr-3">
                     <img class="rounded-circle" src="../../img/undraw_profile_1.svg" alt="...">
                     <div class="status-indicator bg-success"></div>
@@ -160,8 +160,8 @@
                             told me that people say this to all dogs, even if they aren't good...</div>
                         <div class="small text-gray-500">Chicken the Dog · 2w</div>
                     </div>
-                </a> -->
-                <a class="dropdown-item text-center small text-gray-500" href="contact.php">Read More Messages</a>
+                </a>
+                <a class="dropdown-item text-center small text-gray-500" href="message.php">Read More Messages</a>
             </div>
         </li>
 
