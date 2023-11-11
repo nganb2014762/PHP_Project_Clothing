@@ -23,7 +23,7 @@ if (isset($_POST['update_order'])) {
     $update_orders->execute([$update_payment, $order_id]);
     $message[] = 'payment has been updated!';
     $placed_on = date('d-M-Y');
-    $future_date = date('d-M-Y', strtotime($placed_on . ' +3 days'));
+
 };
 
 
