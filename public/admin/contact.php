@@ -26,16 +26,18 @@ if (isset($message)) {
 //        echo '<script>alert(" ' . $message . ' ");</script><alert>';
 //     }
 //  }
- 
- if (isset($_GET['delete'])) {
- 
+
+if (isset($_GET['delete'])) {
+
     $delete_id = $_GET['delete'];
-    $delete_message = $conn->prepare("DELETE FROM `message` WHERE id = ?");
+    $delete_message = $pdo->prepare("DELETE FROM `message` WHERE user_id = ?");
     $delete_message->execute([$delete_id]);
-    header('location: admin_contacts.php');
- }
- 
- ?>
+    header('location: index.php');
+}
+
+
+
+?>
 ?>
 
 <title>Message</title>
@@ -68,7 +70,7 @@ if (isset($message)) {
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    
+
 
                     <section class="">
                         <div class="container text-center">
@@ -82,7 +84,20 @@ if (isset($message)) {
                                     <form id="product-form" action="" method="POST" enctype="multipart/form-data"
                                         class="text_center form-horizontal">
                                         <?php
-                                        $select_message = $pdo->prepare("SELECT * FROM `message`");
+                                        $select_message = $pdo->prepare("
+                                        SELECT 
+                                            message.id AS message_id, 
+                                            message.message,
+                                            user.id AS user_id,
+                                            user.name, 
+                                            user.phone, 
+                                            user.email 
+                                        FROM 
+                                            message 
+                                        JOIN 
+                                            user ON message.user_id = user.id
+                                    ");
+
                                         $select_message->execute();
                                         if ($select_message->rowCount() > 0) {
                                             while ($fetch_message = $select_message->fetch(PDO::FETCH_ASSOC)) {
@@ -96,7 +111,7 @@ if (isset($message)) {
                                                                 <?= $fetch_message['name']; ?>
                                                             </span> </p>
                                                         <p> number : <span>
-                                                                <?= $fetch_message['number']; ?>
+                                                                <?= $fetch_message['phone']; ?>
                                                             </span> </p>
                                                         <p> email : <span>
                                                                 <?= $fetch_message['email']; ?>
@@ -104,9 +119,19 @@ if (isset($message)) {
                                                         <p> message : <span>
                                                                 <?= $fetch_message['message']; ?>
                                                             </span> </p>
-                                                        <a href="admin_contacts.php?delete=<?= $fetch_message['id']; ?>"
+                                                        <a href="contact.php?delete=<?= htmlspecialchars($fetch_message['user_id']); ?>"
                                                             onclick="return confirm('delete this message?');"
                                                             class="delete-btn">delete</a>
+
+                                                        <!-- <td class="pt-4">
+                                                            <a class="btn btn-danger my-1 my-lg-0"
+                                                                data-id="<?= htmlspecialchars($fetch_message['user_id']); ?>"
+                                                                data-toggle="modal"
+                                                                data-target="#deleteConfirmationModal">delete</a>
+
+                                                        </td> -->
+
+
                                                     </div>
                                                 </div>
                                                 <?php
@@ -148,55 +173,5 @@ if (isset($message)) {
         <i class="fas fa-angle-up"></i>
     </a>
 
-    <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="/logout">Logout</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Delete Modal -->
-    <!-- <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" role="dialog"
-        aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deleteConfirmationModalLabel">Xác nhận xóa</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    Bạn có chắc chắn muốn xóa dòng này?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-                    <a id="deleteLink" href="" class="btn btn-danger">Xóa</a>
-                </div>
-            </div>
-        </div>
-    </div> -->
-    <!-- <script>
-        $(document).ready(function () {
-            $('button.btn-danger').on('click', function () {
-                var id = $(this).data('id');
-                var deleteLink = '/deleteticket/' + id;
-                $('#deleteLink').attr('href', deleteLink);
-            });
-        });
-    </script> -->
     <?php
     include_once __DIR__ . '../../../partials/admin_footer.php';
