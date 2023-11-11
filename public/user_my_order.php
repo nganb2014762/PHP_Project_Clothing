@@ -8,11 +8,11 @@ require_once __DIR__ . '/../partials/connect.php';
 
 // session_start();
 
-// $admin_id = $_SESSION['admin_id'];
+$user_id = $_SESSION['user_id'];
 
-// if(!isset($admin_id)){
-//    header('location:login.php');
-// };
+if(!isset($user_id)){
+   header('location:login.php');
+};
 
 if (isset($_POST['update_order'])) {
 
@@ -23,14 +23,21 @@ if (isset($_POST['update_order'])) {
     $update_orders->execute([$update_payment, $order_id]);
     $message[] = 'payment has been updated!';
     $placed_on = date('d-M-Y');
-
-};
-
-
-
+}
+;
+if (isset($message)) {
+    foreach ($message as $message) {
+      // echo '<script>alert(" ' . $message . ' ");</script>';
+      echo '<div class="alert alert-warning alert-dismissible fade show col-4 offset-4" role="alert" tabindex="-1">
+                ' . htmlspecialchars($message) . '
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>';
+    }
+  };
 ?>
 
-
+<title>My orders</title>
+</head>
 <section id="cart" class="pt-5">
     <div class="container">
         <div class="title text-center mt-5 pt-5">
@@ -60,7 +67,7 @@ if (isset($_POST['update_order'])) {
                 if ($select_orders->rowCount() > 0) {
                     while ($fetch_orders = $select_orders->fetch(PDO::FETCH_ASSOC)) {
 
-                ?>
+                        ?>
                         <div>
                             <tr>
 
@@ -109,25 +116,33 @@ if (isset($_POST['update_order'])) {
 
                                 <td>
                                     <span class="product-price">
-                                    Pending confirmation
+                                        Pending confirmation
                                     </span>
                                 </td>
                             </tr>
                         </div>
-                    <?php
+                        <?php
 
                     }
 
 
                     ?>
-            </table>
+                </table>
 
-    <?php
+                <?php
                 }
-            } else {
-                echo '<p class="empty" >no orders placed yet!</p>';
-            }
-    ?>
+        } else { ?>
+            <div class="text-center pt-3">
+                <h6 class="position-relative d-inline-block">No item found </h6>
+                <div>
+                    <a type="submit" class="buy-btn text-capitalize text-decoration-none mt-3" name="order now"
+                        href="cart.php">order now</a>
+                </div>
+            </div>
+            <!-- echo '<p class="empty" >no orders placed yet!</p>'; -->
+            <?php
+        }
+        ?>
     </div>
 </section>
 

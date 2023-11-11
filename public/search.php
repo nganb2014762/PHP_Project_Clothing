@@ -70,10 +70,20 @@ if (isset($_POST['add_to_cart'])) {
    }
 }
 
-
+if (isset($message)) {
+   foreach ($message as $message) {
+     // echo '<script>alert(" ' . $message . ' ");</script>';
+     echo '<div class="alert alert-warning alert-dismissible fade show col-4 offset-4" role="alert" tabindex="-1">
+               ' . htmlspecialchars($message) . '
+               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+             </div>';
+   }
+ };
 ?>
 
 
+<title>Search</title>
+</head>
 
 <section class="my-5 py-5">
    <div class="container title text-center mt-3 pt-5">
@@ -113,25 +123,25 @@ if (isset($_POST['add_to_cart'])) {
                   <div class="col text-center">
                      <div class="card h-100 p-4">
                         <div class="price">$
-                           <?= $fetch_products['price']; ?>/-
+                           <?= htmlspecialchars($fetch_products['price']); ?>/-
                         </div>
-                        <a href="view_page.php?pid=<?= $fetch_products['id']; ?>" class="fas fa-eye"></a>
-                        <img src="admin/uploaded_img/<?= $fetch_products['image']; ?>" alt="">
+                        <a href="view_page.php?pid=<?= htmlspecialchars($fetch_products['id']); ?>" class="fas fa-eye"></a>
+                        <img src="admin/uploaded_img/<?= htmlspecialchars($fetch_products['image']); ?>" alt="">
 
                         <div class="name">
-                           <?= $fetch_products['name']; ?>
+                           <?= htmlspecialchars($fetch_products['name']); ?>
                         </div>
                         <div class="cat">
-                           <?= $fetch_products['category']; ?>
+                           <?= htmlspecialchars($fetch_products['category']); ?>
                         </div>
                         <div class="details">
-                           <?= $fetch_products['details']; ?>
+                           <?= htmlspecialchars($fetch_products['details']); ?>
                         </div>
                         <div>
-                           <input type="hidden" name="pid" value="<?= $fetch_products['id']; ?>">
-                           <input type="hidden" name="p_name" value="<?= $fetch_products['name']; ?>">
-                           <input type="hidden" name="p_price" value="<?= $fetch_products['price']; ?>">
-                           <input type="hidden" name="p_image" value="<?= $fetch_products['image']; ?>">
+                           <input type="hidden" name="pid" value="<?= htmlspecialchars($fetch_products['id']); ?>">
+                           <input type="hidden" name="p_name" value="<?= htmlspecialchars($fetch_products['name']); ?>">
+                           <input type="hidden" name="p_price" value="<?= htmlspecialchars($fetch_products['price']); ?>">
+                           <input type="hidden" name="p_image" value="<?= htmlspecialchars($fetch_products['image']); ?>">
                         </div>
                         <div class="flex-btn">
                            <input type="number" min="1" value="1" name="p_qty" class="form-control ">
@@ -142,7 +152,7 @@ if (isset($_POST['add_to_cart'])) {
                         </div>
                         <br>
                         <div class="flex-btn">
-                           <input type="submit" value="add to cart" class="btn" name="add_to_cart">
+                           <input type="submit" value="add to cart" class="buy-btn" name="add_to_cart">
                         </div>
                      </div>
                   </div>
