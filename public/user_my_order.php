@@ -86,7 +86,7 @@ if (isset($_POST['update_order'])) {
                                 <td>
                                     <span class="product-price">
                                         <div class="price">
-                                            <?= $fetch_orders['future_date']; ?>
+                                            <?= $fetch_orders['check_date']; ?>
                                         </div>
                                     </span>
                                 </td>
