@@ -25,9 +25,6 @@ $message = [];
 
 //     $update_profile = $pdo->prepare("UPDATE `user` SET name = ?, email = ? WHERE id = ?");
 //     $update_profile->execute([$name, $sex, $phone, $address, $born, $email, $user_id]);
-
-
-
 // };
 
 if (isset($message)) {
@@ -54,21 +51,25 @@ if (isset($message)) {
 
     <div class="d-flex justify-content-center">
         <div class="card mt-5 mb-5 w-50">
-
             <div class="card-body row">
                 <div class="col-md-3 col-12">Profile photo</div>
-                <div class="col-md-8 col-10">Your profile photo helps others recognize you</div>
-                <div class="col-md-1 col-2"><img class="float-end" src="../img/account/user.jpg" width="70"></div>
-                <!-- <hr class="mt-2"> -->
+                <div class="col-md-8 col-10">
+                    <?php
+                    if ((htmlspecialchars($fetch_profile['image'])) != '') { ?>
+                        <img src="admin/uploaded_img/user/<?= htmlspecialchars($fetch_profile['image']); ?>" width="70">
+                        <?php
+                    } else {
+                        echo '<img src="img/account/user0.png" width="70">';
+                    }
+                    ;
+                    ?>
+                </div>
             </div>
             <div class="card-body row">
                 <div class="col-md-3 col-12">Name</div>
                 <div class="col-md-8 col-10">
                     <?= $fetch_profile['name']; ?>
-
                 </div>
-
-                <!-- <hr class="mt-2"> -->
             </div>
             <div class="card-body row">
                 <div class="col-md-3 col-12">Sex</div>
