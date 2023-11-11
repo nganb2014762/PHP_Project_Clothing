@@ -179,44 +179,50 @@ if (isset($message)) {
                     if ($select_products->rowCount() > 0) {
                         while ($fetch_products = $select_products->fetch(PDO::FETCH_ASSOC)) {
                             ?>
-                            <div class="col">
-                                <div class="card shadow rounded">
-                                    <div class="collection-img position-relative">
-                                        <img class="rounded-top p-0"
-                                            src="admin/uploaded_img/<?= htmlspecialchars($fetch_products['image']); ?>" alt="">
-                                        <span
-                                            class="position-absolute d-flex align-items-center justify-content-center sale">New</span>
-                                    </div>
+                            <form action="" method="POST">
+                                <div class="col">
+                                    <div class="card shadow rounded h-100">
+                                        <div class="collection-img position-relative">
+                                            <img class="rounded-top p-0 card-img-top"
+                                                src="admin/uploaded_img/<?= $fetch_products['image']; ?>" alt="">
+                                        </div>
 
-                                    <div class="card-body">
-                                        <div class="rating">
-                                            <span class="text-primary"><i class="fas fa-star"></i></span>
-                                            <span class="text-primary"><i class="fas fa-star"></i></span>
-                                            <span class="text-primary"><i class="fas fa-star"></i></span>
-                                            <span class="text-primary"><i class="fas fa-star"></i></span>
-                                            <span class="text-primary"><i class="fas fa-star"></i></span>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-8">
-                                                <p class="card-text text-capitalize text-truncate fw-bold">
-                                                    <?= htmlspecialchars($fetch_products['name']); ?>
-                                                </p>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-8">
+                                                    <p class="card-text text-capitalize text-truncate fw-bold">
+                                                        <?= htmlspecialchars($fetch_products['name']); ?>
+                                                    </p>
+                                                </div>
+
+                                                <div class="col-4 text-end"><button class="text-capitalize border-0 bg-white"
+                                                        type="submit" name="add_to_wishlist"><i
+                                                            class="fa-regular fa-heart fa-lg text-dark heart"></i></button>
+                                                </div>
+
                                             </div>
-                                            <div class="col-4 text-end"><a href="wishlist.php"><i
-                                                        class="fa-regular fa-heart fa-lg text-dark heart"></i></a></div>
-                                        </div>
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <span class="fw-bold d-block">$
-                                                <?= htmlspecialchars($fetch_products['price']); ?>
-                                            </span>
-                                            <div class="btn-group position-static">
-                                                <a href="view_page.php?pid=<?= htmlspecialchars($fetch_products['id']); ?>"
-                                                    class="btn btn-primary mt-3">View</a>
+
+                                            <p class="text-truncate text-capitalize">
+                                                <?= htmlspecialchars($fetch_products['details']); ?>
+                                            </p>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span class="fw-bold d-block h5">$
+                                                    <?= htmlspecialchars($fetch_products['price']); ?>
+                                                </span>
+                                                <div class="btn-group">
+                                                    <a href="view_page.php?pid=<?= htmlspecialchars($fetch_products['id']); ?>"
+                                                        class="btn btn-primary">View</a>
+                                                </div>
                                             </div>
+                                            <input type="hidden" name="pid" value="<?= $fetch_products['id']; ?>">
+                                            <input type="hidden" name="p_name" value="<?= $fetch_products['name']; ?>">
+                                            <input type="hidden" name="p_price" value="<?= $fetch_products['price']; ?>">
+                                            <input type="hidden" name="p_image" value="<?= $fetch_products['image']; ?>">
+
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </form>
 
                             <?php
                         }
@@ -254,7 +260,7 @@ if (isset($message)) {
         </div>
     </section>
     <!-- end of offer -->
-    
+
     <!-- about us -->
     <section id="about" class="my-5">
         <div class="container">
