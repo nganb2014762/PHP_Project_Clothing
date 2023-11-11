@@ -9,30 +9,32 @@ require_once __DIR__ . '../../partials/connect.php';
 if (isset($_POST['submit'])) {
 
     $email = $_POST['email'];
-
     $password = md5($_POST['password']);
+
     $sql = "SELECT * FROM `user` WHERE email = :email AND password = :password";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([
         ':email' => $email,
         ':password' => $password
     ]);
+
     $rowCount = $stmt->rowCount();
 
-    if ($rowCount > 0) {
+    if (!empty($_POST['email']) && !empty($_POST['password'])) {
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        if ($row['role'] == '0') {
+        if ((strtolower($row['email']) == $email) && ($row['password'] == $password) && ($row['role'] == '0')) {
             $_SESSION['user_id'] = $row['id'];
             header('Location: index.php');
             exit();
         } else {
-            $message[] = 'No user found or incorrect email or password!';
+            $message[] = 'Incorrect email or password!';
         }
     } else {
         $message[] = 'No user found or incorrect email or password!';
     }
 
-};
+}
+;
 ?>
 
 <?php
@@ -64,17 +66,24 @@ if (isset($message)) {
                 <div class="card-body">
                     <form action="login.php" id="login-form" method="post" class="text_center form-horizontal">
                         <div class="form-group">
-                            <input type="text" class="form-control" id="login-email" name="email" placeholder="Email"
+                            <input type="email" class="form-control" id="login-email" name="email" placeholder="Email"
                                 for="email">
                         </div>
-                        <div class="form-group">
-                            <input type="password" class="form-control" id="login-password" name="password"
-                                placeholder="Password" for="password">
+                        <div class="d-flex flex-row input-group rounded">
+                            <div class="col-11">
+                                <input type="password" class="form-control flex-fill" id="login-password"
+                                    name="password" placeholder="Password" for="password">
+                            </div>
+                            <div class="col-1">
+                                <span class="fas fa-eye flex-fill m-3 position-relative"
+                                    type="button" id="btnPassword"></span>
+                            </div>
                         </div>
+                        
                         <div class="form-group row">
                             <div class="form-check col-md-6">
                                 <input class="form-check-input" type="checkbox" id="agree" name="agree" value="agree" />
-                                <label class="form-check-label">Remember Account</label>
+                                <label class="form-check-label"> Remember Account</label>
                             </div>
                             <div class="col-md-6">
                                 <a href="register.php" id="register-url" class="">Don't have account ? Register</a>
@@ -93,7 +102,21 @@ if (isset($message)) {
     <?php
     include_once __DIR__ . '/../partials/footer.php';
     ?>
+    <script>// step 1
+        const ipnElement = document.querySelector('#login-password')
+        const btnElement = document.querySelector('#btnPassword')
 
+        // step 2
+        btnElement.addEventListener('click', function () {
+            // step 3
+            const currentType = ipnElement.getAttribute('type')
+            // step 4
+            ipnElement.setAttribute(
+                'type',
+                currentType === 'password' ? 'text' : 'password'
+            )
+        })
+    </script>
     <script type="text/javascript">
         $(document).ready(function () {
             $('#login-form').validate({

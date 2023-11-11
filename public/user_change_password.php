@@ -33,9 +33,6 @@ if (isset($_POST['update_password'])) {
          $update_pass_query = $pdo->prepare("UPDATE `user` SET password = ? WHERE id = ?");
          $update_pass_query->execute([$confirm_pass, $user_id]);
          $message[] = 'Mật khẩu đã được cập nhật thành công!';
-         // // Chuyển hướng đến trang index.php sau khi cập nhật mật khẩu
-         // header('location:index.php');
-         // exit(); // Đảm bảo không có đầu ra khác trước chuyển hướng
       }
    }
 
@@ -63,7 +60,7 @@ if (isset($message)) {
 
    </div>
    <div class="mx-auto container">
-      <div class="card col-md-6 offset-md-3 bg-secondary">
+      <div class="card col-md-6 offset-md-3">
          <div class="card-body">
             <form id="product-form" action="" method="POST" enctype="multipart/form-data"
                class="text_center form-horizontal">
