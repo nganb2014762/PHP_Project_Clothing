@@ -11,14 +11,14 @@ require_once __DIR__ . '../../partials/connect.php';
 <!-- about us -->
 <section id="about" class="my-5 py-5">
     <div class="container">
-        <div class="title text-center pt-3 pb-5 mt-3 pt-5">
+        <div class="title text-center mt-3 pt-5">
             <h2 class="position-relative d-inline-block ms-4">About Us</h2>
             <hr class="mx-auto">
         </div>
         <div class="row gy-lg-5 align-items-center">
             <div class="col-lg-6 order-lg-1 text-center text-lg-start">
-                <div class="pt-3 pb-5">
-                    <h2 class="position-relative d-inline-block ms-4">BORN IN VIETNAM</h2>
+                <div class="pt-3 pb-3">
+                    <h2 class="position-relative d-inline-block">BORN IN VIETNAM</h2>
                 </div>
                 <p class="lead text-muted px-3">At FASHION, we easily mix fabrics, cuts and seasons. Leather with
                     patterns, tight and loose, summer in winter and winter in sum- mer.
@@ -28,7 +28,7 @@ require_once __DIR__ . '../../partials/connect.php';
                     own right, desired and sought-after by all women of major cities.</p>
             </div>
 
-            <div class="col-lg-6 order-lg-0">
+            <div class="col-lg-6 order-lg-0 pt-3 pb-3">
                 <img src="img/poster/11.jpg" alt="" class="img-fluid">
             </div>
         </div>
