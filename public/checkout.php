@@ -28,7 +28,7 @@ if (isset($_POST['order'])) {
 
   $method = $_POST['method'];
   $method = filter_var($method, FILTER_SANITIZE_STRING);
-
+  
   $address = filter_var($address, FILTER_SANITIZE_STRING);
   $placed_on = date('Y-m-d', strtotime('now'));
 
@@ -63,19 +63,20 @@ if (isset($_POST['order'])) {
     $delete_cart = $pdo->prepare("DELETE FROM `cart` WHERE user_id = ?");
     $delete_cart->execute([$user_id]);
     $message[] = 'order placed successfully!';
+    header('Location: login.php');
   }
 }
 ;
 
-if (isset($message)) {
-  foreach ($message as $message) {
-    // echo '<script>alert(" ' . $message . ' ");</script>';
-    echo '<div class="alert alert-warning alert-dismissible fade show col-4 offset-4" role="alert" tabindex="-1">
-              ' . htmlspecialchars($message) . '
-              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>';
-  }
-}
+// if (isset($message)) {
+//   foreach ($message as $message) {
+//     // echo '<script>alert(" ' . $message . ' ");</script>';
+//     echo '<div class="alert alert-warning alert-dismissible fade show col-4 offset-4" role="alert" tabindex="-1">
+//               ' . htmlspecialchars($message) . '
+//               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+//             </div>';
+//   }
+// }
 ?>
 
 <div class="container">
@@ -190,8 +191,10 @@ if (isset($message)) {
                 if (!empty($fetch_profile['address'])) {
                   echo $fetch_profile['address'];
                 } else {
-                  echo "
-                  You have not updated the address in your profile";
+                  // echo "
+                  // You have not updated the address in your profile";
+                  echo '
+                  <a style="text-decoration: none;" href="user_edit_account.php">Change your information? Click here</a> ';
                 }
                 ?>
               </div>
