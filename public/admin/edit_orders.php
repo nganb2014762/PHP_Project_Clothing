@@ -6,48 +6,44 @@ require_once __DIR__ . '../../../partials/connect.php';
 $admin_id = $_SESSION['admin_id'];
 
 if (!isset($admin_id)) {
-   header('location:login.php');
+    header('location:login.php');
+    exit(); // Đảm bảo ngừng việc thực thi mã ngay sau lệnh header
 }
-;
-
 
 if (isset($_POST['update_order'])) {
+    $update_id = $_POST['update_id'];
+    $check_date = $_POST['check_date'];
+    $cancel_date = $_POST['cancel_date'];
+    $received_date = $_POST['received_date'];
 
-    $id = $_POST['id'];
+    $update_order = $pdo->prepare("
+        UPDATE orders
+        SET check_date = :check_date, cancel_date = :cancel_date, received_date = :received_date
+        WHERE id = :update_id
+    ");
 
-    $payment_status = $_POST['payment_status'];
-    $payment_status = filter_var($payment_status, FILTER_SANITIZE_STRING);
+    $update_order->bindParam(':check_date', $check_date);
+    $update_order->bindParam(':cancel_date', $cancel_date);
+    $update_order->bindParam(':received_date', $received_date);
+    $update_order->bindParam(':update_id', $update_id);
 
-    $update_orders = $pdo->prepare("UPDATE `orders` SET payment_status = ? WHERE id = ?");
-    $update_orders->execute([$payment_status, $id]);
+    $update_order->execute();
 
-    $message[] = 'order updated successfully!';
-    header('location:list_orders.php');
-    // $query = "UPDATE `orders` SET payment_status = ? WHERE id = ?";
-    // $before_update = $pdo->query("SELECT payment_status FROM orders WHERE id = $id")->fetchColumn();
-
-    // $update_orders = $pdo->prepare($query);
-    // $update_orders->execute([$payment_status, $id]);
-
-    // $after_update = $pdo->query("SELECT payment_status FROM orders WHERE id = $id")->fetchColumn();
-
-    // if ($before_update == $after_update) {
-    //     // $message[] = 'Update failed';
-    //     echo 'Update failed';
-    // } else {
-    //     // $message[] = 'Order updated successfully!';
-    //     echo 'Order updated successfully';
-    // }
-};
+    header('location: list_orders.php');
+    exit();
+}
 
 if (isset($message)) {
     foreach ($message as $message) {
-        echo '<script>alert(" ' . $message . ' ");</script><alert>';
+        echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+            ' . htmlspecialchars($message) . '
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+             </div>';
     }
 }
 ?>
 
-<title>Edit Products</title>
+<title>Edit Orders</title>
 </head>
 
 <body id="page-top">
@@ -79,14 +75,11 @@ if (isset($message)) {
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Cập nhật trạng thái đơn hàng</h1>
-                        <a href="list_orders.php" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                class="fas fa-solid fa-list fa-sm text-white-50"></i> Danh sách đơn hàng</a>
+                        <a href="list_orders.php" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                            <i class="fas fa-solid fa-list fa-sm text-white-50"></i> Danh sách đơn hàng</a>
                     </div>
+
                     <section class="">
-                        <!-- <div class="container text-center">
-                            <h2 class="position-relative d-inline-block"></h2>
-                            
-                        </div> -->
                         <div class="mx-auto container">
                             <div class="card shadow-sm">
                                 <div class="card-body">
@@ -96,17 +89,16 @@ if (isset($message)) {
                                     $select_orders->execute([$update_id]);
                                     if ($select_orders->rowCount() > 0) {
                                         while ($fetch_orders = $select_orders->fetch(PDO::FETCH_ASSOC)) {
-                                            ?>
+                                    ?>
 
-                                            <form id="order-form" class="text_center form-horizontal" action="" method="post"
-                                                enctype="multipart/form-data">
+                                    <form id="order-form" class="text_center form-horizontal" action="" method="post"
+                                        enctype="multipart/form-data">
 
-                                                <div class="form-group">
-                                                    <input class="form-control" type="hidden" name="id"
-                                                        value="<?= $fetch_orders['id']; ?>">
-                                                </div>
-
-                                                <div class="form-group">
+                                        <div class="form-group">
+                                            <input class="form-control" type="hidden" name="update_id"
+                                                value="<?= $fetch_orders['id']; ?>">
+                                        </div>
+                                        <div class="form-group">
                                                     <select name="payment_status" class="form-control" required>
                                                         <option selected>
                                                             <?= $fetch_orders['payment_status']; ?>
@@ -117,15 +109,33 @@ if (isset($message)) {
                                                     </select>
                                                 </div>
 
-                                                <div class="form-group">
-                                                    <div class="flex-btn">
-                                                        <input type="submit" class="btn w-100 btn-primary shadow-sm"
-                                                            value="update" name="update_order">
-                                                    </div>
-                                                </div>
-                                            </form>
+                                        <div class="form-group">
+                                            <label for="check_date">Check Date:</label>
+                                            <input type="date" class="form-control" id="check_date" name="check_date"
+                                                value="<?php echo $fetch_orders['check_date']; ?>">
+                                        </div>
 
-                                            <?php
+                                        <div class="form-group">
+                                            <label for="cancel_date">Cancel Date:</label>
+                                            <input type="date" class="form-control" id="cancel_date" name="cancel_date"
+                                                value="<?php echo $fetch_orders['cancel_date']; ?>">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="received_date_date">Received Date:</label>
+                                            <input type="date" class="form-control" id="received_date_date" name="received_date"
+                                                value="<?php echo $fetch_orders['received_date']; ?>">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="flex-btn">
+                                                <input type="submit" class="btn w-100 btn-primary shadow-sm"
+                                                    value="Update" name="update_order">
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                    <?php
                                         }
                                     }
                                     ?>
@@ -139,7 +149,6 @@ if (isset($message)) {
 
             </div>
             <!-- End of Main Content -->
-
 
             <!-- Footer -->
             <footer class="sticky-footer bg-white">
@@ -164,3 +173,4 @@ if (isset($message)) {
 
     <?php
     include_once __DIR__ . '../../../partials/admin_footer.php';
+    ?>

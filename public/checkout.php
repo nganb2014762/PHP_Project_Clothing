@@ -13,14 +13,14 @@ $fetch_profile = $user_profile_query->fetch(PDO::FETCH_ASSOC);
 
 // Tiếp theo, bạn có thể kiểm tra xem dữ liệu có tồn tại hay không
 if ($fetch_profile) {
-    // Hiển thị thông tin hồ sơ người dùng
-    $user_name = isset($fetch_profile['name']) ? $fetch_profile['name'] : '';
-    $user_phone = isset($fetch_profile['phone']) ? $fetch_profile['phone'] : '';
-    $user_email = isset($fetch_profile['email']) ? $fetch_profile['email'] : '';
-    $user_address = isset($fetch_profile['address']) ? $fetch_profile['address'] : '';
+  // Hiển thị thông tin hồ sơ người dùng
+  $user_name = isset($fetch_profile['name']) ? $fetch_profile['name'] : '';
+  $user_phone = isset($fetch_profile['phone']) ? $fetch_profile['phone'] : '';
+  $user_email = isset($fetch_profile['email']) ? $fetch_profile['email'] : '';
+  $user_address = isset($fetch_profile['address']) ? $fetch_profile['address'] : '';
 } else {
-    // Xử lý trường hợp không tìm thấy thông tin hồ sơ người dùng
-    echo "Không thể tìm thấy thông tin hồ sơ người dùng.";
+  // Xử lý trường hợp không tìm thấy thông tin hồ sơ người dùng
+  echo "Không thể tìm thấy thông tin hồ sơ người dùng.";
 }
 
 
@@ -32,8 +32,7 @@ if (isset($_POST['order'])) {
 
   $address = filter_var($address, FILTER_SANITIZE_STRING);
   $placed_on = date('d-M-Y');
-  $future_date = date('d-M-Y', strtotime($placed_on . ' +3 days'));
-
+  
   $cart_total = 0;
   $cart_products[] = '';
 
@@ -155,8 +154,8 @@ if (isset($message)) {
           <div class="row g-3">
             <div class="col-sm-6">
               <label class="form-label">Your name</label>
-              <div class="form-control"  name="name">
-              <?= isset($fetch_profile['name']) ? $fetch_profile['name'] : ''; ?>
+              <div class="form-control" name="name">
+                <?= $fetch_profile['name']; ?>
 
               </div>
               <div class="invalid-feedback">
@@ -166,7 +165,7 @@ if (isset($message)) {
 
             <div class="col-sm-6">
               <label class="form-label">Phone</label>
-              <div class="form-control"  name="phone">
+              <div class="form-control" name="phone">
                 <?= $fetch_profile['phone']; ?>
 
               </div>
@@ -178,7 +177,7 @@ if (isset($message)) {
 
             <div class="col-12">
               <label for="email" class="form-label">Email </label>
-              <div class="form-control"  name="email">
+              <div class="form-control" name="email">
                 <?= $fetch_profile['email']; ?>
 
               </div>
@@ -189,9 +188,14 @@ if (isset($message)) {
 
             <div class="col-12">
               <label for="address" class="form-label">Address</label>
-              <div class="form-control"  name="address">
-                <?= $fetch_profile['address']; ?>
-
+              <div class="form-control" name="address">
+                <?php
+                if (isset($fetch_profile['address']) && !empty($fetch_profile['address'])) {
+                  echo $fetch_profile['address'];
+                } else {
+                  echo 'You did not have your address. ';
+                }
+                ?>
               </div>
               <div class="invalid-feedback">
                 Please enter your shipping address.
@@ -199,7 +203,7 @@ if (isset($message)) {
             </div>
             <hr class="my-4">
 
-            
+
 
 
             <hr class="my-4">

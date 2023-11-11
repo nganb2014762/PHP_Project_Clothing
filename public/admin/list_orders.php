@@ -68,18 +68,21 @@ if (isset($message)) {
                         <table class="table text-center">
                             <thead>
                                 <tr>
-                                    <th scope="col">STT</th>
-                                    <th scope="col">Fullname</th>
-                                    <th scope="col">Email</th>
-                                    <th scope="col">Phone</th>
-                                    <th scope="col">Address</th>
-                                    <th scope="col">Date Place</th>
-                                    <th scope="col">Total Products</th>
-                                    <th scope="col">Total Price</th>
-                                    <th scope="col">Payment Method</th>
-                                    <th scope="col">Payment Status</th>
-                                    <th scope="col">Edit</th>
-                                    <th scope="col">Delete</th>
+                                    <th scope="col-3">STT</th>
+                                    <th scope="col-3">Fullname</th>
+                                    <th scope="col-3">Email</th>
+                                    <th scope="col-3">Phone</th>
+                                    <th scope="col-3">Address</th>
+                                    <th scope="col-3">Date Place</th>
+                                    <th scope="col-3">Cancel Date</th>
+                                    <th scope="col-3">Check Date</th>
+                                    <th scope="col-3">Receive Date</th>
+                                    <th scope="col-3">Total Products</th>
+                                    <th scope="col-3">Total Price</th>
+                                    <th scope="col-3">Payment Method</th>
+                                    <th scope="col-3">Payment Status</th>
+                                    <th scope="col-3">Edit</th>
+                                    <th scope="col-3">Delete</th>
                                 </tr>
                             </thead>
                             <tbody class="table-group-divider">
@@ -87,7 +90,7 @@ if (isset($message)) {
                                 $i = 1;
                                 $select_info = $pdo->prepare("
             SELECT user.name, user.email, user.phone, user.address,
-                   orders.placed_on, orders.check_date, orders.total_products,
+                   orders.placed_on, orders.check_date,orders.cancel_date,orders.received_date, orders.total_products,
                    orders.total_price, orders.method, orders.payment_status, orders.id
             FROM user
             INNER JOIN orders ON user.id = orders.user_id
@@ -118,14 +121,20 @@ if (isset($message)) {
                                             <td class="pt-4">
                                                 <?= htmlspecialchars($row['placed_on']); ?>
                                             </td>
-                                            <!-- <td class="pt-4">
+                                            <td class="pt-4">
+                                                <?= htmlspecialchars($row['cancel_date']); ?>
+                                            </td>
+                                            <td class="pt-4">
                                                 <?= htmlspecialchars($row['check_date']); ?>
-                                            </td> -->
+                                            </td>
+                                            <td class="pt-4">
+                                                <?= htmlspecialchars($row['received_date']); ?>
+                                            </td>
                                             <td class="pt-4">
                                                 <?= htmlspecialchars($row['total_products']); ?>
                                             </td>
                                             <td class="pt-4">
-                                                <?= htmlspecialchars($row['total_price']); ?>
+                                                <?= htmlspecialchars($row['total_price']); ?>$
                                             </td>
                                             <td class="pt-4">
                                                 <?= htmlspecialchars($row['method']); ?>
@@ -135,14 +144,12 @@ if (isset($message)) {
                                             </td>
                                             <td class="pt-4">
                                                 <a class="btn btn-primary"
-                                                    href="edit_orders.php?update=<?= htmlspecialchars($row['id']); ?>"
-                                                    class="option-btn">edit</a>
+                                                    href="edit_orders.php?update=<?= htmlspecialchars($row['id']); ?>&check_date=<?= date('d-M-Y', strtotime($row['check_date'])); ?>&cancel_date=<?= date('d-M-Y', strtotime($row['cancel_date'])); ?>" class="option-btn">edit</a>
                                             </td>
                                             <td class="pt-4">
                                                 <a class="btn btn-danger" data-id="<?= htmlspecialchars($row['id']); ?>"
-                                                    data-toggle="modal" data-target="#deleteConfirmationModal">delete</a>
+                                                    data-check-date="<?= date('d-M-Y', strtotime($row['check_date'])); ?>" data-cancel-date="<?= date('d-M-Y', strtotime($row['cancel_date'])); ?>" data-toggle="modal" data-target="#deleteConfirmationModal">delete</a>
                                             </td>
-                                            
                                         </tr>
                                         <?php
                                     }
@@ -153,7 +160,6 @@ if (isset($message)) {
                             </tbody>
                         </table>
                     </div>
-
 
                 </div>
                 <!-- /.container-fluid -->
@@ -182,7 +188,6 @@ if (isset($message)) {
         <i class="fas fa-angle-up"></i>
     </a>
 
-
     <!-- Delete Modal -->
     <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" role="dialog"
         aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
@@ -195,7 +200,9 @@ if (isset($message)) {
                     </button>
                 </div>
                 <div class="modal-body">
-                    Bạn có chắc chắn muốn xóa dòng này?
+                    <p>Bạn có chắc chắn muốn xóa dòng này?</p>
+                    <p><strong>Check Date:</strong> <span id="checkDateInfo"></span></p>
+                    <p><strong>Cancel Date:</strong> <span id="cancelDateInfo"></span></p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
@@ -205,20 +212,24 @@ if (isset($message)) {
         </div>
     </div>
 
-
     <script>
-        // JavaScript code to handle delete from modal
         $(document).ready(function () {
             $('#deleteConfirmationModal').on('show.bs.modal', function (event) {
                 var button = $(event.relatedTarget);
                 var Id = button.data('id');
+                var checkDate = button.data('check-date');
+                var cancelDate = button.data('cancel-date');
 
-                // Set the delete button link with productId
                 var deleteLink = 'list_orders.php?delete=' + Id;
                 $('#deleteLink').attr('href', deleteLink);
+
+                // Hiển thị thông tin ngày tháng năm trong modal
+                $('#checkDateInfo').text(checkDate);
+                $('#cancelDateInfo').text(cancelDate);
             });
         });
     </script>
 
     <?php
     include_once __DIR__ . '../../../partials/admin_footer.php';
+    ?>
