@@ -6,6 +6,8 @@ include_once __DIR__ . '/../partials/header.php';
 
 require_once __DIR__ . '../../partials/connect.php';
 
+session_start();
+
 $user_id = $_SESSION['user_id'];
 
 if (!isset($user_id)) {
@@ -85,7 +87,7 @@ if (isset($message)) {
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
              </div>';
     }
-}
+  }
 ?>
 
 <section class="pt-5">

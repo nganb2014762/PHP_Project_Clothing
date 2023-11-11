@@ -11,7 +11,7 @@ if (isset($_POST['submit'])) {
     $email = $_POST['email'];
     $password = md5($_POST['password']);
 
-    $sql = "SELECT * FROM `user` WHERE LOWER(email) = LOWER(:email) AND password = :password";
+    $sql = "SELECT * FROM `user` WHERE email = :email AND password = :password";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([
         ':email' => $email,
@@ -22,30 +22,34 @@ if (isset($_POST['submit'])) {
 
     if (!empty($_POST['email']) && !empty($_POST['password'])) {
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        if ($row && strtolower($row['email']) == $email && $row['password'] == $password && $row['role'] == '0') {
+        if ((strtolower($row['email']) == $email) && ($row['password'] == $password) && ($row['role'] == '0')) {
             $_SESSION['user_id'] = $row['id'];
             header('Location: index.php');
             exit();
-        }else{
+        } else {
             $message[] = 'Incorrect email or password!';
         }
     } else {
-        $message[] = 'No user found';
+        $message[] = 'No user found or incorrect email or password!';
     }
-}    
+
+}
 ;
+?>
+
+<?php
 
 if (isset($message)) {
     foreach ($message as $message) {
-      // echo '<script>alert(" ' . $message . ' ");</script>';
-      echo '<div class="alert alert-warning alert-dismissible fade show col-4 offset-4" role="alert" tabindex="-1">
-                ' . htmlspecialchars($message) . '
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-              </div>';
+        // echo '<script>alert(" ' . $message . ' ");</script>';
+        echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+            ' . htmlspecialchars($message) . '
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+             </div>';
     }
-  };
-  ?>
-
+}
+;
+?>
 <title>Login</title>
 </head>
 
