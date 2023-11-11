@@ -54,7 +54,7 @@
                 <span class="badge badge-danger badge-counter">3+</span>
             </a>
             <!-- Dropdown - Alerts -->
-            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+            <!-- <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                 aria-labelledby="alertsDropdown">
                 <h6 class="dropdown-header">
                     Alerts Center
@@ -93,7 +93,7 @@
                     </div>
                 </a>
                 <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
-            </div>
+            </div> -->
         </li>
 
         <!-- Nav Item - Messages -->
@@ -150,7 +150,7 @@
                     <div class="small text-gray-500">Morgan Alvarez · 2d</div>
                 </div>
             </a> -->
-                <a class="dropdown-item d-flex align-items-center" href="#">
+                <!-- <a class="dropdown-item d-flex align-items-center" href="#">
                     <div class="dropdown-list-image mr-3">
                         <img class="rounded-circle" src="https://source.unsplash.com/Mv9hjnEUHR4/60x60" alt="...">
                         <div class="status-indicator bg-success"></div>
@@ -160,8 +160,8 @@
                             told me that people say this to all dogs, even if they aren't good...</div>
                         <div class="small text-gray-500">Chicken the Dog · 2w</div>
                     </div>
-                </a>
-                <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
+                </a> -->
+                <a class="dropdown-item text-center small text-gray-500" href="contact.php">Read More Messages</a>
             </div>
         </li>
 
