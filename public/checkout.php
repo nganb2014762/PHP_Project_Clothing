@@ -34,7 +34,7 @@ if ($fetch_profile) {
 if (isset($_POST['order'])) {
 
   $method = $_POST['method'];
-  $method = filter_var($method, FILTER_SANITIZE_STRING);
+$method = filter_var($method, FILTER_SANITIZE_STRING);
   
   $address = filter_var($address, FILTER_SANITIZE_STRING);
   $placed_on = date('Y-m-d', strtotime('now'));
@@ -59,8 +59,10 @@ if (isset($_POST['order'])) {
 
   $order_query = $pdo->prepare("SELECT * FROM `orders` WHERE  method = ?  AND total_products = ? AND total_price = ?");
   $order_query->execute([$method, $total_products, $cart_total]);
-
-  if ($cart_total == 0) {
+  
+  if (empty($fetch_profile['address'])) {
+    $message[] = 'add address ';
+  }elseif($cart_total == 0) {
     $message[] = 'your cart is empty';
   } elseif ($order_query->rowCount() > 0) {
     $message[] = 'order placed already!';
@@ -69,7 +71,6 @@ if (isset($_POST['order'])) {
     $insert_order->execute([$user_id, $method, $total_products, $cart_total, $placed_on]);
     $delete_cart = $pdo->prepare("DELETE FROM `cart` WHERE user_id = ?");
     $delete_cart->execute([$user_id]);
-    if()
     $message[] = 'order placed successfully!';
   }
 }
@@ -201,10 +202,8 @@ if (isset($message)) {
                 if (!empty($fetch_profile['address'])) {
                   echo htmlspecialchars($fetch_profile['address']);
                 } else {
-                  // echo "
-                  // You have not updated the address in your profile";
-                  echo '
-                  <a style="text-decoration: none;" href="user_edit_account.php">Change your information? Click here</a> ';
+                  echo 'Please enter your shipping address.';
+                  echo '<a style="text-decoration: none;" href="user_edit_account.php">Change your information? Click here</a> ';
                 }
                 ?>
               </div>

@@ -43,13 +43,13 @@ if (isset($_POST['send'])) {
 }
 ;
 if (isset($message)) {
-    foreach ($message as $message) {
-        // echo '<script>alert(" ' . $message . ' ");</script>';
-        echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
-            ' . htmlspecialchars($message) . '
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-             </div>';
-    }
+foreach ($message as $message) {
+// echo '<script>alert(" ' . $message . ' ");</script>';
+echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+' . htmlspecialchars($message) . '
+<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>';
+}
   };
 ?>
 
@@ -69,7 +69,7 @@ if (isset($message)) {
             <!-- <h3 class="mb-0 mt-5">Contact Us</h3> -->
 
             <form id="register-form" class="text_center form-horizontal col-md-9" action="" method="POST">
-                
+
 
                 <div class="form-group">
                     <textarea name="msg" class="form-control" required placeholder="enter your message" cols="30"
