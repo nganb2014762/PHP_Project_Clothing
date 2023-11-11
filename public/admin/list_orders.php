@@ -1,4 +1,5 @@
 <?php
+
 include_once __DIR__ . "../../../partials/admin_boostrap.php";
 session_start();
 require_once __DIR__ . '../../../partials/connect.php';
