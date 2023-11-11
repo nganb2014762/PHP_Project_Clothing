@@ -145,11 +145,11 @@ if (isset($message)) {
                                             </td>
                                             <td class="pt-4">
                                                 <a class="btn btn-primary"
-                                                    href="edit_orders.php?update=<?= htmlspecialchars($row['id']); ?>&check_date=<?= date('d-M-Y', strtotime($row['check_date'])); ?>&cancel_date=<?= date('d-M-Y', strtotime($row['cancel_date'])); ?>" class="option-btn">edit</a>
+                                                    href="edit_orders.php?update=<?= htmlspecialchars($row['id']); ?>&check_date=<?= date('Y-M-d', strtotime($row['check_date'])); ?>&cancel_date=<?= date('Y-M-d', strtotime($row['cancel_date'])); ?>" class="option-btn">edit</a>
                                             </td>
                                             <td class="pt-4">
                                                 <a class="btn btn-danger" data-id="<?= htmlspecialchars($row['id']); ?>"
-                                                    data-check-date="<?= date('d-M-Y', strtotime($row['check_date'])); ?>" data-cancel-date="<?= date('d-M-Y', strtotime($row['cancel_date'])); ?>" data-toggle="modal" data-target="#deleteConfirmationModal">delete</a>
+                                                    data-check-date="<?= date('Y-M-d', strtotime($row['check_date'])); ?>" data-cancel-date="<?= date('Y-M-d', strtotime($row['cancel_date'])); ?>" data-toggle="modal" data-target="#deleteConfirmationModal">delete</a>
                                             </td>
                                         </tr>
                                         <?php
