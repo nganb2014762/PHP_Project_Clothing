@@ -30,8 +30,9 @@ if (isset($_POST['order'])) {
   $method = filter_var($method, FILTER_SANITIZE_STRING);
 
   $address = filter_var($address, FILTER_SANITIZE_STRING);
-  $placed_on = date('d-M-Y');
-  
+  $placed_on = date('Y-m-d', strtotime('now'));
+
+
   $cart_total = 0;
   $cart_products[] = '';
 
@@ -87,7 +88,7 @@ if (isset($message)) {
     </div>
 
     <div class="row g-5">
-      
+
       <div class="col-md-5 col-lg-4 order-md-last">
         <h4 class="d-flex justify-content-between align-items-center mb-3">
           <span class="text-primary ">Your cart</span>
@@ -143,15 +144,15 @@ if (isset($message)) {
           </span>
         </li>
       </div>
-      
+
       <div class="col-md-7 col-lg-8 border-end">
         <h4 class="mb-3 text-primary">Billing address</h4>
         <form class="needs-validation" validate method="POST">
           <div class="row g-3">
             <div class="col-sm-6">
               <label class="form-label">Your name</label>
-              <div class="form-control"  name="name">
-              <?= isset($fetch_profile['name']) ? $fetch_profile['name'] : ''; ?>
+              <div class="form-control" name="name">
+                <?= isset($fetch_profile['name']) ? $fetch_profile['name'] : ''; ?>
 
               </div>
               <div class="invalid-feedback">
@@ -184,14 +185,21 @@ if (isset($message)) {
 
             <div class="col-12">
               <label for="address" class="form-label">Address</label>
-              <div class="form-control"  name="address">
-                <?= $fetch_profile['address']; ?>
-
+              <div class="form-control" name="address">
+                <?php
+                if (!empty($fetch_profile['address'])) {
+                  echo $fetch_profile['address'];
+                } else {
+                  echo "
+                  You have not updated the address in your profile";
+                }
+                ?>
               </div>
               <div class="invalid-feedback">
                 Please enter your shipping address.
               </div>
             </div>
+
             <hr class="my-4">
 
 
