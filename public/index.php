@@ -73,9 +73,11 @@ if (isset($_POST['add_to_cart'])) {
 
 if (isset($message)) {
     foreach ($message as $message) {
-        echo '<div id="alert_message" class="alert alert-warning alert-dismissible fade show col-4 offset-4" role="alert" tabindex="-1">
+        echo '<div class="mt-5 pt-5">
+                <div class="alert alert-warning alert-dismissible fade show col-4 offset-4" role="alert" tabindex="-1">
                 ' . htmlspecialchars($message) . '
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
               </div>';
     }
 }

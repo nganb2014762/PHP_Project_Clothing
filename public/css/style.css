@@ -46,11 +46,6 @@ body {
     border-color: #00b9b3;
 }
 
-.alert{
-    margin-top: 50px;
-    position: absolute;
-    z-index: 100;
-}
 /* .edit-btn {
     text-decoration: none;
     background-color: #fff;
