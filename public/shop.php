@@ -27,32 +27,32 @@ require_once __DIR__ . '../../partials/connect.php';
                         while ($fetch_products = $select_products->fetch(PDO::FETCH_ASSOC)) {
                             ?>
                             <div class="col">
-                                <div class="card shadow rounded">
+                                <div class="card shadow rounded h-100">
                                     <div class="collection-img position-relative">
-                                        <img class="rounded-top p-0" src="admin/uploaded_img/<?= $fetch_products['image']; ?>"
+                                        <img class="rounded-top p-0 card-img-top" src="admin/uploaded_img/<?= $fetch_products['image']; ?>"
                                             alt="">
-
-                                        <span
-                                            class="position-absolute d-flex align-items-center justify-content-center btn-primary"></span>
                                     </div>
 
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-8">
-                                                <p class="card-text text-capitalize mt-2 text-truncate fw-bold">
-                                                    <?= $fetch_products['name']; ?>
+                                                <p class="card-text text-capitalize text-truncate fw-bold">
+                                                    <?= htmlspecialchars($fetch_products['name']); ?>
                                                 </p>
                                             </div>
-                                            <div class="col-4 text-end"><a href="#"><i class="fa-regular fa-heart fa-lg text-dark"></i></a></div>
+                                            <div class="col-4 text-end"><a href="#"><i
+                                                        class="fa-regular fa-heart fa-lg text-dark heart"></i></a></div>
                                         </div>
-                                        <p class="text-truncate"><?= $fetch_products['details']; ?></p>
+                                        <p class="text-truncate text-capitalize">
+                                            <?= htmlspecialchars($fetch_products['details']); ?>
+                                        </p>
                                         <div class="d-flex justify-content-between align-items-center">
-                                            <span class="fw-bold d-block h5 mt-3">$
-                                                <?= $fetch_products['price']; ?>
+                                            <span class="fw-bold d-block h5">$
+                                                <?= htmlspecialchars($fetch_products['price']); ?>
                                             </span>
                                             <div class="btn-group">
-                                                <a href="view_page.php?pid=<?= $fetch_products['id']; ?>"
-                                                    class="btn btn-primary mt-3">View</a>
+                                                <a href="view_page.php?pid=<?= htmlspecialchars($fetch_products['id']); ?>"
+                                                    class="btn btn-primary">View</a>
                                             </div>
                                         </div>
                                     </div>
@@ -63,14 +63,7 @@ require_once __DIR__ . '../../partials/connect.php';
                         }
                         ?>
                     </div>
-
-                    <nav aria-label="Page navigation example" class="pt-5">
-                        <ul class="pagination justify-content-end">
-                            <li class="page-item btn">
-                                <a class="text-decoration-none text-dark" href="shop.php">See All</a>
-                            </li>
-                        </ul>
-                    </nav>
+                    
                     <?php
                     } else {
                         echo '<p class="empty">no products added yet!</p>';

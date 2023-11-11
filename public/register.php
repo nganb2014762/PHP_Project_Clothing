@@ -15,8 +15,8 @@ if(isset($_POST['submit'])){
 
     $cpassword = md5($_POST['cpassword']);
 
-    $select = $pdo->prepare("SELECT * FROM `user` WHERE email = ?");
-    $select->execute([$email]);
+    $select = $pdo->prepare("SELECT * FROM user WHERE email = ? AND phone = ?");
+    $select->execute([$email, $phone]);
 
     if($select->rowCount() > 0){
         $message[] = 'User email already exist!';

@@ -68,7 +68,8 @@ if (isset($_POST['add_to_cart'])) {
         $message[] = 'added to cart!';
     }
 
-};
+}
+;
 
 if (isset($message)) {
     foreach ($message as $message) {
@@ -78,7 +79,8 @@ if (isset($message)) {
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
              </div>';
     }
-  }
+}
+;
 ?>
 <title>Fashion</title>
 </head>
@@ -184,10 +186,10 @@ if (isset($message)) {
                             <div class="col">
                                 <div class="card shadow rounded">
                                     <div class="collection-img position-relative">
-                                        <img class="rounded-top p-0" src="admin/uploaded_img/<?= $fetch_products['image']; ?>"
-                                            alt="">
+                                        <img class="rounded-top p-0"
+                                            src="admin/uploaded_img/<?= htmlspecialchars($fetch_products['image']); ?>" alt="">
                                         <span
-                                            class="position-absolute bg-primary text-white d-flex align-items-center justify-content-center sale">New</span>
+                                            class="position-absolute d-flex align-items-center justify-content-center sale">New</span>
                                     </div>
 
                                     <div class="card-body">
@@ -198,15 +200,21 @@ if (isset($message)) {
                                             <span class="text-primary"><i class="fas fa-star"></i></span>
                                             <span class="text-primary"><i class="fas fa-star"></i></span>
                                         </div>
-                                        <p class="card-text text-capitalize mt-2">
-                                            <?= $fetch_products['name']; ?>
-                                        </p>
+                                        <div class="row">
+                                            <div class="col-8">
+                                                <p class="card-text text-capitalize text-truncate fw-bold">
+                                                    <?= htmlspecialchars($fetch_products['name']); ?>
+                                                </p>
+                                            </div>
+                                            <div class="col-4 text-end"><a href="wishlist.php"><i
+                                                        class="fa-regular fa-heart fa-lg text-dark heart"></i></a></div>
+                                        </div>
                                         <div class="d-flex justify-content-between align-items-center">
                                             <span class="fw-bold d-block">$
-                                                <?= $fetch_products['price']; ?>
+                                                <?= htmlspecialchars($fetch_products['price']); ?>
                                             </span>
                                             <div class="btn-group">
-                                                <a href="view_page.php?pid=<?= $fetch_products['id']; ?>"
+                                                <a href="view_page.php?pid=<?= htmlspecialchars($fetch_products['id']); ?>"
                                                     class="btn btn-primary mt-3">View</a>
                                             </div>
                                         </div>

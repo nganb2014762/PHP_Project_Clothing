@@ -1,18 +1,18 @@
 <?php
+include_once __DIR__ . '../../partials/boostrap.php';
 
-include_once __DIR__ . '/../partials/boostrap.php';
+include_once __DIR__ . '../../partials/header.php';
 
-include_once __DIR__ . '/../partials/header.php';
+require_once __DIR__ . '../../partials/connect.php';
 
-require_once __DIR__ . '/../partials/connect.php';
+echo 'Debugging output here';
 
 $user_id = $_SESSION['user_id'];
-$message = [];
 if (!isset($user_id)) {
     header('location:login.php');
 }
 ;
-
+$message = [];
 if (isset($_POST['update_profile'])) {
     // Kiểm tra các trường không được để trống
     if (empty($_POST['name']) || empty($_POST['sex']) || empty($_POST['born']) || empty($_POST['email']) || empty($_POST['phone']) || empty($_POST['address'])) {
@@ -29,34 +29,37 @@ if (isset($_POST['update_profile'])) {
         $update_success = $update_profile->execute([$name, $sex, $email, $phone, $address, $born, $user_id]);
 
         if ($update_success) {
-            // Nếu thành công, thêm thông báo vào mảng $message
             $message[] = 'Profile updated successfully!';
+            // echo 'Redirecting...'; // Add this line for debugging
+            // header('location:user_account.php');
+            // exit(); // Make sure to exit after the header redirection
         } else {
             $message[] = 'Profile update failed: ' . $pdo->errorInfo()[2]; // In ra thông báo lỗi của PDO
         }
     }
+};
+
+if (isset($message)) {
+    foreach ($message as $message) {
+        // echo '<script>alert(" ' . $message . ' ");</script>';
+        echo '<div class="alert alert-warning alert-dismissible fade show col-4 offset-4" role="alert" tabindex="-1">
+                ' . htmlspecialchars($message) . '
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>';
+    }
 }
-
-
+;
 ?>
 
-
+<title>Update Account</title>
+</head>
 <section class="my-5 py-5">
     <div class="container title text-center mt-3 pt-5">
-        <h2 class="position-relative d-inline-block">My Account</h2>
+        <h2 class="position-relative d-inline-block">Update Account</h2>
         <hr class="mx-auto">
-
     </div>
 
-    <?php
-    if (isset($message) && !empty($message)) {
-        foreach ($message as $message) {
-            echo '<div class="message">' . $message . '</div>';
-        }
-    }
-    ?>
-
-    <div class="d-flex justify-content-center  vh-100">
+    <div class="d-flex justify-content-center">
         <div class="card mt-5 mb-5 w-50">
 
             <form action="user_edit_account.php" method="post">
@@ -137,28 +140,14 @@ if (isset($_POST['update_profile'])) {
 
                     <!-- <hr class="mt-2"> -->
                 </div>
+                <div class="p-3">
+                    <input type="submit" class="btn w-100" value="Update" name="update_profile">
 
+                </div>
         </div>
-
-
-    </div>
-
-    </div>
-
-    <div class="d-grid gap-2 col-3 mx-auto">
-
-        <input type="submit" class="btn w-100" value="Update" name="update_profile">
     </div>
     </form>
-
-
-
 </section>
 
-
-
-
-
-
 <?php
-include_once __DIR__ . '/../partials/footer.php';
+include_once __DIR__ . '../../partials/footer.php';

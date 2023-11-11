@@ -1,97 +1,69 @@
 <?php
 
-
-include_once __DIR__ . '/../partials/boostrap.php';
-
-include_once __DIR__ . '/../partials/header.php';
-
-require_once __DIR__ . '/../partials/connect.php';
+include_once __DIR__ . '../../partials/boostrap.php';
+include_once __DIR__ . '../../partials/header.php';
+require_once __DIR__ . '../../partials/connect.php';
 
 $user_id = $_SESSION['user_id'];
-$message = [];
+
 if(!isset($user_id)){
    header('location:login.php');
 };
 
-if (isset($_POST['update_profile'])) {
+if (isset($_POST['update_password'])) {
 
    $name = $_POST['name'];
    $name = filter_var($name, FILTER_SANITIZE_STRING);
    $email = $_POST['email'];
    $email = filter_var($email, FILTER_SANITIZE_STRING);
 
-   $update_profile = $pdo->prepare("UPDATE `user` SET name = ?, email = ? WHERE id = ?");
-   $update_profile->execute([$name, $email, $user_id]);
+   $update_password = $pdo->prepare("UPDATE `user` SET name = ?, email = ? WHERE id = ?");
+   $update_password->execute([$name, $email, $user_id]);
 
-   // $image = $_FILES['image']['name'];
-   // $image = filter_var($image, FILTER_SANITIZE_STRING);
-   // $image_size = $_FILES['image']['size'];
-   // $image_tmp_name = $_FILES['image']['tmp_name'];
-   // $image_folder = 'uploaded_img/' . $image;
-   // $old_image = $_POST['old_image'];
-
-   // if (!empty($image)) {
-   //    if ($image_size > 2000000) {
-   //       $message[] = 'image size is too large!';
-   //    } else {
-   //       $update_image = $pdo->prepare("UPDATE `users` SET image = ? WHERE id = ?");
-   //       $update_image->execute([$image, $admin_id]);
-   //       if ($update_image) {
-   //          move_uploaded_file($image_tmp_name, $image_folder);
-   //          unlink('uploaded_img/' . $old_image);
-   //          $message[] = 'image updated successfully!';
-   //       }
-   //       ;
-   //    }
-   //    ;
-   // }
-   // ;
-
-   $old_pass = $_POST['old_pass'];
    $update_pass = md5($_POST['update_pass']);
-   $update_pass = filter_var($update_pass, FILTER_SANITIZE_STRING);
    $new_pass = md5($_POST['new_pass']);
-   $new_pass = filter_var($new_pass, FILTER_SANITIZE_STRING);
    $confirm_pass = md5($_POST['confirm_pass']);
-   $confirm_pass = filter_var($confirm_pass, FILTER_SANITIZE_STRING);
 
-   if (!empty($update_pass) and !empty($new_pass) and !empty($confirm_pass)) {
-      if ($update_pass != $old_pass) {
-         $message[] = 'old password not matched!';
+   if (!empty($update_pass) && !empty($new_pass) && !empty($confirm_pass)) {
+      if ($update_pass != $fetch_profile['password']) {
+         $message[] = 'Mật khẩu cũ không khớp!';
       } elseif ($new_pass != $confirm_pass) {
-         $message[] = 'confirm password not matched!';
+         $message[] = 'Mật khẩu xác nhận không khớp!';
       } else {
          $update_pass_query = $pdo->prepare("UPDATE `user` SET password = ? WHERE id = ?");
          $update_pass_query->execute([$confirm_pass, $user_id]);
-         $message[] = 'password updated successfully!';
+         $message[] = 'Mật khẩu đã được cập nhật thành công!';
+         // // Chuyển hướng đến trang index.php sau khi cập nhật mật khẩu
+         // header('location:index.php');
+         // exit(); // Đảm bảo không có đầu ra khác trước chuyển hướng
       }
    }
 
-}
+};
 
+if (isset($message)) {
+   foreach ($message as $message) {
+       echo '<div class="alert alert-warning alert-dismissible fade show col-4 offset-4" role="alert" tabindex="-1">
+               ' . htmlspecialchars($message) . '
+               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+             </div>';
+   }
+}
+;
 ?>
 
+<title>Change Password</title>
+</head>
 
-
-
-<section class="container my-3 py-3 ">
+<section class="container my-5 pt-5">
    <div class="container title text-center mt-3 pt-5">
       <h2 class="position-relative d-inline-block">Change Password</h2>
       <hr class="mx-auto">
 
 
    </div>
-   <br>
-   <?php
-    if(isset($message)) {
-        foreach($message as $message){
-            echo '<script>alert(" '.$message.' ");</script><alert><div class="messgage">';
-        }
-    }
-   ?>
-
-   <div class="mx-auto container mt-5">
-      <div class="card col-md-6 offset-md-3">
+   <div class="mx-auto container">
+      <div class="card col-md-6 offset-md-3 bg-secondary">
          <div class="card-body">
             <form id="product-form" action="" method="POST" enctype="multipart/form-data"
                class="text_center form-horizontal">
@@ -134,4 +106,3 @@ if (isset($_POST['update_profile'])) {
 
 <?php
     include_once __DIR__ . '/../partials/footer.php';
-    ?>
