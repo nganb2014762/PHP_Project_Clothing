@@ -8,6 +8,8 @@ require_once __DIR__ . '../../partials/connect.php';
 
 ?>
 
+<title>About Us</title>
+</head>
 <!-- about us -->
 <section id="about" class="my-5 py-5">
     <div class="container">
