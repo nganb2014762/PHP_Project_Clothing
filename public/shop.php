@@ -17,22 +17,16 @@ if (isset($_POST['add_to_wishlist'])) {
 
     $check_wishlist_numbers = $pdo->prepare("SELECT * FROM `wishlist` WHERE name = :p_name AND user_id = :user_id");
     $check_wishlist_numbers->execute([':p_name' => $p_name, ':user_id' => $user_id]);
-    // $check_wishlist_numbers = $pdo->prepare("SELECT * FROM `wishlist` WHERE name = ? AND user_id = ?");
-    // $check_wishlist_numbers->execute([$p_name, $user_id]);
-
-    // $check_cart_numbers = $pdo->prepare("SELECT * FROM `cart` WHERE name = ? AND user_id = ?");
-    // $check_cart_numbers->execute([$p_name, $user_id]);
 
     if ($check_wishlist_numbers->rowCount() > 0) {
         $message[] = 'already added to wishlist!';
-        // }elseif ($check_cart_numbers->rowCount() > 0) {
-        //    $message[] = 'already added to cart!';
     } else {
         $insert_wishlist = $pdo->prepare("INSERT INTO `wishlist`(user_id, pid, name, price, image) VALUES(?,?,?,?,?)");
         $insert_wishlist->execute([$user_id, $pid, $p_name, $p_price, $p_image]);
         $message[] = 'added to wishlist!';
     }
-};
+}
+;
 
 if (isset($message)) {
     foreach ($message as $message) {
@@ -41,8 +35,8 @@ if (isset($message)) {
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
               </div>';
     }
- }
- ;
+}
+;
 ?>
 <title>Shop</title>
 </head>
@@ -63,7 +57,7 @@ if (isset($message)) {
                     if ($select_products->rowCount() > 0) {
                         while ($fetch_products = $select_products->fetch(PDO::FETCH_ASSOC)) {
                             ?>
-                            <form action="" method="POST">
+                            <form action="" method="POST" onsubmit="return addToWishllist();">
                                 <div class="col">
                                     <div class="card shadow rounded h-100">
                                         <div class="collection-img position-relative">
@@ -121,6 +115,19 @@ if (isset($message)) {
         </div>
     </section>
     <!-- end of shop -->
+    <script>
+        function addToWishllist() {
+            // Kiểm tra trạng thái đăng nhập ở phía client (trình duyệt)
+            var loggedIn = <?php echo isset($_SESSION['user_id']) ? 'true' : 'false'; ?>;
 
+            if (!loggedIn) {
+                // Hiển thị thông báo hoặc chuyển hướng đến trang đăng nhập
+                alert('Bạn cần đăng nhập để thêm sản phẩm vào danh sách yêu thích.');
+                window.location.href = 'login.php'; // Chuyển hướng đến trang đăng nhập
+                return false; // Ngăn chặn gửi yêu cầu đến máy chủ
+            }
+            return true; // Cho phép gửi yêu cầu đến máy chủ
+        }
+    </script>
     <?php
     include_once __DIR__ . '/../partials/footer.php';
