@@ -118,9 +118,6 @@ if (isset($message)) {
                 <h2 class="position-relative d-inline-block">Shop by category</h2>
             </div>
 
-            <div class="title text-center">
-                <h2 class="position-relative d-inline-block">New Collection</h2>
-            </div>
             <div class="row g-0 justify-content-center">
                 <div class="d-flex flex-wrap justify-content-center mt-5 filter-button-group">
                     <button type="button" class="btn m-2 text-dark active-filter-btn" data-filter="*">All</button>
@@ -164,8 +161,7 @@ if (isset($message)) {
 
             </div>
         </div>
-    </section>
- -->
+    </section> -->
 
 
     <!-- shop -->
@@ -213,7 +209,7 @@ if (isset($message)) {
                                             <span class="fw-bold d-block">$
                                                 <?= htmlspecialchars($fetch_products['price']); ?>
                                             </span>
-                                            <div class="btn-group">
+                                            <div class="btn-group position-static">
                                                 <a href="view_page.php?pid=<?= htmlspecialchars($fetch_products['id']); ?>"
                                                     class="btn btn-primary mt-3">View</a>
                                             </div>
@@ -228,7 +224,7 @@ if (isset($message)) {
                     </div>
 
                     <nav aria-label="Page navigation example" class="pt-5">
-                        <ul class="pagination justify-content-end">
+                        <ul class="pagination justify-content-center">
                             <li class="page-item btn">
                                 <a class="text-decoration-none text-dark" href="shop.php">See All</a>
                             </li>
@@ -258,23 +254,32 @@ if (isset($message)) {
         </div>
     </section>
     <!-- end of offer -->
-
+    
     <!-- about us -->
-    <section id="about" class="py-5">
+    <section id="about" class="my-5">
         <div class="container">
-            <div class="title text-center pt-3 pb-5">
+            <div class="title text-center">
                 <h2 class="position-relative d-inline-block ms-4">About Us</h2>
+                <hr class="mx-auto">
             </div>
             <div class="row gy-lg-5 align-items-center">
                 <div class="col-lg-6 order-lg-1 text-center text-lg-start">
-                    <div class="pt-3 pb-5">
-                        <h2 class="position-relative d-inline-block ms-4">Born in Viet Nam</h2>
+                    <div class="pt-3 pb-3">
+                        <h2 class="position-relative d-inline-block">BORN IN VIETNAM</h2>
                     </div>
-                    <button class="btn mx-4"><a href="about.php" class="text-decoration-none text-dark">Read
+                    <p class="lead text-muted px-3">At FASHION, we easily mix fabrics, cuts and seasons. Leather with
+                        patterns, tight and loose, summer in winter and winter in sum- mer.
+                        A mix of styles inspired by these women who embody FASHION. Hyperactive and free, they are
+                        fearless
+                        and have no limit. They wear whatever they want, whenever they want. <br>
+                        From 2023 and the opening of its first VIETNAM boutique in CANTHO, FASHION has become a brand in
+                        its
+                        own right, desired and sought-after by all women of major cities.</p>
+                    <button class="btn mx-4 my-4"><a href="about.php" class="text-decoration-none text-dark">Read
                             more</a></button>
                 </div>
 
-                <div class="col-lg-6 order-lg-0">
+                <div class="col-lg-6 order-lg-0 pt-3 pb-3">
                     <img src="img/poster/11.jpg" alt="" class="img-fluid">
                 </div>
             </div>
@@ -283,9 +288,9 @@ if (isset($message)) {
     <!-- end of about us -->
 
     <!-- blogs -->
-    <section id="blogs">
+    <section id="blogs" class="my-5">
         <div class="container">
-            <div class="title text-center py-5">
+            <div class="title text-center">
                 <h2 class="position-relative d-inline-block mb-3">An Extraordinary Commitment To Quality</h2>
                 <p>No matter what item you choose, you’ll find these things to be true:</p>
             </div>
@@ -315,7 +320,7 @@ if (isset($message)) {
                 </div>
             </div>
 
-            <nav aria-label="Page navigation example" class="pt-5">
+            <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-end">
                     <li class="page-item btn">
                         <a class="text-decoration-none text-dark" href="blog.php">Read more</a>
