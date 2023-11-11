@@ -70,10 +70,20 @@ if (isset($_POST['add_to_cart'])) {
     }
 }
 
-
+if (isset($message)) {
+   foreach ($message as $message) {
+     // echo '<script>alert(" ' . $message . ' ");</script>';
+     echo '<div class="alert alert-warning alert-dismissible fade show col-4 offset-4" role="alert" tabindex="-1">
+               ' . htmlspecialchars($message) . '
+               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+             </div>';
+   }
+ };
 ?>
 
 
+<title>Search</title>
+</head>
 
 <section class="my-5 py-5">
     <div class="container title text-center mt-3 pt-5">
@@ -91,6 +101,7 @@ if (isset($_POST['add_to_cart'])) {
 </section>
 
 <section class="container my-3 py-3">
+<<<<<<< HEAD
     <div class="container title text-center">
         <h2 class="position-relative d-inline-block">Result</h2>
         <!-- <hr class="mx-auto"> -->
@@ -158,6 +169,64 @@ if (isset($_POST['add_to_cart'])) {
                                     </div>
                                 </div>
                             </form>
+=======
+   <div class="container title text-center">
+      <h2 class="position-relative d-inline-block">Result</h2>
+      <!-- <hr class="mx-auto"> -->
+   </div>
+   <div class="container row row-cols-2 row-cols-md-4 g-4 mt-3">
+      <?php
+      if (isset($_POST['search_btn'])) {
+         $_SESSION['search_btn'] = $_POST['search_btn'];
+         $_SESSION['search_btn'] = $_POST['search_box'];
+      }
+      if (isset($_SESSION['search_btn'])) {
+         $search_box = $_SESSION['search_btn'];
+         $search_box = filter_var($search_box, FILTER_SANITIZE_STRING);
+         $select_products = $pdo->prepare("SELECT * FROM `products` WHERE name LIKE '%{$search_box}%' OR category LIKE '%{$search_box}%'");
+         $select_products->execute();
+         if ($select_products->rowCount() > 0) {
+            while ($fetch_products = $select_products->fetch(PDO::FETCH_ASSOC)) {
+               ?>
+               <form action="" method="POST">
+                  <div class="col text-center">
+                     <div class="card h-100 p-4">
+                        <div class="price">$
+                           <?= $fetch_products['price']; ?>/-
+                        </div>
+                        <a href="view_page.php?pid=<?= $fetch_products['id']; ?>" class="fas fa-eye"></a>
+                        <img src="admin/uploaded_img/<?= $fetch_products['image']; ?>" alt="">
+
+                        <div class="name">
+                           <?= $fetch_products['name']; ?>
+                        </div>
+                        <div class="cat">
+                           <?= $fetch_products['category']; ?>
+                        </div>
+                        <div class="details">
+                           <?= $fetch_products['details']; ?>
+                        </div>
+                        <div>
+                           <input type="hidden" name="pid" value="<?= $fetch_products['id']; ?>">
+                           <input type="hidden" name="p_name" value="<?= $fetch_products['name']; ?>">
+                           <input type="hidden" name="p_price" value="<?= $fetch_products['price']; ?>">
+                           <input type="hidden" name="p_image" value="<?= $fetch_products['image']; ?>">
+                        </div>
+                        <div class="flex-btn">
+                           <input type="number" min="1" value="1" name="p_qty" class="form-control ">
+                        </div>
+                        <br>
+                        <div class="flex-btn">
+                           <input type="submit" value="add to wishlist" class="option-btn" name="add_to_wishlist">
+                        </div>
+                        <br>
+                        <div class="flex-btn">
+                           <input type="submit" value="add to cart" class="btn" name="add_to_cart">
+                        </div>
+                     </div>
+                  </div>
+               </form>
+>>>>>>> 4bc16791ee28cb4f65b459802fd0aef36149c95a
 
                     <?php
                 }
