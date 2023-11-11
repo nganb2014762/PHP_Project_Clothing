@@ -114,44 +114,50 @@ if (isset($_POST['add_to_cart'])) {
             if ($select_products->rowCount() > 0) {
                 while ($fetch_products = $select_products->fetch(PDO::FETCH_ASSOC)) {
                     ?>
-                    <form action="" method="POST">
-                        <div class="col text-center">
-                            <div class="card h-100 p-4">
-                                <div class="price">$
-                                    <?= $fetch_products['price']; ?>/-
-                                </div>
-                                <a href="view_page.php?pid=<?= $fetch_products['id']; ?>" class="fas fa-eye"></a>
-                                <img src="admin/uploaded_img/<?= $fetch_products['image']; ?>" alt="">
+                    <form action="" method="POST" onsubmit="return addToWishllist();">
+                                <div class="col">
+                                    <div class="card shadow rounded h-100">
+                                        <div class="collection-img position-relative">
+                                            <img class="rounded-top p-0 card-img-top"
+                                                src="admin/uploaded_img/<?= $fetch_products['image']; ?>" alt="">
+                                        </div>
 
-                                <div class="name">
-                                    <?= $fetch_products['name']; ?>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-8">
+                                                    <p class="card-text text-capitalize text-truncate fw-bold">
+                                                        <?= htmlspecialchars($fetch_products['name']); ?>
+                                                    </p>
+                                                </div>
+
+                                                <div class="col-4 text-end"><button class="text-capitalize border-0 bg-white"
+                                                        type="submit" name="add_to_wishlist"><i
+                                                            class="fa-regular fa-heart fa-lg text-dark heart"></i></button>
+                                                </div>
+
+                                            </div>
+
+                                            <p class="text-truncate text-capitalize">
+                                                <?= htmlspecialchars($fetch_products['details']); ?>
+                                            </p>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span class="fw-bold d-block h5">$
+                                                    <?= htmlspecialchars($fetch_products['price']); ?>
+                                                </span>
+                                                <div class="btn-group">
+                                                    <a href="view_page.php?pid=<?= htmlspecialchars($fetch_products['id']); ?>"
+                                                        class="btn btn-primary">View</a>
+                                                </div>
+                                            </div>
+                                            <input type="hidden" name="pid" value="<?= $fetch_products['id']; ?>">
+                                            <input type="hidden" name="p_name" value="<?= $fetch_products['name']; ?>">
+                                            <input type="hidden" name="p_price" value="<?= $fetch_products['price']; ?>">
+                                            <input type="hidden" name="p_image" value="<?= $fetch_products['image']; ?>">
+
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="cat">
-                                    <?= $fetch_products['category_name']; ?>
-                                </div>
-                                <div class="details">
-                                    <?= $fetch_products['details']; ?>
-                                </div>
-                                <div>
-                                    <input type="hidden" name="pid" value="<?= $fetch_products['id']; ?>">
-                                    <input type="hidden" name="p_name" value="<?= $fetch_products['name']; ?>">
-                                    <input type="hidden" name="p_price" value="<?= $fetch_products['price']; ?>">
-                                    <input type="hidden" name="p_image" value="<?= $fetch_products['image']; ?>">
-                                </div>
-                                <div class="flex-btn">
-                                    <input type="number" min="1" value="1" name="p_qty" class="form-control ">
-                                </div>
-                                <br>
-                                <div class="flex-btn">
-                                    <input type="submit" value="add to wishlist" class="option-btn" name="add_to_wishlist">
-                                </div>
-                                <br>
-                                <div class="flex-btn">
-                                    <input type="submit" value="add to cart" class="btn" name="add_to_cart">
-                                </div>
-                            </div>
-                        </div>
-                    </form>
+                            </form>
 
                     <?php
                 }
