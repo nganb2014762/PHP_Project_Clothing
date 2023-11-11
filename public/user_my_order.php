@@ -30,6 +30,8 @@ if (isset($_POST['update_order'])) {
 
 ?>
 
+<title>My Orders</title>
+</head>
 
 <section id="cart" class="pt-5">
     <div class="container">

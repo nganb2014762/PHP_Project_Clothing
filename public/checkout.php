@@ -70,15 +70,15 @@ $method = filter_var($method, FILTER_SANITIZE_STRING);
 }
 ;
 
-// if (isset($message)) {
-//   foreach ($message as $message) {
-//     // echo '<script>alert(" ' . $message . ' ");</script>';
-//     echo '<div class="alert alert-warning alert-dismissible fade show col-4 offset-4" role="alert" tabindex="-1">
-//               ' . htmlspecialchars($message) . '
-//               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-//             </div>';
-//   }
-// }
+if (isset($message)) {
+  foreach ($message as $message) {
+    // echo '<script>alert(" ' . $message . ' ");</script>';
+    echo '<div class="alert alert-warning alert-dismissible fade show col-4 offset-4" role="alert" tabindex="-1">
+              ' . htmlspecialchars($message) . '
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>';
+  }
+}
 ?>
 
 <div class="container">
@@ -193,7 +193,7 @@ $method = filter_var($method, FILTER_SANITIZE_STRING);
                 if (!empty($fetch_profile['address'])) {
                   echo $fetch_profile['address'];
                 } else {
-                  echo 'Please enter your shipping address.';
+                  echo 'Please enter your shipping address. ';
                   echo '<a style="text-decoration: none;" href="user_edit_account.php">Change your information? Click here</a> ';
                 }
                 ?>
@@ -202,30 +202,13 @@ $method = filter_var($method, FILTER_SANITIZE_STRING);
                 Please enter your shipping address.
               </div>
             </div>
-
-            <hr class="my-4">
-
-
-
-
-            <hr class="my-4">
-
-            <h4 class="mb-3">Payment</h4>
+            <h4 class="mb-3 text-primary">Payment</h4>
             <select name="method" class="form-control" required>
               <option value="cash on delivery">Cash on delivery</option>
               <option value="credit card">Credit card</option>
               <option value="MoMo">MoMo</option>
               <option value="Zalo Pay">Zalo Pay</option>
             </select>
-
-            <hr class="my-4">
-            <br>
-            <div class="col-12">
-              <a style="text-decoration: none;" href="user_edit_account.php">Change your information? Click here</a>
-
-            </div>
-
-
             <button class="w-100 btn btn-primary btn-lg  <?= ($cart_grand_total > 1) ? '' : 'disabled'; ?>" name="order"
               type="submit">Continue to order </button>
 
