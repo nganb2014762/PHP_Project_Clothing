@@ -9,7 +9,7 @@ require_once __DIR__ . '../../partials/connect.php';
 $user_id = $_SESSION['user_id'];
 
 if (!isset($user_id)) {
-    header('location:login.php');
+  header('location:login.php');
 }
 ;
 
@@ -36,56 +36,69 @@ if (isset($_POST['order'])) {
   $method = $_POST['method'];
   $method = filter_var($method, FILTER_SANITIZE_STRING);
 
-  $address = filter_var($address, FILTER_SANITIZE_STRING);
   $placed_on = date('Y-m-d', strtotime('now'));
 
-
   $cart_total = 0;
-  $cart_products[] = '';
+  $cart_products = array(); // Khởi tạo mảng tránh lỗi khi không có sản phẩm trong giỏ hàng
 
   $cart_query = $pdo->prepare("SELECT * FROM `cart` WHERE user_id = ?");
   $cart_query->execute([$user_id]);
+
   if ($cart_query->rowCount() > 0) {
     while ($cart_item = $cart_query->fetch(PDO::FETCH_ASSOC)) {
       $cart_products[] = $cart_item['name'] . ' ( ' . $cart_item['quantity'] . ' )';
       $sub_total = ($cart_item['price'] * $cart_item['quantity']);
       $cart_total += $sub_total;
+      // Lấy product id
+      $pid = $cart_item['pid']; // Giả sử pid là cột trong giỏ hàng
     }
-    ;
   }
-  ;
 
   $total_products = implode(', ', $cart_products);
 
-  $order_query = $pdo->prepare("SELECT * FROM `orders` WHERE  method = ?  AND total_products = ? AND total_price = ?");
-  $order_query->execute([$method, $total_products, $cart_total]);
+  // Lấy id của đơn hàng vừa chèn
+  $order_id = null;
 
-  if (empty($fetch_profile['address'])) {
-    $message[] = 'add address ';
-  } elseif ($cart_total == 0) {
-    $message[] = 'your cart is empty';
-  } elseif ($order_query->rowCount() > 0) {
-    $message[] = 'order placed already!';
-  } else {
-    $insert_order = $pdo->prepare("INSERT INTO `orders`(user_id,method,total_products, total_price, placed_on) VALUES(?,?,?,?,?)");
+  // Bắt đầu transaction để đảm bảo tính toàn vẹn của dữ liệu
+  // $pdo->beginTransaction();
+
+  try {
+    // Thêm đơn hàng vào bảng orders
+    $insert_order = $pdo->prepare("INSERT INTO `orders`(user_id, method, total_products, total_price, placed_on) VALUES(?,?,?,?,?)");
     $insert_order->execute([$user_id, $method, $total_products, $cart_total, $placed_on]);
+
+    // Lấy id của đơn hàng vừa chèn
+    $order_id = $pdo->lastInsertId();
+
+    // Thêm đơn hàng chi tiết vào bảng orders_details
+    $insert_orders_details = $pdo->prepare("INSERT INTO orders_details (order_id, pid) VALUES (?, ?)");
+    $insert_orders_details->execute([$order_id, $pid]);
+
+    // Xóa các sản phẩm trong giỏ hàng
     $delete_cart = $pdo->prepare("DELETE FROM `cart` WHERE user_id = ?");
     $delete_cart->execute([$user_id]);
-    $message[] = 'order placed successfully!';
+
+    // Commit transaction nếu mọi thứ diễn ra suôn sẻ
+    // $pdo->commit();
+
+    $message[] = 'Order placed successfully!';
+  } catch (PDOException $e) {
+    // Nếu có lỗi xảy ra, rollback transaction và hiển thị thông báo lỗi
+    // $pdo->rollBack();
+    // echo "Error: " . $e->getMessage();
+    $message[] = 'Failed to place order.';
+  }
+};
+
+if (isset($message)) {
+  foreach ($message as $message) {
+    // echo '<script>alert(" ' . $message . ' ");</script>';
+    echo '<div class="alert alert-warning alert-dismissible fade show col-4 offset-4" role="alert" tabindex="-1">
+              ' . htmlspecialchars($message) . '
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>';
   }
 }
-;
-
-
-// if (isset($message)) {
-//   foreach ($message as $message) {
-//     // echo '<script>alert(" ' . $message . ' ");</script>';
-//     echo '<div class="alert alert-warning alert-dismissible fade show col-4 offset-4" role="alert" tabindex="-1">
-//               ' . htmlspecialchars($message) . '
-//               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-//             </div>';
-//   }
-// }
 ?>
 
 <title>Checkout</title>
@@ -156,8 +169,8 @@ if (isset($_POST['order'])) {
 
           </span>
         </li>
-        <button class="w-100 btn btn-sm mt-3" name="continue_to_order"
-              type="submit"><a href="shop.php" class="text-decoration-none text-dark">Continue to order</a>
+        <button class="w-100 btn btn-sm mt-3" name="continue_to_order" type="submit"><a href="shop.php"
+            class="text-decoration-none text-dark">Continue to order</a>
         </button>
       </div>
 
@@ -168,8 +181,7 @@ if (isset($_POST['order'])) {
             <div class="col-sm-6">
               <label class="form-label">Your name</label>
               <div class="form-control" name="name">
-<?= isset($fetch_profile['name']) ? htmlspecialchars($fetch_profile['name']) : ''; ?>
-
+                <?= isset($fetch_profile['name']) ? htmlspecialchars($fetch_profile['name']) : ''; ?>
               </div>
               <div class="invalid-feedback">
                 Valid first name is required.

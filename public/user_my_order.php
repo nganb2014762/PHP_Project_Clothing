@@ -69,7 +69,7 @@ WHERE orders.user_id = :user_id";
                     <th>Product ID</th>
                     <th>Product Name</th>
                     <th>Product Price</th>
-
+                    <th>Cancel</th>
                 </tr>
                 <?php
                 // $select_orders = $pdo->prepare("SELECT * FROM `orders`");
@@ -113,7 +113,9 @@ WHERE orders.user_id = :user_id";
                             <td>
                                 <?= $fetch_orders['product_price']; ?>
                             </td>
-
+                            <td>
+                                <button>Cancel</button>
+                            </td>
                         </tr>
                         <?php
                     }
