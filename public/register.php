@@ -66,9 +66,6 @@ if (isset($message)) {
 <body>
     <!-- Register -->
     <section class="my-5 py-5">
-        <!-- <div class="container text-center mt-3 pt-5">
-            <img src="../img/account/user0.png" alt="" width="100">
-        </div> -->
         <div class="container title text-center mt-3 pt-5">
             <h2 class="position-relative d-inline-block">Register</h2>
             <hr class="mx-auto">
