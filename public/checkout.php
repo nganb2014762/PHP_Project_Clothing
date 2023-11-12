@@ -6,6 +6,13 @@ include_once __DIR__ . '../../partials/header.php';
 
 require_once __DIR__ . '../../partials/connect.php';
 
+$user_id = $_SESSION['user_id'];
+
+if (!isset($user_id)) {
+    header('location:login.php');
+}
+;
+
 // Đoạn mã để lấy thông tin hồ sơ người dùng từ cơ sở dữ liệu
 $user_profile_query = $pdo->prepare("SELECT * FROM `user` WHERE id = ?");
 $user_profile_query->execute([$user_id]);
@@ -62,22 +69,25 @@ if (isset($_POST['order'])) {
     $insert_order->execute([$user_id, $method, $total_products, $cart_total, $placed_on]);
     $delete_cart = $pdo->prepare("DELETE FROM `cart` WHERE user_id = ?");
     $delete_cart->execute([$user_id]);
+    if()
     $message[] = 'order placed successfully!';
-    header('Location: login.php');
   }
 }
 ;
 
-// if (isset($message)) {
-//   foreach ($message as $message) {
-//     // echo '<script>alert(" ' . $message . ' ");</script>';
-//     echo '<div class="alert alert-warning alert-dismissible fade show col-4 offset-4" role="alert" tabindex="-1">
-//               ' . htmlspecialchars($message) . '
-//               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-//             </div>';
-//   }
-// }
+if (isset($message)) {
+  foreach ($message as $message) {
+    // echo '<script>alert(" ' . $message . ' ");</script>';
+    echo '<div class="alert alert-warning alert-dismissible fade show col-4 offset-4" role="alert" tabindex="-1">
+              ' . htmlspecialchars($message) . '
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>';
+  }
+};
 ?>
+
+<title>Checkout</title>
+</head>
 
 <div class="container">
   <main>
@@ -109,11 +119,11 @@ if (isset($_POST['order'])) {
                   <div>
                     <h6 class="my-0">Product name</h6>
                     <small class="text-muted">
-                      <?= $fetch_cart_items['name']; ?>
+                      <?= htmlspecialchars($fetch_cart_items['name']); ?>
                     </small>
                   </div>
                   <span class="text-muted">
-                    <?= $fetch_cart_items['price'] . '$' ?>
+                    <?= htmlspecialchars($fetch_cart_items['price']) . '$' ?>
                   </span>
                 </li>
 
@@ -122,7 +132,7 @@ if (isset($_POST['order'])) {
                     <h6 class="my-0">Quantity</h6>
                   </div>
                   <span class="text-muted">
-                    <?= $fetch_cart_items['quantity']; ?>
+                    <?= htmlspecialchars($fetch_cart_items['quantity']); ?>
                   </span>
                 </li>
 
@@ -139,7 +149,7 @@ if (isset($_POST['order'])) {
         <li class="list-group-item d-flex justify-content-between lh-sm">
           <span><b>Total: </b></span>
           <strong>
-            <?= $cart_grand_total; ?>$
+            <?= htmlspecialchars($cart_grand_total); ?>$
           </strong>
 
           </span>
@@ -153,7 +163,7 @@ if (isset($_POST['order'])) {
             <div class="col-sm-6">
               <label class="form-label">Your name</label>
               <div class="form-control" name="name">
-                <?= isset($fetch_profile['name']) ? $fetch_profile['name'] : ''; ?>
+                <?= isset($fetch_profile['name']) ? htmlspecialchars($fetch_profile['name']) : ''; ?>
 
               </div>
               <div class="invalid-feedback">
@@ -164,7 +174,7 @@ if (isset($_POST['order'])) {
             <div class="col-sm-6">
               <label class="form-label">Phone</label>
               <div class="form-control" name="phone">
-                <?= $fetch_profile['phone']; ?>
+                <?= htmlspecialchars($fetch_profile['phone']); ?>
 
               </div>
               <div class="invalid-feedback">
@@ -176,7 +186,7 @@ if (isset($_POST['order'])) {
             <div class="col-12">
               <label for="email" class="form-label">Email </label>
               <div class="form-control" name="email">
-                <?= $fetch_profile['email']; ?>
+                <?= htmlspecialchars($fetch_profile['email']); ?>
 
               </div>
               <div class="invalid-feedback">
@@ -189,7 +199,7 @@ if (isset($_POST['order'])) {
               <div class="form-control" name="address">
                 <?php
                 if (!empty($fetch_profile['address'])) {
-                  echo $fetch_profile['address'];
+                  echo htmlspecialchars($fetch_profile['address']);
                 } else {
                   // echo "
                   // You have not updated the address in your profile";
@@ -203,29 +213,17 @@ if (isset($_POST['order'])) {
               </div>
             </div>
 
-            <hr class="my-4">
-
-
-
-
-            <hr class="my-4">
-
-            <h4 class="mb-3">Payment</h4>
+            <h4 class="mb-3 text-primary">Payment</h4>
             <select name="method" class="form-control" required>
               <option value="cash on delivery">Cash on delivery</option>
               <option value="credit card">Credit card</option>
               <option value="MoMo">MoMo</option>
               <option value="Zalo Pay">Zalo Pay</option>
             </select>
-
-            <hr class="my-4">
-            <br>
-            <div class="col-12">
+            
+            <!-- <div class="col-12">
               <a style="text-decoration: none;" href="user_edit_account.php">Change your information? Click here</a>
-
-            </div>
-
-
+            </div> -->
             <button class="w-100 btn btn-primary btn-lg  <?= ($cart_grand_total > 1) ? '' : 'disabled'; ?>" name="order"
               type="submit">Continue to order </button>
 
