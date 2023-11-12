@@ -76,6 +76,7 @@ if (isset($_POST['order'])) {
 }
 ;
 
+
 // if (isset($message)) {
 //   foreach ($message as $message) {
 //     // echo '<script>alert(" ' . $message . ' ");</script>';
@@ -167,7 +168,7 @@ if (isset($_POST['order'])) {
             <div class="col-sm-6">
               <label class="form-label">Your name</label>
               <div class="form-control" name="name">
-                <?= isset($fetch_profile['name']) ? htmlspecialchars($fetch_profile['name']) : ''; ?>
+<?= isset($fetch_profile['name']) ? htmlspecialchars($fetch_profile['name']) : ''; ?>
 
               </div>
               <div class="invalid-feedback">

@@ -61,19 +61,6 @@
     </div>
 </li>
 
-<!-- Nav Item - Collapse Menu -->
-<!-- <li class="nav-item">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
-        <i class="fa-solid fa-dollar-sign"></i>
-        <span>Quản lý doanh thu</span>
-    </a>
-    <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionSidebar">
-        <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Quản lý doanh thu:</h6>
-            <a class="collapse-item" href="list_orders.php">Doanh số bán hàng</a>
-        </div>
-    </div>
-</li> -->
 <!-- Divider -->
 <hr class="sidebar-divider">
 

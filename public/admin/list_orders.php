@@ -79,8 +79,6 @@ if (isset($message)) {
                                     <th scope="col" class="col-auto">Cancel Date</th>
                                     <th scope="col" class="col-auto">Check Date</th>
                                     <th scope="col" class="col-auto">Receive Date</th>
-                                    <th scope="col" class="col-auto">Total Products</th>
-                                    <th scope="col" class="col-auto">Total Price</th>
                                     <th scope="col" class="col-auto">Payment Method</th>
                                     <th scope="col" class="col-auto">Payment Status</th>
                                     <th scope="col" class="col-auto">Edit</th>
@@ -91,8 +89,8 @@ if (isset($message)) {
                                 <?php
                                 $i = 1;
                                 $select_info = $pdo->prepare("SELECT user.name, user.email, user.phone, user.address,
-                                                                    orders.placed_on, orders.check_date,orders.cancel_date,orders.received_date, orders.total_products,
-                                                                    orders.total_price, orders.method, orders.payment_status, orders.id
+                                                                    orders.placed_on, orders.check_date,orders.cancel_date,orders.received_date,
+                                                                    orders.method, orders.payment_status, orders.id
                                                                 FROM user
                                                                 INNER JOIN orders ON user.id = orders.user_id
                                                             ");
@@ -130,12 +128,6 @@ if (isset($message)) {
                                             </td>
                                             <td class="pt-4">
                                                 <?= htmlspecialchars($row['received_date']); ?>
-                                            </td>
-                                            <td class="pt-4">
-                                                <?= htmlspecialchars($row['total_products']); ?>
-                                            </td>
-                                            <td class="pt-4">
-                                                <?= htmlspecialchars($row['total_price']); ?>$
                                             </td>
                                             <td class="pt-4">
                                                 <?= htmlspecialchars($row['method']); ?>
