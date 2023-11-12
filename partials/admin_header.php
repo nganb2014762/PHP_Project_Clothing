@@ -118,6 +118,7 @@
                     Message Center
                 </h6>
                 <a class="dropdown-item text-center small text-gray-500" href="message.php">Read More Messages</a>
+                
                 <!-- <a class="dropdown-item d-flex align-items-center" href="#">
                 <div class="dropdown-list-image mr-3">
                     <img class="rounded-circle" src="../../img/undraw_profile_1.svg" alt="...">
