@@ -71,6 +71,7 @@
                                         <li><a class="dropdown-item" href="user_account.php">My Account</a></li>
                                         <li><a class="dropdown-item" href="user_change_password.php">Change Password</a></li>
                                         <li><a class="dropdown-item" href="user_my_order.php">My Orders</a></li>
+                                        <li><a class="dropdown-item" href="wishlist.php">My Favorite List</a></li>
                                         <li><a id="logout" class="dropdown-item" href="logout.php">Log Out</a></li>
                                     </ul>
                                 </div> ';
