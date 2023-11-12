@@ -4,61 +4,50 @@ include_once __DIR__ . '../../partials/boostrap.php';
 include_once __DIR__ . '../../partials/header.php';
 require_once __DIR__ . '../../partials/connect.php';
 
-// if ($select->rowCount() > 0) {
-//     $message[] = 'User email already exist!';
-// } else {
-//     if ($password != $cpassword) {
-//         $message[] = 'Confirm password not matched!';
-//     } else {
-//         $insert = $pdo->prepare("INSERT INTO `user`(name, phone, email, password) VALUES(?, ?, ?, ?)");
-//         $insert->execute([$name, $phone, $email, $password]);
-//         $message[] = 'registered successfully!';
-//         header('Location: login.php');
-//     }
-// }
+ // if ($select->rowCount() > 0) {
+    //     $message[] = 'User email already exist!';
+    // } else {
+    //     if ($password != $cpassword) {
+    //         $message[] = 'Confirm password not matched!';
+    //     } else {
+    //         $insert = $pdo->prepare("INSERT INTO `user`(name, phone, email, password) VALUES(?, ?, ?, ?)");
+    //         $insert->execute([$name, $phone, $email, $password]);
+    //         $message[] = 'registered successfully!';
+    //         header('Location: login.php');
+    //     }
+    // }
 
-if (isset($_POST['submit'])) {
-    $name = $_POST['name'];
-    $phone = $_POST['phone'];
-    $email = $_POST['email'];
-    $password = md5($_POST['password']);
-    $cpassword = md5($_POST['cpassword']);
-
-    $select_email = $pdo->prepare("SELECT * FROM user WHERE email = ?");
-    $select_email->execute([$email]);
-
-    $select_phone = $pdo->prepare("SELECT * FROM user WHERE phone= ?");
-    $select_phone->execute([$phone]);
-
-    if (($select_email->rowCount() > 0) && ($select_phone->rowCount() > 0)) {
-        $message[] = 'Email and phone already exist!';
-    } elseif ($select_phone->rowCount() > 0) {
-        $message[] = 'Phone already exist!';
-    } elseif ($select_email->rowCount() > 0) {
-        $message[] = 'Email already exist!';
-    } else {
-        if ($password != $cpassword) {
-            $message[] = 'Confirm password not matched!';
+    if (isset($_POST['submit'])) {
+        $name = $_POST['name'];
+        $phone = $_POST['phone'];
+        $email = $_POST['email'];
+        $password = md5($_POST['password']);
+        $cpassword = md5($_POST['cpassword']);
+    
+        $select_email = $pdo->prepare("SELECT * FROM user WHERE email = ?");
+        $select_email->execute([$email]);
+    
+        $select_phone = $pdo->prepare("SELECT * FROM user WHERE phone= ?");
+        $select_phone->execute([$phone]);
+    
+        if(($select_email->rowCount() > 0) && ($select_phone->rowCount() > 0)){
+            $message[] = 'Email and phone already exist!';
+        } elseif($select_phone->rowCount() > 0){
+            $message[] = 'Phone already exist!';
+        } elseif ($select_email->rowCount() > 0){
+            $message[] = 'Email already exist!';
         } else {
-            $insert = $pdo->prepare("INSERT INTO `user`(name, phone, email, password) VALUES(?, ?, ?, ?)");
-            $insert->execute([$name, $phone, $email, $password]);
-            $message[] = 'registered successfully!';
-            header('Location:login.php');
+            if ($password != $cpassword) {
+                $message[] = 'Confirm password not matched!';
+            } else {
+                $insert = $pdo->prepare("INSERT INTO `user`(name, phone, email, password) VALUES(?, ?, ?, ?)");
+                $insert->execute([$name, $phone, $email, $password]);
+                $message[] = 'registered successfully!';
+                header('Location:login.php');
+            }
         }
-    }
-}
-;
+    };
 
-if (isset($message)) {
-    foreach ($message as $message) {
-        // echo '<script>alert(" ' . $message . ' ");</script>';
-        echo '<div class="alert alert-warning alert-dismissible fade show col-4 offset-4" role="alert" tabindex="-1">
-                    ' . htmlspecialchars($message) . '
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                  </div>';
-    }
-}
-;
 ?>
 <title>Register</title>
 </head>
