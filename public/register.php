@@ -4,6 +4,19 @@ include_once __DIR__ . '../../partials/boostrap.php';
 include_once __DIR__ . '../../partials/header.php';
 require_once __DIR__ . '../../partials/connect.php';
 
+ // if ($select->rowCount() > 0) {
+    //     $message[] = 'User email already exist!';
+    // } else {
+    //     if ($password != $cpassword) {
+    //         $message[] = 'Confirm password not matched!';
+    //     } else {
+    //         $insert = $pdo->prepare("INSERT INTO `user`(name, phone, email, password) VALUES(?, ?, ?, ?)");
+    //         $insert->execute([$name, $phone, $email, $password]);
+    //         $message[] = 'registered successfully!';
+    //         header('Location: login.php');
+    //     }
+    // }
+
 if (isset($_POST['submit'])) {
     $name = $_POST['name'];
     $phone = $_POST['phone'];
@@ -11,18 +24,11 @@ if (isset($_POST['submit'])) {
     $password = md5($_POST['password']);
     $cpassword = md5($_POST['cpassword']);
 
-    $select_email = $pdo->prepare("SELECT * FROM user WHERE email = ?");
-    $select_email->execute([$email]);
+    $select = $pdo->prepare("SELECT * FROM user WHERE email = ? AND phone = ?");
+    $select->execute([$email, $phone]);
 
-    $select_phone = $pdo->prepare("SELECT * FROM user WHERE phone= ?");
-    $select_phone->execute([$phone]);
-
-    if(($select_email->rowCount() > 0) && ($select_phone->rowCount() > 0)){
-        $message[] = 'Email and phone already exist!';
-    } elseif($select_phone->rowCount() > 0){
-        $message[] = 'Phone already exist!';
-    } elseif ($select_email->rowCount() > 0){
-        $message[] = 'Email already exist!';
+    if ($select->rowCount() > 0) {
+        $message[] = 'User email already exist!';
     } else {
         if ($password != $cpassword) {
             $message[] = 'Confirm password not matched!';
@@ -33,21 +39,13 @@ if (isset($_POST['submit'])) {
             header('Location:login.php');
         }
     }
-};
+}
 
 ?>
 <title>Register</title>
 </head>
 
 <body>
-
-    <?php
-    if (isset($message)) {
-        foreach ($message as $message) {
-            echo '<script>alert(" ' . $message . ' ");</script><alert><div class="messgage">';
-        }
-    }
-    ?>
     <!-- Register -->
     <section class="my-5 py-5">
         <!-- <div class="container text-center mt-3 pt-5">
@@ -93,14 +91,6 @@ if (isset($_POST['submit'])) {
                                     id="btnPassword1"></span>
                             </div>
                         </div>
-                        <!-- <div class="form-group">
-                            <input type="password" class="form-control" id="register-password" name="password"
-                                placeholder="Password" for="password">
-                        </div>
-                        <div class="form-group">
-                            <input type="password" class="form-control" id="register-confirm-password" name="cpassword"
-                                placeholder="Confirm Password" for="cpassword">
-                        </div> -->
                         <div class="form-group row">
                             <div class="form-check col-md-6">
                                 <input class="form-check-input" type="checkbox" id="agree" name="agree" value="agree" />

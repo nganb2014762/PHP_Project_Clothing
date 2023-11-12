@@ -8,11 +8,11 @@ require_once __DIR__ . '/../partials/connect.php';
 
 // session_start();
 
-// $admin_id = $_SESSION['admin_id'];
+$user_id = $_SESSION['user_id'];
 
-// if(!isset($admin_id)){
-//    header('location:login.php');
-// };
+if(!isset($user_id)){
+   header('location:login.php');
+};
 
 if (isset($_POST['update_order'])) {
 
@@ -30,8 +30,6 @@ if (isset($_POST['update_order'])) {
 
 ?>
 
-<title>My Orders</title>
-</head>
 
 <section id="cart" class="pt-5">
     <div class="container">
@@ -62,7 +60,7 @@ if (isset($_POST['update_order'])) {
                 if ($select_orders->rowCount() > 0) {
                     while ($fetch_orders = $select_orders->fetch(PDO::FETCH_ASSOC)) {
 
-                ?>
+                        ?>
                         <div>
                             <tr>
 
@@ -111,25 +109,33 @@ if (isset($_POST['update_order'])) {
 
                                 <td>
                                     <span class="product-price">
-                                    Pending confirmation
+                                        Pending confirmation
                                     </span>
                                 </td>
                             </tr>
                         </div>
-                    <?php
+                        <?php
 
                     }
 
 
                     ?>
-            </table>
+                </table>
 
-    <?php
+                <?php
                 }
-            } else {
-                echo '<p class="empty" >no orders placed yet!</p>';
-            }
-    ?>
+        } else { ?>
+            <div class="text-center pt-3">
+                <h6 class="position-relative d-inline-block">No item found </h6>
+                <div>
+                    <a type="submit" class="buy-btn text-capitalize text-decoration-none mt-3" name="order now"
+                        href="cart.php">order now</a>
+                </div>
+            </div>
+            <!-- echo '<p class="empty" >no orders placed yet!</p>'; -->
+            <?php
+        }
+        ?>
     </div>
 </section>
 
