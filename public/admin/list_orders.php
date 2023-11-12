@@ -66,6 +66,7 @@ if (isset($message)) {
                     </div>
 
                     <div class="table-responsive">
+
                         <table class="table text-center">
                             <thead>
                                 <tr>
@@ -162,6 +163,7 @@ if (isset($message)) {
                                 ?>
                             </tbody>
                         </table>
+                        
                     </div>
                 </div>
                 <!-- /.container-fluid -->
