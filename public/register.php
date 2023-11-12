@@ -6,20 +6,23 @@ require_once __DIR__ . '../../partials/connect.php';
 
 if (isset($_POST['submit'])) {
     $name = $_POST['name'];
-
     $phone = $_POST['phone'];
-
     $email = $_POST['email'];
-
     $password = md5($_POST['password']);
-
     $cpassword = md5($_POST['cpassword']);
 
-    $select = $pdo->prepare("SELECT * FROM user WHERE email = ? AND phone = ?");
-    $select->execute([$email, $phone]);
+    $select_email = $pdo->prepare("SELECT * FROM user WHERE email = ?");
+    $select_email->execute([$email]);
 
-    if ($select->rowCount() > 0) {
-        $message[] = 'User email already exist!';
+    $select_phone = $pdo->prepare("SELECT * FROM user WHERE phone= ?");
+    $select_phone->execute([$phone]);
+
+    if(($select_email->rowCount() > 0) && ($select_phone->rowCount() > 0)){
+        $message[] = 'Email and phone already exist!';
+    } elseif($select_phone->rowCount() > 0){
+        $message[] = 'Phone already exist!';
+    } elseif ($select_email->rowCount() > 0){
+        $message[] = 'Email already exist!';
     } else {
         if ($password != $cpassword) {
             $message[] = 'Confirm password not matched!';
@@ -27,10 +30,10 @@ if (isset($_POST['submit'])) {
             $insert = $pdo->prepare("INSERT INTO `user`(name, phone, email, password) VALUES(?, ?, ?, ?)");
             $insert->execute([$name, $phone, $email, $password]);
             $message[] = 'registered successfully!';
-            header('Location: login.php');
+            header('Location:login.php');
         }
     }
-}
+};
 
 ?>
 <title>Register</title>
@@ -76,8 +79,8 @@ if (isset($_POST['submit'])) {
                                     name="password" placeholder="Password" for="password">
                             </div>
                             <div class="col-1">
-                                <span class="fas fa-eye flex-fill m-3 position-relative"
-                                    type="button" id="btnPassword"></span>
+                                <span class="fas fa-eye flex-fill m-3 position-relative" type="button"
+                                    id="btnPassword"></span>
                             </div>
                         </div>
                         <div class="form-group d-flex rounded">

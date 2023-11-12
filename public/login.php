@@ -11,29 +11,27 @@ if (isset($_POST['submit'])) {
     $email = $_POST['email'];
     $password = md5($_POST['password']);
 
-    $sql = "SELECT * FROM `user` WHERE email = :email AND password = :password";
+    $sql = "SELECT * FROM `user` WHERE LOWER(email) = LOWER(:email) AND password = :password";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([
         ':email' => $email,
         ':password' => $password
     ]);
-
     $rowCount = $stmt->rowCount();
 
     if (!empty($_POST['email']) && !empty($_POST['password'])) {
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        if ((strtolower($row['email']) == $email) && ($row['password'] == $password) && ($row['role'] == '0')) {
+        if ($row && strtolower($row['email']) == $email && $row['password'] == $password && $row['role'] == '0') {
             $_SESSION['user_id'] = $row['id'];
             header('Location: index.php');
             exit();
-        } else {
+        }else{
             $message[] = 'Incorrect email or password!';
         }
     } else {
-        $message[] = 'No user found or incorrect email or password!';
+        $message[] = 'No user found';
     }
-
-}
+}    
 ;
 ?>
 
