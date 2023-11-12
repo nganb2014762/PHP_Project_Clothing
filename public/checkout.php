@@ -38,41 +38,43 @@ if (isset($_POST['order'])) {
 
   $placed_on = date('Y-m-d', strtotime('now'));
 
-  $cart_total = 0;
-  $cart_products = array(); // Khởi tạo mảng tránh lỗi khi không có sản phẩm trong giỏ hàng
+  $cart_grand_total = 0;
+  $orderDetails = array(); // Khởi tạo mảng để lưu thông tin sản phẩm trong giỏ hàng
 
   $cart_query = $pdo->prepare("SELECT * FROM `cart` WHERE user_id = ?");
   $cart_query->execute([$user_id]);
 
   if ($cart_query->rowCount() > 0) {
-    while ($cart_item = $cart_query->fetch(PDO::FETCH_ASSOC)) {
-      $cart_products[] = $cart_item['name'] . '(' . $cart_item['quantity'] . ')';
-      $sub_total = ($cart_item['price'] * $cart_item['quantity']);
-      $cart_total += $sub_total;
-       // Lấy product id
-    $pid = $cart_item['pid']; // Giả sử pid là cột trong giỏ hàng
-    $quantity = $cart_item['quantity'];
+    while ($fetch_cart_items = $cart_query->fetch(PDO::FETCH_ASSOC)) {
+      // Lấy product id và quantity
+      $pid = $fetch_cart_items['pid'];
+      $quantity = $fetch_cart_items['quantity'];
 
+      // Lưu thông tin sản phẩm vào mảng
+      $orderDetails[] = array('pid' => $pid, 'quantity' => $quantity);
+
+      // Cập nhật tổng giá trị đơn hàng
+      $cart_total_price = ($fetch_cart_items['price'] * $quantity);
+      $cart_grand_total += $cart_total_price;
     }
-   
   }
 
-  $total_products = implode(',', $cart_products);
-
+  $total_products = implode(',', array_column($orderDetails, 'pid'));
   // Lấy id của đơn hàng vừa chèn
   $order_id = null;
 
   try {
     // Thêm đơn hàng vào bảng orders
     $insert_order = $pdo->prepare("INSERT INTO `orders`(user_id, method, total_products, total_price, placed_on) VALUES(?,?,?,?,?)");
-    $insert_order->execute([$user_id, $method, $total_products, $cart_total, $placed_on]);
+    $insert_order->execute([$user_id, $method, $total_products, $cart_grand_total, $placed_on]);
 
     // Lấy id của đơn hàng vừa chèn
     $order_id = $pdo->lastInsertId();
 
-    // Thêm đơn hàng chi tiết vào bảng orders_details
-    $insert_orders_details = $pdo->prepare("INSERT INTO orders_details (order_id, pid, quantity) VALUES (?, ?, ?)");
-    $insert_orders_details->execute([$order_id, $pid, $quantity]);
+    foreach ($orderDetails as $orderDetail) {
+      $insert_orders_details = $pdo->prepare("INSERT INTO orders_details (order_id, pid, quantity) VALUES (?, ?, ?)");
+      $insert_orders_details->execute([$order_id, $orderDetail['pid'], $orderDetail['quantity']]);
+    }
 
     // Xóa các sản phẩm trong giỏ hàng
     $delete_cart = $pdo->prepare("DELETE FROM `cart` WHERE user_id = ?");
@@ -161,8 +163,6 @@ if (isset($message)) {
           <strong>
             <?= htmlspecialchars($cart_grand_total); ?>$
           </strong>
-
-          </span>
         </li>
         <button class="w-100 btn btn-sm mt-3" name="continue_to_order" type="submit"><a href="shop.php"
             class="text-decoration-none text-dark">Continue to order</a>
@@ -175,9 +175,8 @@ if (isset($message)) {
           <div class="row g-3">
             <div class="col-sm-6">
               <label class="form-label">Your name</label>
-              <div class="form-control" name="name">
-                <?= isset($fetch_profile['name']) ? htmlspecialchars($fetch_profile['name']) : ''; ?>
-              </div>
+              <input type="text" class="form-control" name="name"
+                value="<?= isset($fetch_profile['name']) ? htmlspecialchars($fetch_profile['name']) : ''; ?>" readonly>
               <div class="invalid-feedback">
                 Valid first name is required.
               </div>
@@ -185,22 +184,17 @@ if (isset($message)) {
 
             <div class="col-sm-6">
               <label class="form-label">Phone</label>
-              <div class="form-control" name="phone">
-                <?= htmlspecialchars($fetch_profile['phone']); ?>
-
-              </div>
+              <input type="text" class="form-control" name="phone"
+                value="<?= htmlspecialchars($fetch_profile['phone']); ?>" readonly>
               <div class="invalid-feedback">
                 Valid last name is required.
               </div>
             </div>
 
-
             <div class="col-12">
-              <label for="email" class="form-label">Email </label>
-              <div class="form-control" name="email">
-                <?= htmlspecialchars($fetch_profile['email']); ?>
-
-              </div>
+              <label for="email" class="form-label">Email</label>
+              <input type="email" class="form-control" name="email"
+                value="<?= htmlspecialchars($fetch_profile['email']); ?>" readonly>
               <div class="invalid-feedback">
                 Please enter a valid email address for shipping updates.
               </div>
@@ -208,29 +202,19 @@ if (isset($message)) {
 
             <div class="col-12">
               <label for="address" class="form-label">Address</label>
-              <div class="form-control" name="address">
-                <?php
-                if (!empty($fetch_profile['address'])) {
-                  echo htmlspecialchars($fetch_profile['address']);
-                } else {
-                  echo 'Please enter your shipping address. ';
-                  echo '<a style="text-decoration: none;" href="user_edit_account.php">Change your information? Click here</a> ';
-                }
-                ?>
-              </div>
+              <textarea class="form-control" name="address" readonly><?php
+              if (!empty($fetch_profile['address'])) {
+                echo htmlspecialchars($fetch_profile['address']);
+              } else {
+                echo 'Please enter your shipping address. ';
+                echo '<a style="text-decoration: none;" href="user_edit_account.php">Change your information? Click here</a> ';
+              }
+              ?></textarea>
               <div class="invalid-feedback">
                 Please enter your shipping address.
               </div>
             </div>
-
-            <hr class="my-4">
-
-
-
-
-            <hr class="my-4">
-
-            <h4 class="mb-3">Payment</h4>
+            <h4 class="text-primary">Payment</h4>
             <select name="method" class="form-control" required>
               <option value="cash on delivery">Cash on delivery</option>
               <option value="credit card">Credit card</option>
@@ -238,8 +222,7 @@ if (isset($message)) {
               <option value="Zalo Pay">Zalo Pay</option>
             </select>
             <button class="w-100 btn btn-primary btn-lg  <?= ($cart_grand_total > 1) ? '' : 'disabled'; ?>" name="order"
-              type="submit">Continue to order </button>
-
+              type="submit">Accept Payment</button>
         </form>
       </div>
     </div>

@@ -227,12 +227,13 @@ if (isset($_POST['add_to_cart'])) {
                                        Add To Cart</button>
                                  </ul>
                                  <ul class="list-inline">
-                                    <button class="buy-btn text-capitalize col-5" type="submit" name="continue_shopping">
-                                       <a href="shop.php" class="text-decoration-none text-dark">Continue Shopping</a>
-                                    </button>
-                                    <button class="buy-btn text-capitalize col-5" type="submit" name="continue_shopping">
-                                       <a href="cart.php" class="text-decoration-none text-dark">Go to Cart</a>
-                                    </button>
+                                    <a href="shop.php"
+                                       class="buy-btn text-capitalize col-5 text-decoration-none text-dark">Continue
+                                       Shopping</a>
+
+                                    <a href="cart.php" class="buy-btn text-capitalize col-5 text-decoration-none text-dark">Go
+                                       to Cart</a>
+
                                  </ul>
 
                                  <input type="hidden" name="pid" value="<?= $fetch_products['id']; ?>">
