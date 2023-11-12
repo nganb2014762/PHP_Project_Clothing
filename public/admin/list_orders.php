@@ -101,6 +101,7 @@ if (isset($message)) {
                                 if ($select_info->rowCount() > 0) {
                                     while ($row = $select_info->fetch(PDO::FETCH_ASSOC)) {
                                         ?>
+                                        
                                         <tr>
                                             <td class="pt-4">
                                                 <b>
