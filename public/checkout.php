@@ -71,7 +71,6 @@ if (isset($_POST['order'])) {
     $insert_order->execute([$user_id, $method, $total_products, $cart_total, $placed_on]);
     $delete_cart = $pdo->prepare("DELETE FROM `cart` WHERE user_id = ?");
     $delete_cart->execute([$user_id]);
-    if()
     $message[] = 'order placed successfully!';
   }
 }
