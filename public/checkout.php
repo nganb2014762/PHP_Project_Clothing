@@ -222,7 +222,7 @@ if (isset($_POST['order'])) {
 
             <hr class="my-4">
 
-            <h4 class="mb-3">Payment</h4>
+            <h4 class="mb-3">Payment test</h4>
             <select name="method" class="form-control" required>
               <option value="cash on delivery">Cash on delivery</option>
               <option value="credit card">Credit card</option>
