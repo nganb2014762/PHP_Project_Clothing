@@ -30,8 +30,6 @@ if (isset($_GET['delete'])) {
     header('location: index.php');
 }
 
-
-
 ?>
 
 <title>Message</title>
@@ -72,12 +70,25 @@ if (isset($_GET['delete'])) {
                             <!-- <hr class="mx-auto"> -->
                         </div>
 
-                        <div class="mx-auto container">
-                            <div class="card col-md-6 offset-md-3 shadow-sm">
-                                <div class="card-body">
-                                    <form id="product-form" action="" method="POST" enctype="multipart/form-data"
-                                        class="text_center form-horizontal">
+
+                        <div class="table-responsive">
+                            <form id="product-form" action="" method="POST" enctype="multipart/form-data"
+                                class="text_center form-horizontal">
+                                <table class="table text-center">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">STT</th>
+                                            <th scope="col">User ID</th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Phone</th>
+                                            <th scope="col">Email</th>
+                                            <th scope="col">Message</th>
+                                            <th scope="col">Delete</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="table-group-divider">
                                         <?php
+                                        $i = 1;
                                         $select_message = $pdo->prepare("
                                         SELECT 
                                             message.id AS message_id, 
@@ -96,47 +107,49 @@ if (isset($_GET['delete'])) {
                                         if ($select_message->rowCount() > 0) {
                                             while ($fetch_message = $select_message->fetch(PDO::FETCH_ASSOC)) {
                                                 ?>
-                                                <div class="col text-center">
-                                                    <div class="card h-100 p-4">
-                                                        <p> user id : <span>
-                                                                <?= $fetch_message['user_id']; ?>
-                                                            </span> </p>
-                                                        <p> name : <span>
-                                                                <?= $fetch_message['name']; ?>
-                                                            </span> </p>
-                                                        <p> number : <span>
-                                                                <?= $fetch_message['phone']; ?>
-                                                            </span> </p>
-                                                        <p> email : <span>
-                                                                <?= $fetch_message['email']; ?>
-                                                            </span> </p>
-                                                        <p> message : <span>
-                                                                <?= $fetch_message['message']; ?>
-                                                            </span> </p>
-                                                        <a href="contact.php?delete=<?= htmlspecialchars($fetch_message['user_id']); ?>"
+                                                <tr>
+                                                    <td class="pt-4">
+                                                        <b>
+                                                            <?= htmlspecialchars($i++); ?>
+                                                        </b>
+                                                    </td>
+
+                                                    <td>
+                                                        <?= htmlspecialchars($fetch_message['user_id']); ?>
+                                                    </td>
+
+                                                    <td class="pt-4">
+                                                        <?= htmlspecialchars($fetch_message['name']); ?>
+                                                    </td>
+
+                                                    <td class="pt-4">
+                                                        <?= htmlspecialchars($fetch_message['phone']); ?>
+                                                    </td>
+
+                                                    <td class="pt-4">
+                                                        <?= htmlspecialchars($fetch_message['email']); ?>
+                                                    </td>
+
+                                                    <td class="pt-4">
+                                                        <?= htmlspecialchars($fetch_message['message']); ?>
+                                                    </td>
+
+                                                    <td class="pt-4">
+                                                    <a href="message.php?delete=<?= htmlspecialchars($fetch_message['user_id']); ?>"
                                                             onclick="return confirm('delete this message?');"
                                                             class="delete-btn">delete</a>
-
-                                                        <!-- <td class="pt-4">
-                                                            <a class="btn btn-danger my-1 my-lg-0"
-                                                                data-id="<?= htmlspecialchars($fetch_message['user_id']); ?>"
-                                                                data-toggle="modal"
-                                                                data-target="#deleteConfirmationModal">delete</a>
-
-                                                        </td> -->
-
-
-                                                    </div>
-                                                </div>
-                                                <?php
+                                                    </td>
+                                                    
+                                                </tr>
+                                            </tbody>
+                                            <?php
                                             }
                                         } else {
                                             echo '<p class="empty">you have no messages!</p>';
                                         }
                                         ?>
-                                    </form>
-                                </div>
-                            </div>
+                                </table>
+                                </form>
                         </div>
                     </section>
 
@@ -166,6 +179,7 @@ if (isset($_GET['delete'])) {
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
+
 
     <?php
     include_once __DIR__ . '../../../partials/admin_footer.php';
