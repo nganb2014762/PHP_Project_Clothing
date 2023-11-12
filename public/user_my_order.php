@@ -13,18 +13,24 @@ if (!isset($user_id)) {
 }
 ;
 
-// if (isset($_POST['update_order'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_order'])) {
+    $order_id = $_POST['order_id'];
 
-//     $order_id = $_POST['order_id'];
-//     $update_payment = $_POST['update_payment'];
-//     $update_payment = filter_var($update_payment, FILTER_SANITIZE_STRING);
-//     $update_orders = $pdo->prepare("UPDATE `orders` SET payment_status = ? WHERE id = ?");
-//     $update_orders->execute([$update_payment, $order_id]);
-//     $message[] = 'payment has been updated!';
-//     $placed_on = date('d-M-Y');
+    // Kiểm tra xem đơn đặt hàng có tồn tại không
+    $check_order_query = $pdo->prepare("SELECT * FROM `orders` WHERE id = ? AND user_id = ?");
+    $check_order_query->execute([$order_id, $user_id]);
+    $order_data = $check_order_query->fetch(PDO::FETCH_ASSOC);
 
-// };
-
+    if ($order_data) {
+        // Cập nhật cột payment_status thành 'cancel'
+        $update_order_query = $pdo->prepare("UPDATE `orders` SET payment_status = 'cancel', cancel_date = current_timestamp() WHERE id = ?");
+        $update_order_query->execute([$order_id]);
+        
+        echo "Đơn hàng đã được hủy thành công!";
+    } else {
+        echo "Không tìm thấy đơn đặt hàng!";
+    }
+};
 ?>
 
 <title>My order</title>
@@ -40,16 +46,13 @@ if (!isset($user_id)) {
         <?php
         $total = 0;
         $sub_total = 0;
-        // $select_orders = $pdo->prepare("SELECT * FROM `orders` WHERE user_id = ?");
-        // $select_orders->execute([$user_id]);
-        
 
         $sql = "SELECT orders.id as order_id, orders.total_products, orders.total_price, orders.placed_on, orders.check_date, orders.method, orders.payment_status, 
-products.id as product_id, products.name as product_name, products.price as product_price, products.image as product_image
-FROM orders
-JOIN orders_details ON orders.id = orders_details.order_id
-JOIN products ON orders_details.pid = products.id
-WHERE orders.user_id = :user_id";
+                products.id as product_id, products.name as product_name, products.price as product_price, products.image as product_image, orders_details.quantity as product_quantity
+                FROM orders
+                JOIN orders_details ON orders.id = orders_details.order_id
+                JOIN products ON orders_details.pid = products.id
+                WHERE orders.user_id = :user_id";
 
         $select_orders = $pdo->prepare($sql);
         $select_orders->execute([':user_id' => $user_id]);
@@ -58,33 +61,39 @@ WHERE orders.user_id = :user_id";
         if ($select_orders->rowCount() > 0) { ?>
             <table class="mt-5 pt-5">
                 <tr>
+                    <th class="col-1">Order ID</th>
                     <th class="col-1">Product Image</th>
-                    <th>Order ID</th>
-                    <th>Total Products</th>
-                    <th>Total Price</th>
-                    <th>Placed On</th>
-                    <th>Check Date</th>
-                    <th>Payment Method</th>
-                    <th>Payment Status</th>
-                    <th>Product ID</th>
-                    <th>Product Name</th>
-                    <th>Product Price</th>
-                    <th>Cancel</th>
+                    <th class="col-1">Product Name</th>
+                    <th class="col-1">Product Price</th>
+                    <th class="col-1">Product Quantity</th>
+                    <th class="col-1">Total Products</th>
+                    <th class="col-1">Total Price</th>
+                    <th class="col-1">Placed On</th>
+                    <th class="col-1">Check Date</th>
+                    <th class="col-1">Payment Method</th>
+                    <th class="col-1">Payment Status</th>
+                    <th class="col-1">Cancel</th>
                 </tr>
                 <?php
-                // $select_orders = $pdo->prepare("SELECT * FROM `orders`");
-                // $select_orders->execute();
-            
                 if ($select_orders->rowCount() > 0) {
                     while ($fetch_orders = $select_orders->fetch(PDO::FETCH_ASSOC)) {
 
                         ?>
                         <tr>
                             <td>
+                                <?= $fetch_orders['order_id']; ?>
+                            </td>
+                            <td>
                                 <img src="admin/uploaded_img/<?= $fetch_orders['product_image']; ?>" alt="" class="w-100">
                             </td>
                             <td>
-                                <?= $fetch_orders['order_id']; ?>
+                                <?= $fetch_orders['product_name']; ?>
+                            </td>
+                            <td>
+                                <?= $fetch_orders['product_price']; ?>
+                            </td>
+                            <td>
+                                <?= $fetch_orders['product_quantity']; ?>
                             </td>
                             <td>
                                 <?= $fetch_orders['total_products']; ?>
@@ -104,17 +113,13 @@ WHERE orders.user_id = :user_id";
                             <td>
                                 <?= $fetch_orders['payment_status']; ?>
                             </td>
+
                             <td>
-                                <?= $fetch_orders['product_id']; ?>
-                            </td>
-                            <td>
-                                <?= $fetch_orders['product_name']; ?>
-                            </td>
-                            <td>
-                                <?= $fetch_orders['product_price']; ?>
-                            </td>
-                            <td>
-                                <button>Cancel</button>
+                                <!-- Trong HTML của trang hiển thị đơn đặt hàng -->
+                                <form action="user_my_order.php" method="POST">
+                                    <input type="hidden" name="order_id" value="<?= $fetch_orders['order_id'] ?>">
+                                    <button type="submit" name="cancel_order" class="buy-btn">cancel</button>
+                                </form>
                             </td>
                         </tr>
                         <?php
@@ -138,7 +143,6 @@ WHERE orders.user_id = :user_id";
         ?>
     </div>
 </section>
-
 
 <?php
 include_once __DIR__ . '/../partials/footer.php';

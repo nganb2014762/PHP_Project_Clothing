@@ -171,15 +171,16 @@ if (isset($_POST['add_to_cart'])) {
                      <div class="col-lg-6 mt-5">
                         <div class="card">
                            <div class="card-body">
-                              <form action="" method="POST" onsubmit="return addToCart();" onsubmit="return addToWishlist();" >
+                              <form action="" method="POST" onsubmit="return addToCart();" onsubmit="return addToWishlist();">
                                  <div class="row">
                                     <div class="col-11">
                                        <h2 class="card-text text-capitalize fw-bold">
                                           <?= htmlspecialchars($fetch_products['name']); ?>
                                        </h2>
                                     </div>
-                                    <div class="col-1 text-end">                                       
-                                       <button class="text-capitalize border-0 bg-white" type="submit" name="add_to_wishlist"><i
+                                    <div class="col-1 text-end">
+                                       <button class="text-capitalize border-0 bg-white" type="submit"
+                                          name="add_to_wishlist"><i
                                              class="fa-regular fa-heart fa-lg text-dark heart"></i></button>
                                     </div>
                                  </div>
@@ -224,9 +225,16 @@ if (isset($_POST['add_to_cart'])) {
                                        value="1" name="p_qty" class="qty" style="width: 100px;" />
                                     <button class="buy-btn text-capitalize" type="submit" name="add_to_cart">
                                        Add To Cart</button>
-                                    <!-- <button class="buy-btn text-capitalize " type="submit" name="add_to_wishlist">Add To Wishlist</button> -->
-
                                  </ul>
+                                 <ul class="list-inline">
+                                    <button class="buy-btn text-capitalize col-5" type="submit" name="continue_shopping">
+                                       <a href="shop.php" class="text-decoration-none text-dark">Continue Shopping</a>
+                                    </button>
+                                    <button class="buy-btn text-capitalize col-5" type="submit" name="continue_shopping">
+                                       <a href="cart.php" class="text-decoration-none text-dark">Go to Cart</a>
+                                    </button>
+                                 </ul>
+
                                  <input type="hidden" name="pid" value="<?= $fetch_products['id']; ?>">
                                  <input type="hidden" name="p_name" value="<?= $fetch_products['name']; ?>">
                                  <input type="hidden" name="p_price" value="<?= $fetch_products['price']; ?>">
@@ -337,7 +345,7 @@ if (isset($_POST['add_to_cart'])) {
          return true; // Cho phép gửi yêu cầu đến máy chủ
       }
    </script>
-   
+
    <?php
    include_once __DIR__ . '../../partials/footer.php';
    ?>
