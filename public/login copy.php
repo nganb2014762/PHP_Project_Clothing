@@ -17,7 +17,6 @@ if (isset($_POST['submit'])) {
         ':email' => $email,
         ':password' => $password
     ]);
-    
     $rowCount = $stmt->rowCount();
 
     if (!empty($_POST['email']) && !empty($_POST['password'])) {
