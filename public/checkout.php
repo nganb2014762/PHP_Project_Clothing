@@ -27,8 +27,8 @@ if ($fetch_profile) {
 if (isset($_POST['order'])) {
 
   $method = $_POST['method'];
-$method = filter_var($method, FILTER_SANITIZE_STRING);
-  
+  $method = filter_var($method, FILTER_SANITIZE_STRING);
+
   $address = filter_var($address, FILTER_SANITIZE_STRING);
   $placed_on = date('Y-m-d', strtotime('now'));
 
@@ -52,10 +52,10 @@ $method = filter_var($method, FILTER_SANITIZE_STRING);
 
   $order_query = $pdo->prepare("SELECT * FROM `orders` WHERE  method = ?  AND total_products = ? AND total_price = ?");
   $order_query->execute([$method, $total_products, $cart_total]);
-  
+
   if (empty($fetch_profile['address'])) {
     $message[] = 'add address ';
-  }elseif($cart_total == 0) {
+  } elseif ($cart_total == 0) {
     $message[] = 'your cart is empty';
   } elseif ($order_query->rowCount() > 0) {
     $message[] = 'order placed already!';
@@ -65,7 +65,6 @@ $method = filter_var($method, FILTER_SANITIZE_STRING);
     $delete_cart = $pdo->prepare("DELETE FROM `cart` WHERE user_id = ?");
     $delete_cart->execute([$user_id]);
     $message[] = 'order placed successfully!';
-    header('Location: login.php');
   }
 }
 ;
@@ -146,6 +145,9 @@ if (isset($message)) {
 
           </span>
         </li>
+        <button class="w-100 btn btn-sm mt-3" name="continue_to_order"
+              type="submit"><a href="shop.php" class="text-decoration-none text-dark">Continue to order</a>
+        </button>
       </div>
 
       <div class="col-md-7 col-lg-8 border-end">
@@ -209,9 +211,8 @@ if (isset($message)) {
               <option value="MoMo">MoMo</option>
               <option value="Zalo Pay">Zalo Pay</option>
             </select>
-            <button class="w-100 btn btn-primary btn-lg  <?= ($cart_grand_total > 1) ? '' : 'disabled'; ?>" name="order"
-              type="submit">Continue to order </button>
-
+            <button class="w-100 btn btn-primary btn-sm mt-3 <?= ($cart_grand_total > 1) ? '' : 'disabled'; ?>" name="order"
+              type="submit">Pay on</button>
         </form>
       </div>
     </div>
