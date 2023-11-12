@@ -69,33 +69,32 @@ if (isset($message)) {
                         <table class="table text-center">
                             <thead>
                                 <tr>
-                                    <th scope="col-3">STT</th>
-                                    <th scope="col-3">Fullname</th>
-                                    <th scope="col-3">Email</th>
-                                    <th scope="col-3">Phone</th>
-                                    <th scope="col-3">Address</th>
-                                    <th scope="col-3">Date Place</th>
-                                    <th scope="col-3">Cancel Date</th>
-                                    <th scope="col-3">Check Date</th>
-                                    <th scope="col-3">Receive Date</th>
-                                    <th scope="col-3">Total Products</th>
-                                    <th scope="col-3">Total Price</th>
-                                    <th scope="col-3">Payment Method</th>
-                                    <th scope="col-3">Payment Status</th>
-                                    <th scope="col-3">Edit</th>
-                                    <th scope="col-3">Delete</th>
+                                    <th scope="col" class="col-auto">STT</th>
+                                    <th scope="col" class="col-auto">Fullname</th>
+                                    <th scope="col" class="col-auto">Email</th>
+                                    <th scope="col" class="col-auto">Phone</th>
+                                    <th scope="col" class="col-auto">Address</th>
+                                    <th scope="col" class="col-auto">Date Place</th>
+                                    <th scope="col" class="col-auto">Cancel Date</th>
+                                    <th scope="col" class="col-auto">Check Date</th>
+                                    <th scope="col" class="col-auto">Receive Date</th>
+                                    <th scope="col" class="col-auto">Total Products</th>
+                                    <th scope="col" class="col-auto">Total Price</th>
+                                    <th scope="col" class="col-auto">Payment Method</th>
+                                    <th scope="col" class="col-auto">Payment Status</th>
+                                    <th scope="col" class="col-auto">Edit</th>
+                                    <th scope="col" class="col-auto">Delete</th>
                                 </tr>
                             </thead>
                             <tbody class="table-group-divider">
                                 <?php
                                 $i = 1;
-                                $select_info = $pdo->prepare("
-            SELECT user.name, user.email, user.phone, user.address,
-                   orders.placed_on, orders.check_date,orders.cancel_date,orders.received_date, orders.total_products,
-                   orders.total_price, orders.method, orders.payment_status, orders.id
-            FROM user
-            INNER JOIN orders ON user.id = orders.user_id
-        ");
+                                $select_info = $pdo->prepare("SELECT user.name, user.email, user.phone, user.address,
+                                                                    orders.placed_on, orders.check_date,orders.cancel_date,orders.received_date, orders.total_products,
+                                                                    orders.total_price, orders.method, orders.payment_status, orders.id
+                                                                FROM user
+                                                                INNER JOIN orders ON user.id = orders.user_id
+                                                            ");
                                 $select_info->execute();
 
                                 if ($select_info->rowCount() > 0) {
@@ -145,11 +144,14 @@ if (isset($message)) {
                                             </td>
                                             <td class="pt-4">
                                                 <a class="btn btn-primary"
-                                                    href="edit_orders.php?update=<?= htmlspecialchars($row['id']); ?>&check_date=<?= date('Y-M-d', strtotime($row['check_date'])); ?>&cancel_date=<?= date('Y-M-d', strtotime($row['cancel_date'])); ?>" class="option-btn">edit</a>
+                                                    href="edit_orders.php?update=<?= htmlspecialchars($row['id']); ?>&check_date=<?= date('Y-M-d', strtotime($row['check_date'])); ?>&cancel_date=<?= date('Y-M-d', strtotime($row['cancel_date'])); ?>"
+                                                    class="option-btn">edit</a>
                                             </td>
                                             <td class="pt-4">
                                                 <a class="btn btn-danger" data-id="<?= htmlspecialchars($row['id']); ?>"
-                                                    data-check-date="<?= date('Y-M-d', strtotime($row['check_date'])); ?>" data-cancel-date="<?= date('Y-M-d', strtotime($row['cancel_date'])); ?>" data-toggle="modal" data-target="#deleteConfirmationModal">delete</a>
+                                                    data-check-date="<?= date('Y-M-d', strtotime($row['check_date'])); ?>"
+                                                    data-cancel-date="<?= date('Y-M-d', strtotime($row['cancel_date'])); ?>"
+                                                    data-toggle="modal" data-target="#deleteConfirmationModal">delete</a>
                                             </td>
                                         </tr>
                                         <?php
@@ -161,7 +163,6 @@ if (isset($message)) {
                             </tbody>
                         </table>
                     </div>
-
                 </div>
                 <!-- /.container-fluid -->
 
