@@ -230,7 +230,7 @@ if (isset($_POST['order'])) {
               <option value="Zalo Pay">Zalo Pay</option>
             </select>
             <button class="w-100 btn btn-primary btn-lg  <?= ($cart_grand_total > 1) ? '' : 'disabled'; ?>" name="order"
-              type="submit">Continue to order </button>
+              type="submit">Pay on </button>
 
         </form>
       </div>
