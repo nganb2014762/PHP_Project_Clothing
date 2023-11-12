@@ -117,7 +117,8 @@
                 <h6 class="dropdown-header">
                     Message Center
                 </h6>
-                <a class="dropdown-item d-flex align-items-center" href="#">
+                <a class="dropdown-item text-center small text-gray-500" href="message.php">Read More Messages</a>
+                <!-- <a class="dropdown-item d-flex align-items-center" href="#">
                 <div class="dropdown-list-image mr-3">
                     <img class="rounded-circle" src="../../img/undraw_profile_1.svg" alt="...">
                     <div class="status-indicator bg-success"></div>
@@ -149,7 +150,7 @@
                         the progress so far, keep up the good work!</div>
                     <div class="small text-gray-500">Morgan Alvarez · 2d</div>
                 </div>
-            </a> -->
+            </a>  -->
                 <!-- <a class="dropdown-item d-flex align-items-center" href="#">
                     <div class="dropdown-list-image mr-3">
                         <img class="rounded-circle" src="https://source.unsplash.com/Mv9hjnEUHR4/60x60" alt="...">
@@ -167,7 +168,7 @@
 
         <div class="topbar-divider d-none d-sm-block"></div>
 
-        <!-- Nav Item - User Information -->
+         Nav Item - User Information -->
 
         <li class="nav-item dropdown no-arrow">
             <?php
