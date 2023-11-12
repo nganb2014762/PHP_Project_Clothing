@@ -160,7 +160,6 @@ if (isset($message)) {
                                 } else {
                                     echo "<tr><td colspan='12'>Không có dữ liệu.</td></tr>";
                                 }
-                                
                                 ?>
                             </tbody>
                         </table>

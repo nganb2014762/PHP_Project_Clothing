@@ -28,7 +28,6 @@ if (isset($_POST['update_order'])) {
     $update_order->bindParam(':received_date', $received_date);
     $update_order->bindParam(':update_id', $update_id);
     $update_order->bindParam(':payment_status', $payment_status);
-    
 
     $update_order->execute();
 
