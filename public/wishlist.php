@@ -71,10 +71,16 @@ if (isset($message)) {
                                                 </div>
                                             </div>
 
-                                            
                                             <div class="d-flex justify-content-between align-items-center">
-                                                <span class="fw-bold d-block h5">$<?= htmlspecialchars($fetch_products['price']); ?></span>
-                                            </div>
+                                                <span class="fw-bold d-block h5">$
+                                                    <?= htmlspecialchars($fetch_products['price']); ?>
+                                                </span>
+                                                <div class="btn-group">
+                                                    <a href="view_page.php?pid=<?= htmlspecialchars($fetch_products['id']); ?>"
+                                                        class="btn btn-primary">View</a>
+                                                </div>
+                                            </div>                                            
+                                            
                                             <input type="hidden" name="id" value="<?= $fetch_products['id']; ?>">
                                         </div>
                                     </div>
