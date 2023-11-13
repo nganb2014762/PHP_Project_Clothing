@@ -183,8 +183,11 @@ if (isset($message)) {
             <?= htmlspecialchars($cart_grand_total); ?>$
           </strong>
         </li>
-        <button class="w-100 btn btn-sm mt-3" name="continue_to_order" type="submit"><a href="shop.php"
-            class="text-decoration-none text-dark">Continue to order</a>
+        <button class="w-100 btn btn-sm mt-3" name="go_to_shop" type="submit"><a href="shop.php"
+            class="text-decoration-none text-dark">Go to shop</a>
+        </button>
+        <button class="w-100 btn btn-sm mt-3" name="Go to cart" type="submit"><a href="cart.php"
+            class="text-decoration-none text-dark">Go to Cart</a>
         </button>
       </div>
 
@@ -235,8 +238,8 @@ if (isset($message)) {
               <option value="MoMo">MoMo</option>
               <option value="Zalo Pay">Zalo Pay</option>
             </select>
-            <button class="w-100 btn btn-primary btn-lg  <?= ($cart_grand_total > 1) ? '' : 'disabled'; ?>" name="order"
-              type="submit">Accept Payment</button>
+            <button class="w-100 btn btn-primary btn-lg mt-3 <?= ($cart_grand_total > 1) ? '' : 'disabled'; ?>"
+              name="order" type="submit">Accept Payment</button>
         </form>
       </div>
     </div>
