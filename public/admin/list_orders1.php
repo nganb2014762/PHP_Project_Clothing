@@ -75,8 +75,6 @@ if (isset($message)) {
                                     <th scope="col" class="col-auto">Email</th>
                                     <th scope="col" class="col-auto">Phone</th>
                                     <th scope="col" class="col-auto">Address</th>
-                                    <th scope="col" class="col-auto">Total Products</th>
-                                    <th scope="col" class="col-auto">Total Price</th>
                                     <th scope="col" class="col-auto">Date Place</th>
                                     <th scope="col" class="col-auto">Cancel Date</th>
                                     <th scope="col" class="col-auto">Check Date</th>
@@ -91,8 +89,7 @@ if (isset($message)) {
                                 <?php
                                 $i = 1;
                                 $select_info = $pdo->prepare("SELECT user.name, user.email, user.phone, user.address,
-                                                                    orders.placed_on, orders.check_date,orders.cancel_date,orders.received_date,orders.total_products,
-                                                                    orders.total_price,
+                                                                    orders.placed_on, orders.check_date,orders.cancel_date,orders.received_date,
                                                                     orders.method, orders.payment_status, orders.id
                                                                 FROM user
                                                                 INNER JOIN orders ON user.id = orders.user_id
@@ -102,7 +99,6 @@ if (isset($message)) {
                                 if ($select_info->rowCount() > 0) {
                                     while ($row = $select_info->fetch(PDO::FETCH_ASSOC)) {
                                         ?>
-                                        
                                         <tr>
                                             <td class="pt-4">
                                                 <b>
@@ -120,13 +116,6 @@ if (isset($message)) {
                                             </td>
                                             <td class="pt-4">
                                                 <?= htmlspecialchars($row['address']); ?>
-                                            <td>
-                                                <?= htmlspecialchars($row['total_products']); ?>
-                                            </td>
-                                            <td>
-                                                <?= htmlspecialchars($row['total_price']); ?>$
-                                            </td>
-
                                             </td>
                                             <td class="pt-4">
                                                 <?= htmlspecialchars($row['placed_on']); ?>
@@ -163,11 +152,11 @@ if (isset($message)) {
                                 } else {
                                     echo "<tr><td colspan='12'>Không có dữ liệu.</td></tr>";
                                 }
-
+                                
                                 ?>
                             </tbody>
                         </table>
-
+                        
                     </div>
                 </div>
                 <!-- /.container-fluid -->

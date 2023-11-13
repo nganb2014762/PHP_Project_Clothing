@@ -1,17 +1,18 @@
 <?php
 
 include_once __DIR__ . '../../partials/boostrap.php';
+
 include_once __DIR__ . '../../partials/header.php';
+
 require_once __DIR__ . '../../partials/connect.php';
 
 $user_id = $_SESSION['user_id'];
 
 if (!isset($user_id)) {
     header('location:login.php');
-    exit(); // Dừng chương trình để ngăn chạy tiếp sau lệnh header
 }
+;
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_order'])) {
     $order_id = $_POST['order_id'];
 
     // Kiểm tra xem đơn đặt hàng có tồn tại không
@@ -23,16 +24,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_order'])) {
         // Cập nhật cột payment_status thành 'cancel'
         $update_order_query = $pdo->prepare("UPDATE `orders` SET payment_status = 'cancel', cancel_date = current_timestamp() WHERE id = ?");
         $update_order_query->execute([$order_id]);
-
+        
         echo "Đơn hàng đã được hủy thành công!";
     } else {
         echo "Không tìm thấy đơn đặt hàng!";
     }
-}
-
 ?>
-
-<!-- HTML và CSS của trang web -->
 
 <title>My order</title>
 </head>
@@ -48,25 +45,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_order'])) {
         $total = 0;
         $sub_total = 0;
 
-        // Lấy danh sách đơn đặt hàng của người dùng
-        $sql = "SELECT DISTINCT orders.id as order_id, orders.total_products, orders.total_price, orders.placed_on, orders.check_date, orders.method, orders.payment_status
+        $sql = "SELECT orders.id as order_id, orders.total_products, orders.total_price, orders.placed_on, orders.check_date, orders.method, orders.payment_status, 
+                products.id as product_id, products.name as product_name, products.price as product_price, products.image as product_image, orders_details.quantity as product_quantity
                 FROM orders
+                JOIN orders_details ON orders.id = orders_details.order_id
+                JOIN products ON orders_details.pid = products.id
                 WHERE orders.user_id = :user_id";
 
         $select_orders = $pdo->prepare($sql);
         $select_orders->execute([':user_id' => $user_id]);
 
-        if ($select_orders->rowCount() > 0) {
-            while ($fetch_orders = $select_orders->fetch(PDO::FETCH_ASSOC)) {
-                // Hiển thị thông tin về đơn đặt hàng
-                ?>
-                <div class="row mt-5">
 
                     <div class="col-12">
                         <!-- Hiển thị sản phẩm trong đơn đặt hàng -->
                         <table class="mt-5 pt-5">
                             <tr>
-                                <th class="col-3">Product Image</th>
+                                <th class="col">Product Image</th>
                                 <th class="col">Product Name</th>
                                 <th class="col">Product Price</th>
                                 <th class="col">Product Quantity</th>
@@ -134,12 +128,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_order'])) {
         } else {
             ?>
             <div class="text-center pt-3">
-                <h6 class="position-relative d-inline-block">No item found </h6>
+                <h6 class="position-relative d-inline-block">No items found </h6>
                 <div>
-                    <a type="submit" class="buy-btn text-capitalize text-decoration-none mt-3" name="order now"
-                        href="cart.php">order now</a>
+                    <a type="submit" class="buy-btn text-capitalize text-decoration-none mt-3" name="order now" href="cart.php">Order Now</a>
                 </div>
             </div>
+            <!-- echo '<p class="empty" >no orders placed yet!</p>'; -->
             <?php
         }
         ?>
@@ -148,4 +142,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_order'])) {
 
 <?php
 include_once __DIR__ . '/../partials/footer.php';
-?>

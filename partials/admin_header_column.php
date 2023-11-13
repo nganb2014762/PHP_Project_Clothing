@@ -56,7 +56,7 @@
         <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Quản lý đơn hàng:</h6>
             <a class="collapse-item" href="list_orders.php">Danh sách đơn hàng</a>
-            <a class="collapse-item" href="status_orders.php">Trạng thái đơn hàng</a>
+            
         </div>
     </div>
 </li>
