@@ -46,6 +46,8 @@ if (isset($_POST['update_qty'])) {
             // Cập nhật quantity trong bảng cart
             $update_qty = $pdo->prepare("UPDATE `cart` SET quantity = ? WHERE id = ?");
             $update_qty->execute([$new_quantity, $cart_id]);
+        }else{
+            $message[] = "Update fail";
         }
     }
 }
