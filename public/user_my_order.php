@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_order'])) {
                         <!-- Hiển thị sản phẩm trong đơn đặt hàng -->
                         <table class="mt-5 pt-5">
                             <tr>
-                                <th class="col-3">Product Image</th>
+                                <th class="col">Product Image</th>
                                 <th class="col">Product Name</th>
                                 <th class="col">Product Price</th>
                                 <th class="col">Product Quantity</th>
@@ -85,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_order'])) {
                                 ?>
                                 <tr>
                                     <td>
-                                        <img src="admin/uploaded_img/<?= $product['product_image']; ?>" alt="">
+                                        <img src="admin/uploaded_img/<?= $product['product_image']; ?>" alt="" class="w-25">
                                     </td>
                                     <td>
                                         <?= $product['product_name']; ?>

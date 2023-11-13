@@ -113,7 +113,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_order'])) {
                             <?= $fetch_orders['total_price']; ?>
                         </p>
                         <p>Payment Method:
-                            <?= $fetch_orders['method']; ?>
+                            <p  class="text-primary"><?= $fetch_orders['method']; ?></p>
                         </p>
                         <p>Payment Status:
                             <?= $fetch_orders['payment_status']; ?>
