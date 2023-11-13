@@ -29,7 +29,6 @@ if (!isset($user_id)) {
     } else {
         echo "Không tìm thấy đơn đặt hàng!";
     }
-};
 ?>
 
 <title>My order</title>
