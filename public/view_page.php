@@ -256,10 +256,38 @@ if (isset($_POST['add_to_cart'])) {
    <!-- end of quick-view -->
 
    <!-- Related items section-->
+   <section id="collection">
+      <div class="container">
+         <div class="title text-center mt-5 pt-5">
+            <h2 class="position-relative d-inline-block">Reviews</h2>
+         </div>
+
+         <div class="row g-0 container">
+            <div class="col-4">
+               <img src="img/undraw_posting_photo.svg" alt="" width="70%">
+            </div>
+            <div class="col-8">
+               <p class="card-text text-capitalize text-truncate fw-bold">
+                  Tên người bình luận
+               </p>
+               <p class="text-truncate text-capitalize">
+                  Bình luận nội dung
+               </p>
+            </div>
+            <p class="text-primary">Bình luận</p>
+            <input type="text">
+            <button type="submit" class="mt-2">bình luận</button>
+
+         </div>
+      </div>
+      </div>
+   </section>
+
+   <!-- Related items section-->
    <section id="collection" class="bg-light">
       <div class="container">
          <div class="title text-center mt-5 pt-5">
-            <h2 class="position-relative d-inline-block">Related Product</h2>
+            <h2 class="position-relative d-inline-block">You May Also Like</h2>
          </div>
 
          <div class="row g-0 container">
