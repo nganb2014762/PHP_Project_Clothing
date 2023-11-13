@@ -6,72 +6,102 @@ include_once __DIR__ . '../../partials/header.php';
 
 require_once __DIR__ . '../../partials/connect.php';
 
+$user_id = $_SESSION['user_id'];
+
+if (!isset($user_id)) {
+  header('location:login.php');
+}
+;
+
+// Đoạn mã để lấy thông tin hồ sơ người dùng từ cơ sở dữ liệu
+$user_profile_query = $pdo->prepare("SELECT * FROM `user` WHERE id = ?");
+$user_profile_query->execute([$user_id]);
+$fetch_profile = $user_profile_query->fetch(PDO::FETCH_ASSOC);
+
+// Tiếp theo, bạn có thể kiểm tra xem dữ liệu có tồn tại hay không
+if ($fetch_profile) {
+  // Hiển thị thông tin hồ sơ người dùng
+  $user_name = isset($fetch_profile['name']) ? $fetch_profile['name'] : '';
+  $user_phone = isset($fetch_profile['phone']) ? $fetch_profile['phone'] : '';
+  $user_email = isset($fetch_profile['email']) ? $fetch_profile['email'] : '';
+  $user_address = isset($fetch_profile['address']) ? $fetch_profile['address'] : '';
+} else {
+  // Xử lý trường hợp không tìm thấy thông tin hồ sơ người dùng
+  echo "Không thể tìm thấy thông tin hồ sơ người dùng.";
+}
+
 
 if (isset($_POST['order'])) {
-
-  $name = $_POST['name'];
-  $name = filter_var($name, FILTER_SANITIZE_STRING);
-  $number = $_POST['number'];
-  $number = filter_var($number, FILTER_SANITIZE_STRING);
-  $email = $_POST['email'];
-  $email = filter_var($email, FILTER_SANITIZE_STRING);
-  $address = $_POST['address'];
 
   $method = $_POST['method'];
   $method = filter_var($method, FILTER_SANITIZE_STRING);
 
-  $address = filter_var($address, FILTER_SANITIZE_STRING);
-  $placed_on = date('d-M-Y');
-  $future_date = date('d-M-Y', strtotime($placed_on . ' +3 days'));
+  $placed_on = date('Y-m-d', strtotime('now'));
 
   $cart_total = 0;
-  $cart_products[] = '';
+  $cart_products = array(); // Khởi tạo mảng tránh lỗi khi không có sản phẩm trong giỏ hàng
 
   $cart_query = $pdo->prepare("SELECT * FROM `cart` WHERE user_id = ?");
   $cart_query->execute([$user_id]);
+
   if ($cart_query->rowCount() > 0) {
     while ($cart_item = $cart_query->fetch(PDO::FETCH_ASSOC)) {
-      $cart_products[] = $cart_item['name'] . ' ( ' . $cart_item['quantity'] . ' )';
+      $cart_products[] = $cart_item['name'] . '(' . $cart_item['quantity'] . ')';
       $sub_total = ($cart_item['price'] * $cart_item['quantity']);
       $cart_total += $sub_total;
+       // Lấy product id
+    $pid = $cart_item['pid']; // Giả sử pid là cột trong giỏ hàng
+    $quantity = $cart_item['quantity'];
+
     }
-    ;
+   
   }
-  ;
 
-  $total_products = implode(', ', $cart_products);
+  $total_products = implode(',', $cart_products);
 
-  $order_query = $pdo->prepare("SELECT * FROM orders WHERE user_id = ? AND number = ? AND email = ? AND method = ? AND address = ? AND total_products = ? AND total_price = ?");
+  // Lấy id của đơn hàng vừa chèn
+  $order_id = null;
 
-  $order_query->execute([$name, $number, $email, $method, $address, $total_products, $cart_total]);
+  try {
+    // Thêm đơn hàng vào bảng orders
+    $insert_order = $pdo->prepare("INSERT INTO `orders`(user_id, method, total_products, total_price, placed_on) VALUES(?,?,?,?,?)");
+    $insert_order->execute([$user_id, $method, $total_products, $cart_total, $placed_on]);
 
-  if ($cart_total == 0) {
-    $message[] = 'your cart is empty';
-  } elseif ($order_query->rowCount() > 0) {
-    $message[] = 'order placed already!';
-  } else {
-    $insert_order = $pdo->prepare("INSERT INTO `orders`(user_id, name, number, email, method, address, total_products, total_price, placed_on, future_date) VALUES(?,?,?,?,?,?,?,?,?,?)");
-    $insert_order->execute([$user_id, $name, $number, $email, $method, $address, $total_products, $cart_total, $placed_on, $future_date,]);
+    // Lấy id của đơn hàng vừa chèn
+    $order_id = $pdo->lastInsertId();
+
+    // Thêm đơn hàng chi tiết vào bảng orders_details
+    $insert_orders_details = $pdo->prepare("INSERT INTO orders_details (order_id, pid, quantity) VALUES (?, ?, ?)");
+    $insert_orders_details->execute([$order_id, $pid, $quantity]);
+
+    // Xóa các sản phẩm trong giỏ hàng
     $delete_cart = $pdo->prepare("DELETE FROM `cart` WHERE user_id = ?");
     $delete_cart->execute([$user_id]);
-    $message[] = 'order placed successfully!';
+
+    $message[] = 'Order placed successfully!';
+  } catch (PDOException $e) {
+    $message[] = 'Failed to place order.';
   }
-};
+}
+;
 
 if (isset($message)) {
   foreach ($message as $message) {
-      // echo '<script>alert(" ' . $message . ' ");</script>';
-      echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
-          ' . htmlspecialchars($message) . '
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-           </div>';
+    // echo '<script>alert(" ' . $message . ' ");</script>';
+    echo '<div class="alert alert-warning alert-dismissible fade show col-4 offset-4" role="alert" tabindex="-1">
+              ' . htmlspecialchars($message) . '
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>';
   }
 }
 ?>
 
+<title>Checkout</title>
+</head>
+
 <div class="container">
   <main>
-    <div class=" my-5 py-5 text-center">
+    <div class="my-5 pt-5 text-center">
       <div class="container title text-center mt-3 pt-5">
         <h2 class="position-relative d-inline-block">Checkout form</h2>
       </div>
@@ -80,12 +110,9 @@ if (isset($message)) {
 
     <div class="row g-5">
 
-
-
       <div class="col-md-5 col-lg-4 order-md-last">
         <h4 class="d-flex justify-content-between align-items-center mb-3">
-          <span class="text-primary">Your cart</span>
-
+          <span class="text-primary ">Your cart</span>
         </h4>
         <?php
         $cart_grand_total = 0;
@@ -102,11 +129,11 @@ if (isset($message)) {
                   <div>
                     <h6 class="my-0">Product name</h6>
                     <small class="text-muted">
-                      <?= $fetch_cart_items['name']; ?>
+                      <?= htmlspecialchars($fetch_cart_items['name']); ?>
                     </small>
                   </div>
                   <span class="text-muted">
-                    <?= $fetch_cart_items['price'] . '$' ?>
+                    <?= htmlspecialchars($fetch_cart_items['price']) . '$' ?>
                   </span>
                 </li>
 
@@ -115,7 +142,7 @@ if (isset($message)) {
                     <h6 class="my-0">Quantity</h6>
                   </div>
                   <span class="text-muted">
-                    <?= $fetch_cart_items['quantity']; ?>
+                    <?= htmlspecialchars($fetch_cart_items['quantity']); ?>
                   </span>
                 </li>
 
@@ -132,20 +159,25 @@ if (isset($message)) {
         <li class="list-group-item d-flex justify-content-between lh-sm">
           <span><b>Total: </b></span>
           <strong>
-            <?= $cart_grand_total; ?>$
+            <?= htmlspecialchars($cart_grand_total); ?>$
           </strong>
 
           </span>
         </li>
+        <button class="w-100 btn btn-sm mt-3" name="continue_to_order" type="submit"><a href="shop.php"
+            class="text-decoration-none text-dark">Continue to order</a>
+        </button>
       </div>
 
-      <div class="col-md-7 col-lg-8">
+      <div class="col-md-7 col-lg-8 border-end">
         <h4 class="mb-3 text-primary">Billing address</h4>
         <form class="needs-validation" validate method="POST">
           <div class="row g-3">
             <div class="col-sm-6">
               <label class="form-label">Your name</label>
-              <input type="text" class="form-control" id="firstName" name="name" placeholder="enter your name" required>
+              <div class="form-control" name="name">
+                <?= isset($fetch_profile['name']) ? htmlspecialchars($fetch_profile['name']) : ''; ?>
+              </div>
               <div class="invalid-feedback">
                 Valid first name is required.
               </div>
@@ -153,8 +185,10 @@ if (isset($message)) {
 
             <div class="col-sm-6">
               <label class="form-label">Phone</label>
-              <input type="text" class="form-control" id="lastName" name="number" placeholder="enter your number"
-                required>
+              <div class="form-control" name="phone">
+                <?= htmlspecialchars($fetch_profile['phone']); ?>
+
+              </div>
               <div class="invalid-feedback">
                 Valid last name is required.
               </div>
@@ -162,8 +196,11 @@ if (isset($message)) {
 
 
             <div class="col-12">
-              <label for="email" class="form-label">Email <span class="text-muted">(Optional)</span></label>
-              <input type="email" class="form-control" id="email" name="email" placeholder="enter your email" >
+              <label for="email" class="form-label">Email </label>
+              <div class="form-control" name="email">
+                <?= htmlspecialchars($fetch_profile['email']); ?>
+
+              </div>
               <div class="invalid-feedback">
                 Please enter a valid email address for shipping updates.
               </div>
@@ -171,23 +208,25 @@ if (isset($message)) {
 
             <div class="col-12">
               <label for="address" class="form-label">Address</label>
-              <input type="text" class="form-control" id="address" name="address" placeholder="your address" required>
+              <div class="form-control" name="address">
+                <?php
+                if (!empty($fetch_profile['address'])) {
+                  echo htmlspecialchars($fetch_profile['address']);
+                } else {
+                  echo 'Please enter your shipping address. ';
+                  echo '<a style="text-decoration: none;" href="user_edit_account.php">Change your information? Click here</a> ';
+                }
+                ?>
+              </div>
               <div class="invalid-feedback">
                 Please enter your shipping address.
               </div>
             </div>
+
             <hr class="my-4">
 
-            <!-- <div class="form-check">
-              <input type="checkbox" class="form-check-input" id="same-address">
-              <label class="form-check-label" for="same-address">Shipping address is the same as my billing
-                address</label>
-            </div>
 
-            <div class="form-check">
-              <input type="checkbox" class="form-check-input" id="save-info">
-              <label class="form-check-label" for="save-info">Save this information for next time</label>
-            </div> -->
+
 
             <hr class="my-4">
 
@@ -198,14 +237,9 @@ if (isset($message)) {
               <option value="MoMo">MoMo</option>
               <option value="Zalo Pay">Zalo Pay</option>
             </select>
-
-
-            <hr class="my-4">
-            <br>
-
-
             <button class="w-100 btn btn-primary btn-lg  <?= ($cart_grand_total > 1) ? '' : 'disabled'; ?>" name="order"
-              type="submit">Continue to checkout</button>
+              type="submit">Continue to order </button>
+
         </form>
       </div>
     </div>

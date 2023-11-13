@@ -103,10 +103,11 @@ if (isset($message)) {
                                         </div>
                                         <div class="form-group">
                                                     <select name="payment_status" class="form-control" required>
-                                                        <option selected>
+                                                        <option selected disabled>
                                                             <?= $fetch_orders['payment_status']; ?>
                                                         </option>
                                                         <option value="pending">pending</option>
+                                                        <option value="cancel">cancel</option>
                                                         <option value="transport">transport</option>
                                                         <option value="completed">completed</option>
                                                     </select>

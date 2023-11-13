@@ -84,6 +84,22 @@ if (isset($message)) {
 ;
 ?>
 <title>Fashion</title>
+<style>
+    #myBtn {
+        display: none;
+        /* Ẩn nút khi trang đầu tiên được tải */
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        font-size: 20px;
+        background-color: white;
+        color: black;
+        border: none;
+        border-radius: 50%;
+        padding: px;
+        cursor: pointer;
+    }
+</style>
 </head>
 
 <body>
@@ -336,6 +352,8 @@ if (isset($message)) {
             </nav>
         </div>
     </section>
+    <button onclick="topFunction()" id="myBtn" title="Quay lại đầu trang"><i class="fa-solid fa-arrow-up"></i></button>
+
     <!-- end of blogs -->
     <script>
         function addToWishllist() {
@@ -351,6 +369,36 @@ if (isset($message)) {
             return true; // Cho phép gửi yêu cầu đến máy chủ
         }
     </script>
-    <?php
 
-    include_once __DIR__ . '/../partials/footer.php';
+    <!-- ... (mã HTML hiện tại) ... -->
+
+
+
+    <script>
+        // Khi người dùng cuộn xuống 20px từ đỉnh trang, hiển thị nút
+        window.onscroll = function () { scrollFunction() };
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                document.getElementById("myBtn").style.display = "block";
+            } else {
+                document.getElementById("myBtn").style.display = "none";
+            }
+        }
+
+        // Khi người dùng nhấp vào nút, cuộn đầu trang
+        function topFunction() {
+            document.body.scrollTop = 0; // Cho Safari
+            document.documentElement.scrollTop = 0; 
+        }
+    </script>
+
+</body>
+
+</html>
+
+
+
+<?php
+
+include_once __DIR__ . '/../partials/footer.php';

@@ -47,18 +47,12 @@ if (isset($_POST['update_order'])) {
         <?php if ($select_orders->rowCount() > 0) { ?>
             <table class="mt-5 pt-5">
                 <tr>
-                    <th class="col-1">Order ID</th>
-                    <th class="col-1">Product Image</th>
-                    <th class="col-1">Product Name</th>
-                    <th class="col-1">Product Price</th>
-                    <th class="col-1">Product Quantity</th>
-                    <th class="col-1">Total Products</th>
-                    <th class="col-1">Total Price</th>
-                    <th class="col-1">Placed On</th>
-                    <th class="col-1">Check Date</th>
-                    <th class="col-1">Payment Method</th>
-                    <th class="col-1">Payment Status</th>
-                    <th class="col-1">Cancel</th>
+                    <th>Product</th>
+                    <th>Order date</th>
+                    <th>Delivery date</th>
+                    <th>Payment method</th>
+                    <th>Subtotal</th>
+                    <th>Status</th>
                 </tr>
                 <?php
                 $select_orders = $pdo->prepare("SELECT * FROM `orders`");
@@ -132,15 +126,19 @@ if (isset($_POST['update_order'])) {
                 }
         } else { ?>
             <div class="text-center pt-3">
-                <h6 class="position-relative d-inline-block">No items found </h6>
+                <h6 class="position-relative d-inline-block">No item found </h6>
                 <div>
-                    <a type="submit" class="buy-btn text-capitalize text-decoration-none mt-3" name="order now" href="cart.php">Order Now</a>
+                    <a type="submit" class="buy-btn text-capitalize text-decoration-none mt-3" name="order now"
+                        href="cart.php">order now</a>
                 </div>
             </div>
-        <?php } ?>
+            <!-- echo '<p class="empty" >no orders placed yet!</p>'; -->
+            <?php
+        }
+        ?>
     </div>
 </section>
 
+
 <?php
 include_once __DIR__ . '/../partials/footer.php';
-?>
