@@ -90,7 +90,7 @@ if (isset($message)) {
                             <tbody class="table-group-divider">
                                 <?php
                                 $i = 1;
-                                $select_info = $pdo->prepare("SELECT user.name, user.email, user.phone, user.address,
+                                $select_info = $pdo->prepare("SELECT user.name, user.email, user.phone, orders.address,
                                                                     orders.placed_on, orders.check_date,orders.cancel_date,orders.received_date,orders.total_products,
                                                                     orders.total_price,
                                                                     orders.method, orders.payment_status, orders.id
