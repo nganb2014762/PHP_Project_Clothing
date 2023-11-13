@@ -64,7 +64,7 @@
                             // Nếu tìm thấy, hiển thị thông tin người dùng và dropdown menu
                             echo ' <div class="dropdown">
                                     <a  style="color:#222; text-decoration: none;" href="#" role="button" data-bs-toggle="dropdown">
-                                        <i class="fa-solid fa-user"></i> <span>' . htmlspecialchars($fetch_profile['name']) . '</span>
+                                        <i class="fa-solid fa-user"></i> <span>'.htmlspecialchars($fetch_profile['name']).'</span>
                                     </a>
                         
                                     <ul class="dropdown-menu">
