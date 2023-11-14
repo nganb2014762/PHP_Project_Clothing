@@ -78,8 +78,8 @@ if (isset($message)) {
             </div>
 
             <?php
-            $total = 0;
-            $sub_total = 0;
+            $total = 0.00;
+            $sub_total = 0.00;
             $select_cart = $pdo->prepare("SELECT * FROM `cart` WHERE user_id = ?");
             $select_cart->execute([$user_id]);
             ?>
@@ -115,8 +115,8 @@ if (isset($message)) {
                                 </td>
                                 <td>
                                     <div class="product-price">
-                                        <div class="price">
-                                            <?= htmlspecialchars($fetch_cart['price']); ?>$
+                                        <div class="price">$
+                                            <?= htmlspecialchars($fetch_cart['price']); ?>
                                         </div>
                                     </div>
                                 </td>
