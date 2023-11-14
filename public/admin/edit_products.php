@@ -169,7 +169,7 @@ if (isset($message)) {
 
                                                         <div class="form-group">
                                                             <textarea class="form-control" name="details" required
-                                                                placeholder="enter product details" cols="30"
+                                                                placeholder="Enter product details" cols="30"
                                                                 rows="5"><?=  htmlspecialchars($fetch_products['details']); ?></textarea>
                                                         </div>
 
@@ -181,7 +181,7 @@ if (isset($message)) {
                                                         <div class="form-group">
                                                             <div class="flex-btn">
                                                                 <input type="submit" class="btn w-100 btn-primary shadow-sm"
-                                                                    value="update product" name="update_product">
+                                                                    value="Update product" name="update_product">
                                                             </div>
                                                         </div>
                                                     </div>

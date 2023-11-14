@@ -20,7 +20,7 @@ if (isset($_GET['delete'])) {
 ?>
 
 
-<title>Profile</title>
+<title>List Staffs</title>
 </head>
 
 <body id="page-top">
@@ -81,7 +81,7 @@ if (isset($_GET['delete'])) {
                                     <th scope="col">Phone</th>
                                     <th scope="col">Email</th>
                                     <th scope="col">Role</th>
-                                    
+
                                     <th scope="col">Delete</th>
                                 </tr>
                             </thead>
@@ -110,7 +110,8 @@ if (isset($_GET['delete'])) {
                                                     echo '<div class="col-2"><img src="../img/account/user0.png" width="70" height="70" ></div>';
                                                 } else {
                                                     ?>
-                                                    <div class="col-2"><img src="../img/account/<?= htmlspecialchars($fetch_users['image']); ?>"
+                                                    <div class="col-2"><img
+                                                            src="../img/account/<?= htmlspecialchars($fetch_users['image']); ?>"
                                                             width="70" height="70"></div>
                                                     <?php
                                                 }
@@ -172,7 +173,7 @@ if (isset($_GET['delete'])) {
                                                     }
                                                     ?>
                                                 </span>
-                                            </td>                                           
+                                            </td>
 
                                             <td class="pt-4">
                                                 <a class="btn btn-danger my-1 my-lg-0"
@@ -258,14 +259,18 @@ if (isset($_GET['delete'])) {
     </div>
 
     <script>
+        // JavaScript code to handle delete from modal
         $(document).ready(function () {
-            $('button.btn-danger').on('click', function () {
-                var id = $(this).data('id');
-                var deleteLink = '/deleteprofile/' + id;
+            $('#deleteConfirmationModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                var Id = button.data('id');
+
+                // Set the delete button link with productId
+                var deleteLink = 'list_customers.php?delete=' + Id;
                 $('#deleteLink').attr('href', deleteLink);
             });
         });
     </script>
-    
+
     <?php
     include_once __DIR__ . '../../../partials/admin_footer.php';

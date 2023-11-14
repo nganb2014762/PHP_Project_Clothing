@@ -4,23 +4,22 @@ session_start();
 require_once __DIR__ . '../../../partials/connect.php';
 
 $admin_id = $_SESSION['admin_id'];
-
 if (!isset($admin_id)) {
     header('location:login.php');
 }
 ;
 
 if (isset($_GET['delete'])) {
-
     $delete_id = $_GET['delete'];
     $delete_users = $pdo->prepare("DELETE FROM `user` WHERE id = ?");
     $delete_users->execute([$delete_id]);
     header('location:list_customer.php');
 }
+;
 ?>
 
 
-<title>Profile</title>
+<title>List Customers</title>
 </head>
 
 <body id="page-top">
@@ -227,7 +226,7 @@ if (isset($_GET['delete'])) {
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="/logout">Logout</a>
+                    <a class="btn btn-primary" href="logout.php">Logout</a>
                 </div>
             </div>
         </div>
@@ -254,15 +253,20 @@ if (isset($_GET['delete'])) {
             </div>
         </div>
     </div>
-    <!-- <script>
-        $(document).ready(function () {
-            $('button.btn-danger').on('click', function () {
-                var id = $(this).data('id');
-                var deleteLink = '/deleteprofile/' + id;
-                $('#deleteLink').attr('href', deleteLink);
-            });
+
+    <script>
+    // JavaScript code to handle delete from modal
+    $(document).ready(function() {
+        $('#deleteConfirmationModal').on('show.bs.modal', function(event) {
+            var button = $(event.relatedTarget);
+            var Id = button.data('id');
+
+            // Set the delete button link with productId
+            var deleteLink = 'list_customers.php?delete=' + Id;
+            $('#deleteLink').attr('href', deleteLink);
         });
-    </script> -->
+    });
+    </script>
 
 
     <?php

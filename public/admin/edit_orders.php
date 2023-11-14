@@ -117,19 +117,19 @@ if (isset($message)) {
                                         <div class="form-group">
                                             <label for="check_date">Check Date:</label>
                                             <input type="date" class="form-control" id="check_date" name="check_date"
-                                                value="<?php echo htmlspecialchars( $fetch_orders['check_date']); ?>">
+                                                value="<?= htmlspecialchars( $fetch_orders['check_date']); ?>">
                                         </div>
 
                                         <div class="form-group">
                                             <label for="cancel_date">Cancel Date:</label>
                                             <input type="date" class="form-control" id="cancel_date" name="cancel_date"
-                                                value="<?php echo htmlspecialchars($fetch_orders['cancel_date']); ?>">
+                                                value="<?= htmlspecialchars($fetch_orders['cancel_date']); ?>">
                                         </div>
 
                                         <div class="form-group">
                                             <label for="received_date_date">Received Date:</label>
                                             <input type="date" class="form-control" id="received_date_date" name="received_date"
-                                                value="<?php echo htmlspecialchars($fetch_orders['received_date']); ?>">
+                                                value="<?= htmlspecialchars($fetch_orders['received_date']); ?>">
                                         </div>
 
                                         <div class="form-group">
@@ -178,4 +178,3 @@ if (isset($message)) {
 
     <?php
     include_once __DIR__ . '../../../partials/admin_footer.php';
-    ?>
