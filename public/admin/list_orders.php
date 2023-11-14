@@ -90,7 +90,7 @@ if (isset($message)) {
                             <tbody class="table-group-divider">
                                 <?php
                                 $i = 1;
-                                $select_info = $pdo->prepare("SELECT user.name, user.email, user.phone, user.address,
+                                $select_info = $pdo->prepare("SELECT user.name, user.email, user.phone, orders.address,
                                                                     orders.placed_on, orders.check_date,orders.cancel_date,orders.received_date,orders.total_products,
                                                                     orders.total_price,
                                                                     orders.method, orders.payment_status, orders.id
@@ -102,7 +102,7 @@ if (isset($message)) {
                                 if ($select_info->rowCount() > 0) {
                                     while ($row = $select_info->fetch(PDO::FETCH_ASSOC)) {
                                         ?>
-                                        
+
                                         <tr>
                                             <td class="pt-4">
                                                 <b>
@@ -153,15 +153,16 @@ if (isset($message)) {
                                             </td>
                                             <td class="pt-4">
                                                 <a class="btn btn-danger" data-id="<?= htmlspecialchars($row['id']); ?>"
-                                                    data-check-date="<?= date('Y-M-d', strtotime($row['check_date'])); ?>"
-                                                    data-cancel-date="<?= date('Y-M-d', strtotime($row['cancel_date'])); ?>"
-                                                    data-toggle="modal" data-target="#deleteConfirmationModal">delete</a>
+                                                    data-check-date="<?= date('Y-M-d', strtotime($row['check_date'])); ?>" 
+                                                    data-cancel-date="<?= date('Y-M-d', strtotime($row['cancel_date'])); ?>" 
+                                                    data-toggle="modal"
+                                                    data-target="#deleteConfirmationModal">delete</a>
                                             </td>
                                         </tr>
                                         <?php
                                     }
                                 } else {
-                                    echo "<tr><td colspan='12'>Không có dữ liệu.</td></tr>";
+                                    echo "<tr><td colspan='15'>Không có dữ liệu.</td></tr>";
                                 }
 
                                 ?>
@@ -225,15 +226,15 @@ if (isset($message)) {
             $('#deleteConfirmationModal').on('show.bs.modal', function (event) {
                 var button = $(event.relatedTarget);
                 var Id = button.data('id');
-                var checkDate = button.data('check-date');
-                var cancelDate = button.data('cancel-date');
+                // var checkDate = button.data('check-date');
+                // var cancelDate = button.data('cancel-date');
 
                 var deleteLink = 'list_orders.php?delete=' + Id;
                 $('#deleteLink').attr('href', deleteLink);
 
                 // Hiển thị thông tin ngày tháng năm trong modal
-                $('#checkDateInfo').text(checkDate);
-                $('#cancelDateInfo').text(cancelDate);
+                // $('#checkDateInfo').text(checkDate);
+                // $('#cancelDateInfo').text(cancelDate);
             });
         });
     </script>

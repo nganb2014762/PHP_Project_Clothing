@@ -34,8 +34,7 @@ if ($fetch_profile) {
 if (isset($_POST['order'])) {
 
   $method = $_POST['method'];
-  $method = filter_var($method, FILTER_SANITIZE_STRING);
-
+  $address = $_POST['address'];
   $placed_on = date('Y-m-d', strtotime('now'));
 
   $cart_grand_total = 0;
@@ -65,24 +64,43 @@ if (isset($_POST['order'])) {
 
   try {
     // Thêm đơn hàng vào bảng orders
-    $insert_order = $pdo->prepare("INSERT INTO `orders`(user_id, method, total_products, total_price, placed_on) VALUES(?,?,?,?,?)");
-    $insert_order->execute([$user_id, $method, $total_products, $cart_grand_total, $placed_on]);
+    $insert_order = $pdo->prepare("INSERT INTO `orders`(user_id, address, method, total_products, total_price, placed_on) VALUES(?,?,?,?,?,?)");
+    $insert_order->execute([$user_id, $address, $method, $total_products, $cart_grand_total, $placed_on]);
 
     // Lấy id của đơn hàng vừa chèn
     $order_id = $pdo->lastInsertId();
 
+    // Giảm số lượng sản phẩm trong bảng product
     foreach ($orderDetails as $orderDetail) {
-      $insert_orders_details = $pdo->prepare("INSERT INTO orders_details (order_id, pid, quantity) VALUES (?, ?, ?)");
-      $insert_orders_details->execute([$order_id, $orderDetail['pid'], $orderDetail['quantity']]);
+      $product_id = $orderDetail['pid'];
+      $quantity = $orderDetail['quantity'];
+
+      // Lấy số lượng sản phẩm hiện tại từ bảng product
+      $product_query = $pdo->prepare("SELECT quantity FROM `products` WHERE id = ?");
+      $product_query->execute([$product_id]);
+      $current_quantity = $product_query->fetchColumn();
+
+      // Kiểm tra số lượng sản phẩm đủ để giảm không
+      if ($current_quantity >= $quantity) {
+        // Giảm số lượng sản phẩm trong bảng product
+        $update_product_quantity = $pdo->prepare("UPDATE `products` SET quantity = ? WHERE id = ?");
+        $update_product_quantity->execute([$current_quantity - $quantity, $product_id]);
+        $insert_orders_details = $pdo->prepare("INSERT INTO orders_details (order_id, pid, quantity) VALUES (?, ?, ?)");
+        $insert_orders_details->execute([$order_id, $orderDetail['pid'], $orderDetail['quantity']]);
+        // Xóa các sản phẩm trong giỏ hàng
+        $delete_cart = $pdo->prepare("DELETE FROM `cart` WHERE user_id = ?");
+        $delete_cart->execute([$user_id]);
+
+        $message[] = 'Order placed successfully!';
+      } else {
+        // Xử lý trường hợp không đủ sản phẩm trong kho
+        $message[] = "Bạn đã đặt số lượng vượt quá số lượng sản phẩm trong kho.Số lượng sản phẩm trong kho còn $current_quantity";
+        $delete_order = $pdo->prepare("DELETE FROM `orders` WHERE id = ?");
+        $delete_order->execute([$user_id]);
+      }
     }
-
-    // Xóa các sản phẩm trong giỏ hàng
-    $delete_cart = $pdo->prepare("DELETE FROM `cart` WHERE user_id = ?");
-    $delete_cart->execute([$user_id]);
-
-    $message[] = 'Order placed successfully!';
   } catch (PDOException $e) {
-    $message[] = 'Failed to place order.';
+    $message[] = 'Failed to place order. Error: ' . $e->getMessage();
   }
 }
 ;
@@ -165,8 +183,11 @@ if (isset($message)) {
             <?= htmlspecialchars($cart_grand_total); ?>$
           </strong>
         </li>
-        <button class="w-100 btn btn-sm mt-3" name="continue_to_order" type="submit"><a href="shop.php"
-            class="text-decoration-none text-dark">Continue to order</a>
+        <button class="w-100 btn btn-sm mt-3" name="go_to_shop" type="submit"><a href="shop.php"
+            class="text-decoration-none text-dark">Go to shop</a>
+        </button>
+        <button class="w-100 btn btn-sm mt-3" name="Go to cart" type="submit"><a href="cart.php"
+            class="text-decoration-none text-dark">Go to Cart</a>
         </button>
       </div>
 
@@ -177,7 +198,7 @@ if (isset($message)) {
             <div class="col-sm-6">
               <label class="form-label">Your name</label>
               <input type="text" class="form-control" name="name"
-                value="<?= isset($fetch_profile['name']) ? htmlspecialchars($fetch_profile['name']) : ''; ?>" readonly>
+                value="<?= isset($fetch_profile['name']) ? htmlspecialchars($fetch_profile['name']) : ''; ?>" required>
               <div class="invalid-feedback">
                 Valid first name is required.
               </div>
@@ -186,7 +207,7 @@ if (isset($message)) {
             <div class="col-sm-6">
               <label class="form-label">Phone</label>
               <input type="text" class="form-control" name="phone"
-                value="<?= htmlspecialchars($fetch_profile['phone']); ?>" readonly>
+                value="<?= htmlspecialchars($fetch_profile['phone']); ?>" required>
               <div class="invalid-feedback">
                 Valid last name is required.
               </div>
@@ -195,7 +216,7 @@ if (isset($message)) {
             <div class="col-12">
               <label for="email" class="form-label">Email</label>
               <input type="email" class="form-control" name="email"
-                value="<?= htmlspecialchars($fetch_profile['email']); ?>" readonly>
+                value="<?= htmlspecialchars($fetch_profile['email']); ?>" required>
               <div class="invalid-feedback">
                 Please enter a valid email address for shipping updates.
               </div>
@@ -203,13 +224,8 @@ if (isset($message)) {
 
             <div class="col-12">
               <label for="address" class="form-label">Address</label>
-              <textarea class="form-control" name="address" readonly><?php
-              if (!empty($fetch_profile['address'])) {
-                echo htmlspecialchars($fetch_profile['address']);
-              } else {
-                echo 'Please enter your shipping address. ';
-                echo '<a style="text-decoration: none;" href="user_edit_account.php">Change your information? Click here</a> ';
-              }
+              <textarea class="form-control" name="address" required><?php
+              echo htmlspecialchars($fetch_profile['address']);
               ?></textarea>
               <div class="invalid-feedback">
                 Please enter your shipping address.
@@ -222,14 +238,12 @@ if (isset($message)) {
               <option value="MoMo">MoMo</option>
               <option value="Zalo Pay">Zalo Pay</option>
             </select>
-            <button class="w-100 btn btn-primary btn-lg  <?= ($cart_grand_total > 1) ? '' : 'disabled'; ?>" name="order"
-              type="submit">Accept Payment</button>
+            <button class="w-100 btn btn-primary btn-lg mt-3 <?= ($cart_grand_total > 1) ? '' : 'disabled'; ?>"
+              name="order" type="submit">Accept Payment</button>
         </form>
       </div>
     </div>
   </main>
-
 </div>
 <?php
-
 include_once __DIR__ . '../../partials/footer.php';
