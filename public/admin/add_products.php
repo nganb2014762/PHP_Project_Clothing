@@ -119,7 +119,7 @@ if (isset($message)) {
                                                 <?php
                                                 $category = $pdo->query("SELECT * FROM category")->fetchAll(PDO::FETCH_ASSOC);
                                                 foreach ($category as $category) {
-                                                    echo htmlspecialchars("<option value='{$category['id']}'>{$category['name']}</option>");
+                                                    echo "<option value='{$category['id']}'>{$category['name']}</option>";
                                                 }
                                                 ?>
                                             </select>
