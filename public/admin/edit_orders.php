@@ -108,6 +108,7 @@ if (isset($message)) {
                                                         </option>
                                                         <option value="pending">pending</option>
                                                         <option value="cancel">cancel</option>
+                                                        <option value="checked">checked</option>
                                                         <option value="transport">transport</option>
                                                         <option value="completed">completed</option>
                                                     </select>
