@@ -45,8 +45,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_order'])) {
             <hr>
         </div>
         <?php
-        $total = 0;
-        $sub_total = 0;
+        $total = 0.00;
+        $sub_total = 0.00;
 
         // Lấy danh sách đơn đặt hàng của người dùng
         $sql = "SELECT DISTINCT orders.id as order_id, orders.total_products, orders.total_price, orders.placed_on, orders.check_date, orders.method, orders.payment_status
