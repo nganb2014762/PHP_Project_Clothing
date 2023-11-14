@@ -54,7 +54,7 @@ if (isset($message)) {
 
 <body>
     <!-- Cart -->
-    <section id="cart" class="pt-5">
+    <!-- <section id="cart" class="pt-5">
         <div class="container">
             <div class="title text-center mt-5 pt-5">
                 <h2 class="position-relative d-inline-block">Your Cart</h2>
@@ -152,10 +152,119 @@ if (isset($message)) {
             }
             ?>
         </div>
+    </section> -->
+
+
+    <!-- Cart -->
+    <section id="cart" class="pt-5">
+        <div class="container">
+            <div class="title text-center mt-5 pt-5">
+                <h2 class="position-relative d-inline-block">Your Cart</h2>
+                <hr>
+            </div>
+
+            <?php
+            $total = 0;
+            $sub_total = 0;
+            $select_cart = $pdo->prepare("SELECT * FROM `cart` WHERE user_id = ?");
+            $select_cart->execute([$user_id]);
+            ?>
+            <?php if ($select_cart->rowCount() > 0) { ?>
+                <table class="mt-5 pt-5">
+                    <tr>
+                        <th class="col-2">Product</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Subtotal</th>
+                        <th>Delete</th>
+                    </tr>
+                    <?php
+                    while ($fetch_cart = $select_cart->fetch(PDO::FETCH_ASSOC)) {
+                        $product_subtotal = $fetch_cart['price'] * $fetch_cart['quantity'];
+                        $sub_total += $product_subtotal;
+                        ?>
+                        <tr>
+
+                            <td>
+                                <div class="product-info">
+                                    <img src="admin/uploaded_img/<?= htmlspecialchars($fetch_cart['image']); ?>" alt=""
+                                        class="w-50">
+                                </div>
+                            </td>
+                            <td>
+                                <div class="product-name">
+                                    <div class=" name text-capitalize">
+                                        <?= htmlspecialchars($fetch_cart['name']); ?>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="product-price">
+                                    <div class="price">
+                                        <?= htmlspecialchars($fetch_cart['price']); ?>$
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="quantity">
+                                    <?= htmlspecialchars($fetch_cart['quantity']); ?>
+                                </div>
+                            </td>
+
+                            <td>
+                                <span class="product-price">$
+                                    <?= htmlspecialchars($product_subtotal); ?>
+                                </span>
+                            </td>
+                            <td>
+                                <a class="text-capitalize text-align"
+                                    href="cart.php?delete=<?= htmlspecialchars($fetch_cart['id']); ?>"
+                                    onclick="return confirm('delete this from cart?');">delete</a>
+                            </td>
+                        </tr>
+                        <?php
+                    }
+                    ?>
+                </table>
+
+
+                <div class="cart-total">
+                    <table>
+                        <tr>
+                            <td>Total</td>
+                            <td>$
+                                <?= $sub_total; ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Subtotal</td>
+                            <td><span>$
+                                    <?= $sub_total; ?>
+                                </span></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="checkout-container">
+                    <a class="btn checkout-btn" href="checkout.php">Checkout</a>
+                </div>
+
+                <?php
+            } else {
+                ?>
+                <div class="text-center pt-3">
+                    <h6 class="position-relative d-inline-block">No item found </h6>
+                    <div>
+                        <a type="submit" class="buy-btn text-capitalize text-decoration-none mt-3" name="shop now"
+                            href="shop.php">shop now</a>
+                    </div>
+                </div>
+                <?php
+            }
+            ?>
+        </div>
     </section>
-
-
-
     <?php
     include_once __DIR__ . '../../partials/footer.php';
     ?>
