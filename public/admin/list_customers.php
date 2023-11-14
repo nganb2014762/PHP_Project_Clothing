@@ -81,7 +81,7 @@ if (isset($_GET['delete'])) {
                                     <th scope="col">Phone</th>
                                     <th scope="col">Email</th>
                                     <th scope="col">Role</th>
-                                    <th scope="col">Edit</th>
+                                    
                                     <th scope="col">Delete</th>
                                 </tr>
                             </thead>
@@ -174,7 +174,7 @@ if (isset($_GET['delete'])) {
                                                 </span>
                                             </td>
 
-                                            <td class="pt-4">
+                                            <!-- <td class="pt-4">
                                                 <span>
                                                     <a href="admin_total_accounts.php?edit=<?= $fetch_users['id']; ?>"
                                                         class="edit-btn">edit</a>
@@ -185,6 +185,14 @@ if (isset($_GET['delete'])) {
                                                 <span><a href="admin_total_accounts.php?delete=<?= $fetch_users['id']; ?>"
                                                         onclick="return confirm('delete this user?');"
                                                         class="delete-btn">delete</a></span>
+                                            </td> -->
+
+                                            
+
+                                            <td class="pt-4">
+                                                <a class="btn btn-danger my-1 my-lg-0"
+                                                    data-id="<?= htmlspecialchars($fetch_users['id']); ?>"
+                                                    data-toggle="modal" data-target="#deleteConfirmationModal">delete</a>
                                             </td>
                                         </tr>
                                 </tbody>
