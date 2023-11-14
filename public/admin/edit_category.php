@@ -9,18 +9,13 @@ if (!isset($admin_id)) {
     header('location:login.php');
 }
 ;
-
-
 // Sửa danh mục sản phẩm
 if (isset($_POST['update_category'])) {
 
     $id = $_POST['id'];
     $name = $_POST['name'];
-    $name = filter_var($name, FILTER_SANITIZE_STRING);
-
     $update_category = $pdo->prepare("UPDATE `category` SET name = ? WHERE id = ?");
     $update_category->execute([$name, $id]);
-
     $message[] = 'category updated successfully!';
     header('location:list_category.php');
 }

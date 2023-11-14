@@ -24,9 +24,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_order'])) {
         $update_order_query = $pdo->prepare("UPDATE `orders` SET payment_status = 'cancel', cancel_date = current_timestamp() WHERE id = ?");
         $update_order_query->execute([$order_id]);
 
-        echo "Đơn hàng đã được hủy thành công!";
+        echo htmlspecialchars("Đơn hàng đã được hủy thành công!");
     } else {
-        echo "Không tìm thấy đơn đặt hàng!";
+        echo htmlspecialchars("Không tìm thấy đơn đặt hàng!");
     }
 }
 
@@ -85,16 +85,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_order'])) {
                                 ?>
                                 <tr>
                                     <td>
-                                        <img src="admin/uploaded_img/<?= $product['product_image']; ?>" alt="" class="w-25">
+                                        <img src="admin/uploaded_img/<?= htmlspecialchars($product['product_image']); ?>" alt="" class="w-25">
                                     </td>
                                     <td>
-                                        <?= $product['product_name']; ?>
+                                        <?= htmlspecialchars($product['product_name']); ?>
                                     </td>
                                     <td>
-                                        <?= $product['product_price']; ?>
+                                        <?= htmlspecialchars($product['product_price']); ?>
                                     </td>
                                     <td>
-                                        <?= $product['product_quantity']; ?>
+                                        <?= htmlspecialchars($product['product_quantity']); ?>
                                     </td>
                                 </tr>
                                 <?php
@@ -106,22 +106,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_order'])) {
 
                     <div class="mt-5 col-4 text-start offset-9">
                         <p>Placed On:
-                            <?= $fetch_orders['placed_on']; ?>
+                            <?= htmlspecialchars($fetch_orders['placed_on']); ?>
                         </p>
                         <p>Total Price:
                             $
-                            <?= $fetch_orders['total_price']; ?>
+                            <?= htmlspecialchars($fetch_orders['total_price']); ?>
                         </p>
                         <p>Payment Method:
-                            <?= $fetch_orders['method']; ?>
+                            <?= htmlspecialchars($fetch_orders['method']); ?>
                         </p>
                         <p>Payment Status:
-                            <?= $fetch_orders['payment_status']; ?>
+                            <?= htmlspecialchars($fetch_orders['payment_status']); ?>
                         </p>
                         <td>
                             <!-- Trong HTML của trang hiển thị đơn đặt hàng -->
                             <form action="user_my_order.php" method="POST">
-                                <input type="hidden" name="order_id" value="<?= $fetch_orders['order_id'] ?>">
+                                <input type="hidden" name="order_id" value="<?= htmlspecialchars($fetch_orders['order_id']) ?>">
                                 <button type="submit" name="cancel_order" class="buy-btn">Cancel</button>
                             </form>
                         </td>

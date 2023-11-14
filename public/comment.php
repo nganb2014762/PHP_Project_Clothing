@@ -26,7 +26,6 @@ if (isset($_POST['comment'])) {
   // $number = $_POST['number'];
   // $number = filter_var($number, FILTER_SANITIZE_STRING);
   $comment = $_POST['comment'];
-  $comment = filter_var($comment, FILTER_SANITIZE_STRING);
 
   $select_message = $pdo->prepare("SELECT * FROM `reviews` WHERE user_id = ?");
   $select_message->execute([$user_id]);

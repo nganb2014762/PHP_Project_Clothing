@@ -59,7 +59,7 @@ if (isset($message)) {
                         <img src="admin/uploaded_img/user/<?= htmlspecialchars($fetch_profile['image']); ?>" width="70">
                         <?php
                     } else {
-                        echo '<img src="img/account/user0.png" width="70">';
+                        echo htmlspecialchars('<img src="img/account/user0.png" width="70">');
                     }
                     ;
                     ?>
@@ -68,7 +68,7 @@ if (isset($message)) {
             <div class="card-body row">
                 <div class="col-md-3 col-12">Name</div>
                 <div class="col-md-8 col-10">
-                    <?= $fetch_profile['name']; ?>
+                    <?= htmlspecialchars($fetch_profile['name']); ?>
                 </div>
             </div>
             <div class="card-body row">
@@ -88,7 +88,7 @@ if (isset($message)) {
                     }
 
                     // In ra kết quả
-                    echo $sex_string;
+                    echo htmlspecialchars($sex_string);
                     ?>
                 </div>
 
@@ -96,7 +96,7 @@ if (isset($message)) {
             <div class="card-body row">
                 <div class="col-md-3 col-12">Birthday</div>
                 <div class="col-md-8 col-10">
-                    <?= $fetch_profile['born']; ?>
+                    <?= htmlspecialchars($fetch_profile['born']); ?>
 
                 </div>
 
@@ -106,7 +106,7 @@ if (isset($message)) {
             <div class="card-body row">
                 <div class="col-md-3 col-12">Email</div>
                 <div class="col-md-8 col-10">
-                    <?= $fetch_profile['email']; ?>
+                    <?= htmlspecialchars($fetch_profile['email']); ?>
                 </div>
 
                 <!-- <hr class="mt-2"> -->
@@ -114,7 +114,7 @@ if (isset($message)) {
             <div class="card-body row">
                 <div class="col-md-3 col-12">Phone</div>
                 <div class="col-md-8 col-10">
-                    <?= $fetch_profile['phone']; ?>
+                    <?= htmlspecialchars($fetch_profile['phone']); ?>
                 </div>
 
                 <!-- <hr class="mt-2"> -->
@@ -123,7 +123,7 @@ if (isset($message)) {
             <div class="card-body row">
                 <div class="col-md-3 col-12">Address</div>
                 <div class="col-md-8 col-10">
-                    <?= $fetch_profile['address']; ?>
+                    <?= htmlspecialchars($fetch_profile['address']); ?>
                 </div>
 
                 <!-- <hr class="mt-2"> -->

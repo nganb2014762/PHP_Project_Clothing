@@ -81,7 +81,7 @@ if (isset($_GET['delete'])) {
                                     <th scope="col">Phone</th>
                                     <th scope="col">Email</th>
                                     <th scope="col">Role</th>
-                                    
+
                                     <th scope="col">Delete</th>
                                 </tr>
                             </thead>
@@ -93,7 +93,7 @@ if (isset($_GET['delete'])) {
                                 $select_users->execute();
                                 while ($fetch_users = $select_users->fetch(PDO::FETCH_ASSOC)) {
                                     ?>
-                                    <div style="<?php if ($fetch_users['id'] == $admin_id) {
+                                    <div style="<?php if (htmlspecialchars($fetch_users['id']) == $admin_id) {
                                         echo 'display:none';
                                     }
                                     ;
@@ -110,7 +110,8 @@ if (isset($_GET['delete'])) {
                                                     echo '<div class="col-2"><img src="../img/account/user0.png" width="70" height="70" ></div>';
                                                 } else {
                                                     ?>
-                                                    <div class="col-2"><img src="../img/account/<?= $fetch_users['image']; ?>"
+                                                    <div class="col-2"><img
+                                                            src="../img/account/<?= htmlspecialchars($fetch_users['image']); ?>"
                                                             width="70" height="70"></div>
                                                     <?php
                                                 }
@@ -119,75 +120,57 @@ if (isset($_GET['delete'])) {
 
                                             <td class="pt-4">
                                                 <span>
-                                                    <?= $fetch_users['name']; ?>
+                                                    <?= htmlspecialchars($fetch_users['name']); ?>
                                                 </span>
                                             </td>
 
                                             <td class="pt-4">
                                                 <span>
-                                                    <?php if ($fetch_users['sex'] == '0') {
-                                                        echo 'female';
-                                                    } else {
-                                                        echo 'male';
-                                                    }
+                                                    <?php
+                                                    echo ($fetch_users['sex'] == '0') ? htmlspecialchars('female') : htmlspecialchars('male');
                                                     ?>
                                                 </span>
                                             </td>
 
                                             <td class="pt-4">
                                                 <span>
-                                                    <?= $fetch_users['born']; ?>
+                                                    <?= htmlspecialchars($fetch_users['born']); ?>
                                                 </span>
                                             </td>
 
                                             <td class="pt-4">
                                                 <span>
                                                     <?php if ($fetch_users['address'] == '') {
-                                                        echo 'No address';
+                                                        echo htmlspecialchars('No address');
                                                     }
                                                     ;
                                                     ?>
-                                                    <?= $fetch_users['address']; ?>
+                                                    <?= htmlspecialchars($fetch_users['address']); ?>
                                                 </span>
                                             </td>
 
                                             <td class="pt-4">
                                                 <span>
-                                                    <?= $fetch_users['phone']; ?>
+                                                    <?= htmlspecialchars($fetch_users['phone']); ?>
                                                 </span>
                                             </td>
 
                                             <td class="pt-4">
                                                 <span>
-                                                    <?= $fetch_users['email']; ?>
+                                                    <?= htmlspecialchars($fetch_users['email']); ?>
                                                 </span>
                                             </td>
 
                                             <td class="pt-4">
                                                 <span>
                                                     <?php if ($fetch_users['role'] == '1') {
-                                                        echo 'admin';
+                                                        echo htmlspecialchars('admin');
                                                     } else {
-                                                        echo 'user';
+                                                        echo htmlspecialchars('user');
                                                     }
                                                     ?>
                                                 </span>
                                             </td>
-
-                                            <!-- <td class="pt-4">
-                                                <span>
-                                                    <a href="admin_total_accounts.php?edit=<?= $fetch_users['id']; ?>"
-                                                        class="edit-btn">edit</a>
-                                                </span>
-                                            </td>
-
-                                            <td class="pt-4">
-                                                <span><a href="admin_total_accounts.php?delete=<?= $fetch_users['id']; ?>"
-                                                        onclick="return confirm('delete this user?');"
-                                                        class="delete-btn">delete</a></span>
-                                            </td> -->
-
-                                            
 
                                             <td class="pt-4">
                                                 <a class="btn btn-danger my-1 my-lg-0"

@@ -6,13 +6,9 @@ require_once __DIR__ . '../../partials/connect.php';
 
 if (isset($_POST['add_to_wishlist'])) {
    $pid = $_POST['pid'];
-   $pid = filter_var($pid, FILTER_SANITIZE_STRING);
    $p_name = $_POST['p_name'];
-   $p_name = filter_var($p_name, FILTER_SANITIZE_STRING);
    $p_price = $_POST['p_price'];
-   $p_price = filter_var($p_price, FILTER_SANITIZE_STRING);
    $p_image = $_POST['p_image'];
-   $p_image = filter_var($p_image, FILTER_SANITIZE_STRING);
 
    $check_wishlist_numbers = $pdo->prepare("SELECT * FROM `wishlist` WHERE name = :p_name AND user_id = :user_id");
    $check_wishlist_numbers->execute([':p_name' => $p_name, ':user_id' => $user_id]);
@@ -27,15 +23,10 @@ if (isset($_POST['add_to_wishlist'])) {
 
 if (isset($_POST['add_to_cart'])) {
    $pid = $_POST['pid'];
-   $pid = filter_var($pid, FILTER_SANITIZE_STRING);
    $p_name = $_POST['p_name'];
-   $p_name = filter_var($p_name, FILTER_SANITIZE_STRING);
    $p_price = $_POST['p_price'];
-   $p_price = filter_var($p_price, FILTER_SANITIZE_STRING);
    $p_image = $_POST['p_image'];
-   $p_image = filter_var($p_image, FILTER_SANITIZE_STRING);
    $p_qty = $_POST['p_qty'];
-   $p_qty = filter_var($p_qty, FILTER_SANITIZE_STRING);
 
    $check_cart_numbers = $pdo->prepare("SELECT * FROM `cart` WHERE name = ? AND user_id = ?");
    $check_cart_numbers->execute([$p_name, $user_id]);
@@ -338,7 +329,7 @@ if (isset($_POST['add_to_cart'])) {
 
                <?php
                } else {
-                  echo '<p class="empty">no products added yet!</p>';
+                  echo htmlspecialchars('<p class="empty">no products added yet!</p>');
                }
                ?>
          </div>
@@ -348,7 +339,7 @@ if (isset($_POST['add_to_cart'])) {
    <script>
       function addToWishlist() {
          // Kiểm tra trạng thái đăng nhập ở phía client (trình duyệt)
-         var loggedIn = <?php echo isset($_SESSION['user_id']) ? 'true' : 'false'; ?>;
+         var loggedIn = <?php echo htmlspecialchars(isset($_SESSION['user_id']) ? 'true' : 'false'); ?>;
 
          if (!loggedIn) {
             // Hiển thị thông báo hoặc chuyển hướng đến trang đăng nhập
@@ -363,7 +354,7 @@ if (isset($_POST['add_to_cart'])) {
    <script>
       function addToCart() {
          // Kiểm tra trạng thái đăng nhập ở phía client (trình duyệt)
-         var loggedIn = <?php echo isset($_SESSION['user_id']) ? 'true' : 'false'; ?>;
+         var loggedIn = <?php echo htmlspecialchars(isset($_SESSION['user_id']) ? 'true' : 'false'); ?>;
 
          if (!loggedIn) {
             // Hiển thị thông báo hoặc chuyển hướng đến trang đăng nhập

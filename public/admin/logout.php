@@ -9,5 +9,5 @@ if (isset($_SESSION['admin_id'])) {
     header('Location: login.php'); // Chuyển hướng đến trang đăng nhập admin
     exit();
 } else {
-    echo 'Không đăng xuất thành công!';
+    htmlspecialchars('Không đăng xuất thành công!');
 }

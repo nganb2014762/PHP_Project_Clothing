@@ -9,14 +9,9 @@ require_once __DIR__ . '../../partials/connect.php';
 if (isset($_POST['add_to_wishlist'])) {
 
     $pid = $_POST['pid'];
-    $pid = filter_var($pid, FILTER_SANITIZE_STRING);
     $p_name = $_POST['p_name'];
-    $p_name = filter_var($p_name, FILTER_SANITIZE_STRING);
     $p_price = $_POST['p_price'];
-    $p_price = filter_var($p_price, FILTER_SANITIZE_STRING);
     $p_image = $_POST['p_image'];
-    $p_image = filter_var($p_image, FILTER_SANITIZE_STRING);
-
     $check_wishlist_numbers = $pdo->prepare("SELECT * FROM `wishlist` WHERE name = ? AND user_id = ?");
     $check_wishlist_numbers->execute([$p_name, $user_id]);
 
@@ -38,16 +33,10 @@ if (isset($_POST['add_to_wishlist'])) {
 if (isset($_POST['add_to_cart'])) {
 
     $pid = $_POST['pid'];
-    $pid = filter_var($pid, FILTER_SANITIZE_STRING);
     $p_name = $_POST['p_name'];
-    $p_name = filter_var($p_name, FILTER_SANITIZE_STRING);
     $p_price = $_POST['p_price'];
-    $p_price = filter_var($p_price, FILTER_SANITIZE_STRING);
     $p_image = $_POST['p_image'];
-    $p_image = filter_var($p_image, FILTER_SANITIZE_STRING);
     $p_qty = $_POST['p_qty'];
-    $p_qty = filter_var($p_qty, FILTER_SANITIZE_STRING);
-
     $check_cart_numbers = $pdo->prepare("SELECT * FROM `cart` WHERE name = ? AND user_id = ?");
     $check_cart_numbers->execute([$p_name, $user_id]);
 
@@ -231,10 +220,10 @@ if (isset($message)) {
                                                         class="btn btn-primary">View</a>
                                                 </div>
                                             </div>
-                                            <input type="hidden" name="pid" value="<?= $fetch_products['id']; ?>">
-                                            <input type="hidden" name="p_name" value="<?= $fetch_products['name']; ?>">
-                                            <input type="hidden" name="p_price" value="<?= $fetch_products['price']; ?>">
-                                            <input type="hidden" name="p_image" value="<?= $fetch_products['image']; ?>">
+                                            <input type="hidden" name="pid" value="<?= htmlspecialchars($fetch_products['id']); ?>">
+                                            <input type="hidden" name="p_name" value="<?= htmlspecialchars($fetch_products['name']); ?>">
+                                            <input type="hidden" name="p_price" value="<?= htmlspecialchars($fetch_products['price']); ?>">
+                                            <input type="hidden" name="p_image" value="<?= htmlspecialchars($fetch_products['image']); ?>">
 
                                         </div>
                                     </div>
@@ -255,7 +244,7 @@ if (isset($message)) {
                     </nav>
                     <?php
                     } else {
-                        echo '<p class="empty">no products added yet!</p>';
+                        echo htmlspecialchars('<p class="empty">no products added yet!</p>');
                     }
                     ?>
             </div>
@@ -358,7 +347,7 @@ if (isset($message)) {
     <script>
         function addToWishllist() {
             // Kiểm tra trạng thái đăng nhập ở phía client (trình duyệt)
-            var loggedIn = <?php echo isset($_SESSION['user_id']) ? 'true' : 'false'; ?>;
+            var loggedIn = <?php echo htmlspecialchars(isset($_SESSION['user_id']) ? 'true' : 'false'); ?>;
 
             if (!loggedIn) {
                 // Hiển thị thông báo hoặc chuyển hướng đến trang đăng nhập

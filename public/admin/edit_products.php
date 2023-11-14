@@ -9,24 +9,15 @@ if (!isset($admin_id)) {
    header('location:login.php');
 }
 ;
-
-
 if (isset($_POST['update_product'])) {
 
     $pid = $_POST['pid'];
     $name = $_POST['name'];
-    $name = filter_var($name, FILTER_SANITIZE_STRING);
     $category_id = $_POST['category_id'];
-    $category_id = filter_var($category_id, FILTER_SANITIZE_STRING);
     $quantity = $_POST['quantity'];
-    $quantity = filter_var($quantity, FILTER_SANITIZE_STRING);
     $price = $_POST['price'];
-    $price = filter_var($price, FILTER_SANITIZE_STRING);
     $details = $_POST['details'];
-    $details = filter_var($details, FILTER_SANITIZE_STRING);
-
     $image = $_FILES['image']['name'];
-    $image = filter_var($image, FILTER_SANITIZE_STRING);
     $image_size = $_FILES['image']['size'];
     $image_tmp_name = $_FILES['image']['tmp_name'];
     $image_folder = 'uploaded_img/' . $image;
@@ -56,7 +47,6 @@ if (isset($_POST['update_product'])) {
     }
 }
 ;
-
 
 if (isset($message)) {
     foreach ($message as $message) {
@@ -129,16 +119,16 @@ if (isset($message)) {
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <input class="form-control w-100" type="hidden" name="old_image"
-                                                                value="<?= $fetch_products['image']; ?>">
+                                                                value="<?= htmlspecialchars($fetch_products['image']); ?>">
                                                         </div>
 
                                                         <div class="form-group">
                                                             <input class="form-control" type="hidden" name="pid"
-                                                                value="<?= $fetch_products['id']; ?>">
+                                                                value="<?= htmlspecialchars($fetch_products['id']); ?>">
                                                         </div>
 
                                                         <div class="form-group text-center">
-                                                            <img class="img-fluid" src="uploaded_img/<?= $fetch_products['image']; ?>" alt="" />
+                                                            <img class="img-fluid" src="uploaded_img/<?= htmlspecialchars($fetch_products['image']); ?>" alt="" />
                                                         </div>
 
                                                     </div>
@@ -147,19 +137,19 @@ if (isset($message)) {
                                                         <div class="form-group">
                                                             <input type="text" class="form-control" name="name"
                                                                 placeholder="enter product name" required
-                                                                value="<?= $fetch_products['name']; ?>">
+                                                                value="<?= htmlspecialchars($fetch_products['name']); ?>">
                                                         </div>
 
                                                         <div class="form-group">
                                                             <input class="form-control" type="number" name="quantity"
                                                                 placeholder="enter product quantity" required
-                                                                value="<?= $fetch_products['quantity']; ?>">
+                                                                value="<?= htmlspecialchars($fetch_products['quantity']); ?>">
                                                         </div>
 
                                                         <div class="form-group">
                                                             <input class="form-control" type="text" name="price"
                                                                 placeholder="enter product price" required
-                                                                value="<?= $fetch_products['price']; ?>">
+                                                                value="<?= htmlspecialchars($fetch_products['price']); ?>">
                                                         </div>
                                                         <?php
                                                         $category = $pdo->query("SELECT * FROM category")->fetchAll(PDO::FETCH_ASSOC);
@@ -171,7 +161,7 @@ if (isset($message)) {
                                                                 $selected_category = $fetch_products['category_id']; // Lấy danh mục hiện tại của sản phẩm
                                                                 foreach ($category as $category) {
                                                                     $selected = ($category['id'] == $selected_category) ? 'selected' : ''; // Kiểm tra xem danh mục có phải là danh mục hiện tại không
-                                                                    echo "<option value='{$category['id']}' $selected>{$category['name']}</option>";
+                                                                    echo "<option value='" . htmlspecialchars($category['id']) . "' $selected>" . htmlspecialchars($category['name']) . "</option>";
                                                                 }
                                                                 ?>
                                                             </select>
@@ -180,7 +170,7 @@ if (isset($message)) {
                                                         <div class="form-group">
                                                             <textarea class="form-control" name="details" required
                                                                 placeholder="enter product details" cols="30"
-                                                                rows="5"><?= $fetch_products['details']; ?></textarea>
+                                                                rows="5"><?=  htmlspecialchars($fetch_products['details']); ?></textarea>
                                                         </div>
 
                                                         <div class="form-group">

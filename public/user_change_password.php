@@ -13,10 +13,7 @@ if(!isset($user_id)){
 if (isset($_POST['update_password'])) {
 
    $name = $_POST['name'];
-   $name = filter_var($name, FILTER_SANITIZE_STRING);
    $email = $_POST['email'];
-   $email = filter_var($email, FILTER_SANITIZE_STRING);
-
    $update_password = $pdo->prepare("UPDATE `user` SET name = ?, email = ? WHERE id = ?");
    $update_password->execute([$name, $email, $user_id]);
 
@@ -65,17 +62,17 @@ if (isset($message)) {
             <form id="product-form" action="" method="POST" enctype="multipart/form-data"
                class="text_center form-horizontal">
                <div class="form-group p-2">
-                  <input class="form-control" type="text" name="name" value="<?= $fetch_profile['name']; ?>"
+                  <input class="form-control" type="text" name="name" value="<?= htmlspecialchars($fetch_profile['name']); ?>"
                      placeholder="update username" required class="box">
                </div>
 
                <div class="form-group p-2">
-                  <input class="form-control" type="email" name="email" value="<?= $fetch_profile['email']; ?>"
+                  <input class="form-control" type="email" name="email" value="<?= htmlspecialchars($fetch_profile['email']); ?>"
                      placeholder="update email" required class="box">
                </div>
 
                <div class="form-group p-2">
-                  <input type="hidden" name="old_pass" value="<?= $fetch_profile['password']; ?>">
+                  <input type="hidden" name="old_pass" value="<?= htmlspecialchars($fetch_profile['password']); ?>">
                   <input class="form-control" type="password" name="update_pass" placeholder="enter previous password"
                      class="box">
                </div>

@@ -145,7 +145,7 @@ if (isset($_GET['delete'])) {
                                             <?php
                                             }
                                         } else {
-                                            echo '<p class="empty">you have no messages!</p>';
+                                            echo htmlspecialchars('<p class="empty">you have no messages!</p>');
                                         }
                                         ?>
                                 </table>
