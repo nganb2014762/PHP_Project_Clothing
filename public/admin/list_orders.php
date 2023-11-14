@@ -209,8 +209,8 @@ if (isset($message)) {
                 </div>
                 <div class="modal-body">
                     <p>Bạn có chắc chắn muốn xóa dòng này?</p>
-                    <p><strong>Check Date:</strong> <span id="checkDateInfo"></span></p>
-                    <p><strong>Cancel Date:</strong> <span id="cancelDateInfo"></span></p>
+                    <!-- <p><strong>Check Date:</strong> <span id="checkDateInfo"></span></p>
+                    <p><strong>Cancel Date:</strong> <span id="cancelDateInfo"></span></p> -->
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
