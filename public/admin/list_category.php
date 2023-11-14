@@ -14,8 +14,6 @@ if (!isset($admin_id)) {
 if (isset($_POST['add_category'])) {
 
     $name = $_POST['name'];
-    $name = filter_var($name, FILTER_SANITIZE_STRING);
-
     $select_categorys = $pdo->prepare("SELECT * FROM `category` WHERE name = ?");
     $select_categorys->execute([$name]);
 

@@ -14,26 +14,15 @@ $message = [];
 if (isset($_POST['update_profile'])) {
 
     $name = $_POST['name'];
-    $name = filter_var($name, FILTER_SANITIZE_STRING);
     $sex = $_POST['sex'];
-    $sex = filter_var($sex, FILTER_SANITIZE_STRING);
     $email = $_POST['email'];
-    $email = filter_var($email, FILTER_SANITIZE_STRING);
     $phone = $_POST['phone'];
-    $phone = filter_var($phone, FILTER_SANITIZE_STRING);
     $address = $_POST['address'];
-    $address = filter_var($born, FILTER_SANITIZE_STRING);
-    $born = $_POST['address'];
-    $born = filter_var($born, FILTER_SANITIZE_STRING);
-
+    $born = $_POST['born'];
     $update_profile = $pdo->prepare("UPDATE `user` SET name = ?, email = ? WHERE id = ?");
     $update_profile->execute([$name, $sex, $phone, $address, $born, $email, $user_id]);
 
 }
-
-
-
-
 if (isset($message)) {
     foreach ($message as $message) {
         // echo '<script>alert(" ' . $message . ' ");</script>';
@@ -114,7 +103,7 @@ if (isset($message)) {
                                     }
 
                                     // In ra kết quả
-                                    echo $sex_string;
+                                    echo htmlspecialchars($sex_string);
                                     ?>
                                 </div>
 
@@ -122,7 +111,7 @@ if (isset($message)) {
                             <div class="card-body row">
                                 <div class="col-md-3 col-12">Birthday</div>
                                 <div class="col-md-8 col-10">
-                                    <?= $fetch_profile['born']; ?>
+                                    <?= htmlspecialchars($fetch_profile['born']); ?>
 
                                 </div>
 
@@ -132,7 +121,7 @@ if (isset($message)) {
                             <div class="card-body row">
                                 <div class="col-md-3 col-12">Email</div>
                                 <div class="col-md-8 col-10">
-                                    <?= $fetch_profile['email']; ?>
+                                    <?= htmlspecialchars($fetch_profile['email']); ?>
                                 </div>
 
                                 <!-- <hr class="mt-2"> -->
@@ -140,7 +129,7 @@ if (isset($message)) {
                             <div class="card-body row">
                                 <div class="col-md-3 col-12">Phone</div>
                                 <div class="col-md-8 col-10">
-                                    <?= $fetch_profile['phone']; ?>
+                                    <?= htmlspecialchars($fetch_profile['phone']); ?>
                                 </div>
 
                                 <!-- <hr class="mt-2"> -->
@@ -149,7 +138,7 @@ if (isset($message)) {
                             <div class="card-body row">
                                 <div class="col-md-3 col-12">Address</div>
                                 <div class="col-md-8 col-10">
-                                    <?= $fetch_profile['address']; ?>
+                                    <?= htmlspecialchars($fetch_profile['address']); ?>
                                 </div>
 
                                 <!-- <hr class="mt-2"> -->

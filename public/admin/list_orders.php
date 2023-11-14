@@ -61,8 +61,7 @@ if (isset($message)) {
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Danh sách đơn hàng</h1>
-                        <a href="status_orders.php" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-                            <i class="fa-solid fa-pen-to-square"></i> Trạng thái đơn hàng</a>
+                        
                     </div>
 
                     <div class="table-responsive">
@@ -162,7 +161,7 @@ if (isset($message)) {
                                         <?php
                                     }
                                 } else {
-                                    echo "<tr><td colspan='15'>Không có dữ liệu.</td></tr>";
+                                    echo htmlspecialchars("<tr><td colspan='15'>Không có dữ liệu.</td></tr>");
                                 }
 
                                 ?>

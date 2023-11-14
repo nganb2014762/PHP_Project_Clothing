@@ -99,12 +99,12 @@ if (isset($message)) {
 
                                         <div class="form-group">
                                             <input class="form-control" type="hidden" name="update_id"
-                                                value="<?= $fetch_orders['id']; ?>">
+                                            value=<?= htmlspecialchars($fetch_orders['id']); ?>>
                                         </div>
                                         <div class="form-group">
                                                     <select name="payment_status" class="form-control" required>
                                                         <option selected disabled>
-                                                            <?= $fetch_orders['payment_status']; ?>
+                                                            <?= htmlspecialchars($fetch_orders['payment_status']); ?>
                                                         </option>
                                                         <option value="pending">pending</option>
                                                         <option value="cancel">cancel</option>
@@ -117,19 +117,19 @@ if (isset($message)) {
                                         <div class="form-group">
                                             <label for="check_date">Check Date:</label>
                                             <input type="date" class="form-control" id="check_date" name="check_date"
-                                                value="<?php echo $fetch_orders['check_date']; ?>">
+                                                value="<?php echo htmlspecialchars( $fetch_orders['check_date']); ?>">
                                         </div>
 
                                         <div class="form-group">
                                             <label for="cancel_date">Cancel Date:</label>
                                             <input type="date" class="form-control" id="cancel_date" name="cancel_date"
-                                                value="<?php echo $fetch_orders['cancel_date']; ?>">
+                                                value="<?php echo htmlspecialchars($fetch_orders['cancel_date']); ?>">
                                         </div>
 
                                         <div class="form-group">
                                             <label for="received_date_date">Received Date:</label>
                                             <input type="date" class="form-control" id="received_date_date" name="received_date"
-                                                value="<?php echo $fetch_orders['received_date']; ?>">
+                                                value="<?php echo htmlspecialchars($fetch_orders['received_date']); ?>">
                                         </div>
 
                                         <div class="form-group">

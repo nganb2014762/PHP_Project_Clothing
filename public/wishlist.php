@@ -52,7 +52,7 @@ if (isset($message)) {
                                     <div class="card shadow rounded h-100">
                                         <div class="collection-img position-relative">
                                             <img class="rounded-top p-0 card-img-top"
-                                                src="admin/uploaded_img/<?= $fetch_products['image']; ?>" alt="">
+                                                src="admin/uploaded_img/<?= htmlspecialchars($fetch_products['image']); ?>" alt="">
                                         </div>
 
                                         <div class="card-body">
@@ -81,7 +81,7 @@ if (isset($message)) {
                                                 </div>
                                             </div>                                            
                                             
-                                            <input type="hidden" name="id" value="<?= $fetch_products['id']; ?>">
+                                            <input type="hidden" name="id" value="<?= htmlspecialchars($fetch_products['id']); ?>">
                                         </div>
                                     </div>
                                 </div>
@@ -89,7 +89,7 @@ if (isset($message)) {
                             <?php
                         }
                     } else {
-                        echo '<p class="empty">No products added yet!</p>';
+                        echo htmlspecialchars('<p class="empty">No products added yet!</p>');
                     }
                     ?>
                 </div>
@@ -100,7 +100,7 @@ if (isset($message)) {
     <script>
         function addToWishlist() {
             // Check the login status on the client side (browser)
-            var loggedIn = <?php echo isset($_SESSION['user_id']) ? 'true' : 'false'; ?>;
+            var loggedIn = <?php echo htmlspecialchars(isset($_SESSION['user_id']) ? 'true' : 'false'); ?>;
 
             if (!loggedIn) {
                 // Display a message or redirect to the login page

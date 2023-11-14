@@ -13,19 +13,13 @@ if (!isset($admin_id)) {
 
 if (isset($_POST['add_product'])) {
 
-    $name = $_POST['name'];
-    $name = filter_var($name, FILTER_SANITIZE_STRING);
-    $price = $_POST['price'];
-    $price = filter_var($price, FILTER_SANITIZE_STRING);
-    $category_id = $_POST['category_id'];
-    $category_id = filter_var($category_id, FILTER_SANITIZE_STRING);
-    $quantity = $_POST['quantity'];
-    $quantity = filter_var($quantity, FILTER_SANITIZE_STRING);
-    $details = $_POST['details'];
-    $details = filter_var($details, FILTER_SANITIZE_STRING);
+    $name = $_POST['name'];    
+    $price = $_POST['price'];    
+    $category_id = $_POST['category_id'];    
+    $quantity = $_POST['quantity'];  
+    $details = $_POST['details'];    
 
-    $image = $_FILES['image']['name'];
-    $image = filter_var($image, FILTER_SANITIZE_STRING);
+    $image = $_FILES['image']['name'];    
     $image_size = $_FILES['image']['size'];
     $image_tmp_name = $_FILES['image']['tmp_name'];
     $image_folder = 'uploaded_img/' . $image;
@@ -130,7 +124,7 @@ if (isset($message)) {
                                                 <?php
                                                 $category = $pdo->query("SELECT * FROM category")->fetchAll(PDO::FETCH_ASSOC);
                                                 foreach ($category as $category) {
-                                                    echo "<option value='{$category['id']}'>{$category['name']}</option>";
+                                                    echo htmlspecialchars("<option value='{$category['id']}'>{$category['name']}</option>");
                                                 }
                                                 ?>
                                             </select>

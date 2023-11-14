@@ -26,7 +26,6 @@ if (isset($_POST['send'])) {
     // $number = $_POST['number'];
     // $number = filter_var($number, FILTER_SANITIZE_STRING);
     $msg = $_POST['msg'];
-    $msg = filter_var($msg, FILTER_SANITIZE_STRING);
 
     $select_message = $pdo->prepare("SELECT * FROM `message` WHERE  user_id = ?");
     $select_message->execute([$msg]);

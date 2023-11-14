@@ -71,7 +71,7 @@ if (isset($_POST['update_profile'])) {
                     <?php
                     if (isset($message) && !empty($message)) {
                         foreach ($message as $message) {
-                            echo '<div class="message">' . $message . '</div>';
+                            echo '<div class="message">' . htmlspecialchars($message) . '</div>';
                         }
                     }
                     ?>
@@ -91,7 +91,7 @@ if (isset($_POST['update_profile'])) {
                                     <div class="col-md-3 col-12">Name</div>
                                     <div class="col-md-8 col-10">
                                         <input class="form-control" type="text" name="name"
-                                            value="<?= $fetch_profile['name']; ?>" placeholder="update username">
+                                            value="<?=  htmlspecialchars($fetch_profile['name']); ?>" placeholder="update username">
 
                                     </div>
 
@@ -114,7 +114,7 @@ if (isset($_POST['update_profile'])) {
                                         }
 
                                         // In ra kết quả
-                                        echo $sex_string;
+                                        echo htmlspecialchars($sex_string);
                                         ?>" placeholder="update my sex">
                                     </div>
 
@@ -123,7 +123,7 @@ if (isset($_POST['update_profile'])) {
                                     <div class="col-md-3 col-12">Birthday</div>
                                     <div class="col-md-8 col-10">
                                         <input class="form-control" type="text" name="born"
-                                            value="<?= $fetch_profile['born']; ?>" placeholder="update my birthday">
+                                            value="<?=  htmlspecialchars($fetch_profile['born']); ?>" placeholder="update my birthday">
 
                                     </div>
 
@@ -134,7 +134,7 @@ if (isset($_POST['update_profile'])) {
                                     <div class="col-md-3 col-12">Email</div>
                                     <div class="col-md-8 col-10">
                                         <input class="form-control" type="text" name="email"
-                                            value="<?= $fetch_profile['email']; ?>" placeholder="update my email">
+                                            value="<?= htmlspecialchars($fetch_profile['email']); ?>" placeholder="update my email">
                                     </div>
 
                                     <!-- <hr class="mt-2"> -->
@@ -143,7 +143,7 @@ if (isset($_POST['update_profile'])) {
                                     <div class="col-md-3 col-12">Phone</div>
                                     <div class="col-md-8 col-10">
                                         <input class="form-control" type="text" name="phone"
-                                            value="<?= $fetch_profile['phone']; ?>" placeholder="update my phone">
+                                            value="<?= htmlspecialchars($fetch_profile['phone']); ?>" placeholder="update my phone">
                                     </div>
 
                                     <!-- <hr class="mt-2"> -->
@@ -153,7 +153,7 @@ if (isset($_POST['update_profile'])) {
                                     <div class="col-md-3 col-12">Address</div>
                                     <div class="col-md-8 col-10">
                                         <input class="form-control" type="text" name="address"
-                                            value="<?= $fetch_profile['address']; ?>" placeholder="update address">
+                                            value="<?= htmlspecialchars($fetch_profile['address']); ?>" placeholder="update address">
                                     </div>
 
                                     <!-- <hr class="mt-2"> -->

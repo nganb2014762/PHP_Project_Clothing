@@ -98,7 +98,7 @@ if (isset($message)) {
                                     width="70">
                                 <?php
                             } else {
-                                echo '<img src="img/account/user0.png" width="70">';
+                                echo htmlspecialchars('<img src="img/account/user0.png" width="70">');
                             }
                             ;
                             ?>
@@ -137,7 +137,7 @@ if (isset($message)) {
                         }
 
                         // In ra kết quả
-                        echo $sex_string;
+                        echo htmlspecialchars($sex_string);
                         ?>" placeholder="update my sex">
                     </div>
 

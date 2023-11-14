@@ -69,7 +69,7 @@ if (!isset($admin_id)) {
                                             ;
                                             ?>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">$
-                                                <?= $total_completed; ?>
+                                                <?= htmlspecialchars($total_completed); ?>
                                             </div>
                                         </div>
                                         <div class="col-auto">
@@ -98,7 +98,7 @@ if (!isset($admin_id)) {
                                             ;
                                             ?>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">$
-                                                <?= $total_pendings; ?>
+                                                <?= htmlspecialchars($total_pendings); ?>
                                             </div>
                                         </div>
                                         <div class="col-auto">
@@ -125,7 +125,7 @@ if (!isset($admin_id)) {
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col-auto">
                                                     <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
-                                                        <?= $number_of_products; ?>
+                                                        <?= htmlspecialchars($number_of_products); ?>
                                                     </div>
                                                 </div>
                                             </div>
@@ -154,7 +154,7 @@ if (!isset($admin_id)) {
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col-auto">
                                                     <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
-                                                        <?= $number_of_orders; ?>
+                                                        <?= htmlspecialchars($number_of_orders); ?>
                                                     </div>
                                                 </div>
                                             </div>
@@ -181,7 +181,7 @@ if (!isset($admin_id)) {
                                             $number_of_completed_orders = $select_orders->rowCount();
                                             ?>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                <?= $number_of_completed_orders; ?>
+                                                <?= htmlspecialchars($number_of_completed_orders); ?>
                                             </div>
                                         </div>
                                         <div class="col-auto">
@@ -206,7 +206,7 @@ if (!isset($admin_id)) {
                                             $number_of_pending_orders = $select_orders->rowCount();
                                             ?>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                <?= $number_of_pending_orders; ?>
+                                                <?= htmlspecialchars($number_of_pending_orders); ?>
                                             </div>
                                         </div>
                                         <div class="col-auto">
@@ -234,7 +234,7 @@ if (!isset($admin_id)) {
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col-auto">
                                                     <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
-                                                        <?= $number_of_users; ?>
+                                                        <?= htmlspecialchars($number_of_users); ?>
                                                     </div>
                                                 </div>
                                             </div>
@@ -261,7 +261,7 @@ if (!isset($admin_id)) {
                                             $number_of_messages = $select_messages->rowCount();
                                             ?>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                <?= $number_of_messages; ?>
+                                                <?= htmlspecialchars($number_of_messages); ?>
                                             </div>
                                         </div>
                                         <div class="col-auto">

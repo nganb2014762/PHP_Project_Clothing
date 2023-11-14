@@ -9,7 +9,7 @@ require_once __DIR__ . '../../partials/connect.php';
 $user_id = $_SESSION['user_id'];
 
 if (!isset($user_id)) {
-    header('location:login.php');
+  header('location:login.php');
 }
 ;
 
@@ -27,30 +27,34 @@ if ($fetch_profile) {
   $user_address = isset($fetch_profile['address']) ? $fetch_profile['address'] : '';
 } else {
   // Xử lý trường hợp không tìm thấy thông tin hồ sơ người dùng
-  echo "Không thể tìm thấy thông tin hồ sơ người dùng.";
+  echo htmlspecialchars("Không thể tìm thấy thông tin hồ sơ người dùng.");
 }
 
 
 if (isset($_POST['order'])) {
 
   $method = $_POST['method'];
-  $method = filter_var($method, FILTER_SANITIZE_STRING);
-
-  $address = filter_var($address, FILTER_SANITIZE_STRING);
-  
+  $address = $_POST['address'];
   $placed_on = date('Y-m-d', strtotime('now'));
 
-
-  $cart_total = 0;
-  $cart_products[] = '';
+  $cart_grand_total = 0;
+  $orderDetails = array(); // Khởi tạo mảng để lưu thông tin sản phẩm trong giỏ hàng
 
   $cart_query = $pdo->prepare("SELECT * FROM `cart` WHERE user_id = ?");
   $cart_query->execute([$user_id]);
+
   if ($cart_query->rowCount() > 0) {
-    while ($cart_item = $cart_query->fetch(PDO::FETCH_ASSOC)) {
-      $cart_products[] = $cart_item['name'] . ' ( ' . $cart_item['quantity'] . ' )';
-      $sub_total = ($cart_item['price'] * $cart_item['quantity']);
-      $cart_total += $sub_total;
+    while ($fetch_cart_items = $cart_query->fetch(PDO::FETCH_ASSOC)) {
+      // Lấy product id và quantity
+      $pid = $fetch_cart_items['pid'];
+      $quantity = $fetch_cart_items['quantity'];
+
+      // Lưu thông tin sản phẩm vào mảng
+      $orderDetails[] = array('pid' => $pid, 'quantity' => $quantity);
+
+      // Cập nhật tổng giá trị đơn hàng
+      $cart_total_price = ($fetch_cart_items['price'] * $quantity);
+      $cart_grand_total += $cart_total_price;
     }
     ;
   }
@@ -108,19 +112,73 @@ if (isset($_POST['order'])) {
     }
   } catch (PDOException $e) {
     $message[] = 'Failed to place order. Error: ' . $e->getMessage();
+
   }
+
+  $total_products = implode(',', array_column($orderDetails, 'pid'));
+  
+  // $order_id = null;
+    try {
+      // Cập nhật địa chỉ trong bảng `user`
+      $update_user_address = $pdo->prepare("UPDATE `user` SET address = ? WHERE id = ?");
+      $update_user_address->execute([$address, $user_id]);
+      // Thêm đơn hàng vào bảng orders
+      $insert_order = $pdo->prepare("INSERT INTO `orders`(user_id, method, total_products, total_price, placed_on) VALUES(?,?,?,?,?)");
+      $insert_order->execute([$user_id, $method, $total_products, $cart_grand_total, $placed_on]);
+      // Lấy id của đơn hàng vừa chèn
+      $order_id = $pdo->lastInsertId();
+
+      // Giảm số lượng sản phẩm trong bảng product
+      foreach ($orderDetails as $orderDetail) {
+        $product_id = $orderDetail['pid'];
+        $quantity = $orderDetail['quantity'];
+
+        // Lấy số lượng sản phẩm hiện tại từ bảng product
+        $product_query = $pdo->prepare("SELECT quantity FROM `products` WHERE id = ?");
+        $product_query->execute([$product_id]);
+        $current_quantity = $product_query->fetchColumn();
+
+        // Kiểm tra số lượng sản phẩm đủ để giảm không
+        if ($current_quantity >= $quantity) {
+          // Giảm số lượng sản phẩm trong bảng product
+          $update_product_quantity = $pdo->prepare("UPDATE `products` SET quantity = ? WHERE id = ?");
+          $update_product_quantity->execute([$current_quantity - $quantity, $product_id]);
+          $insert_orders_details = $pdo->prepare("INSERT INTO orders_details (order_id, pid, quantity) VALUES (?, ?, ?)");
+          $insert_orders_details->execute([$order_id, $orderDetail['pid'], $orderDetail['quantity']]);
+          // Xóa các sản phẩm trong giỏ hàng
+          $delete_cart = $pdo->prepare("DELETE FROM `cart` WHERE user_id = ?");
+          $delete_cart->execute([$user_id]);
+
+          $message[] = 'Order placed successfully!';
+        } else {
+          // Xử lý trường hợp không đủ sản phẩm trong kho
+          $message[] = "Bạn đã đặt số lượng vượt quá số lượng sản phẩm trong kho.Số lượng sản phẩm trong kho còn $current_quantity";
+          $delete_order = $pdo->prepare("DELETE FROM `orders` WHERE id = ?");
+          $delete_order->execute([$user_id]);
+        }
+        // Kiểm tra xem cập nhật đã thành công hay không và hiển thị thông báo
+        if ($update_user_address->rowCount() > 0) {
+          echo htmlspecialchars("Địa chỉ đã được cập nhật thành công!");
+        } else {
+          echo htmlspecialchars("Có lỗi xảy ra khi cập nhật địa chỉ.");
+        }
+      }
+    } catch (PDOException $e) {
+      $message[] = 'Failed to place order. Error: ' . $e->getMessage();
+    }
 }
 ;
 
-// if (isset($message)) {
-//   foreach ($message as $message) {
-//     // echo '<script>alert(" ' . $message . ' ");</script>';
-//     echo '<div class="alert alert-warning alert-dismissible fade show col-4 offset-4" role="alert" tabindex="-1">
-//               ' . htmlspecialchars($message) . '
-//               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-//             </div>';
-//   }
-// }
+
+if (isset($message)) {
+  foreach ($message as $message) {
+    // echo '<script>alert(" ' . $message . ' ");</script>';
+    echo '<div class="alert alert-warning alert-dismissible fade show col-4 offset-4" role="alert" tabindex="-1">
+              ' . htmlspecialchars($message) . '
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>';
+  }
+}
 ?>
 
 <title>Checkout</title>
@@ -179,7 +237,7 @@ if (isset($_POST['order'])) {
             <?php
           }
         } else {
-          echo '<p class="empty"> Your bill is  empty!</p>';
+          echo htmlspecialchars('<p class="empty"> Your bill is  empty!</p>');
         }
         ?>
 
@@ -188,11 +246,12 @@ if (isset($_POST['order'])) {
           <strong>
             <?= htmlspecialchars($cart_grand_total); ?>$
           </strong>
-
-          </span>
         </li>
-        <button class="w-100 btn btn-sm mt-3" name="continue_to_order"
-              type="submit"><a href="shop.php" class="text-decoration-none text-dark">Continue to order</a>
+        <button class="w-100 btn btn-sm mt-3" name="go_to_shop" type="submit"><a href="shop.php"
+            class="text-decoration-none text-dark">Go to shop</a>
+        </button>
+        <button class="w-100 btn btn-sm mt-3" name="Go to cart" type="submit"><a href="cart.php"
+            class="text-decoration-none text-dark">Go to Cart</a>
         </button>
       </div>
 
@@ -202,10 +261,8 @@ if (isset($_POST['order'])) {
           <div class="row g-3">
             <div class="col-sm-6">
               <label class="form-label">Your name</label>
-              <div class="form-control" name="name">
-                <?= isset($fetch_profile['name']) ? htmlspecialchars($fetch_profile['name']) : ''; ?>
-
-              </div>
+              <input type="text" class="form-control" name="name"
+                value="<?= isset($fetch_profile['name']) ? htmlspecialchars($fetch_profile['name']) : ''; ?>" required>
               <div class="invalid-feedback">
                 Valid first name is required.
               </div>
@@ -213,22 +270,17 @@ if (isset($_POST['order'])) {
 
             <div class="col-sm-6">
               <label class="form-label">Phone</label>
-              <div class="form-control" name="phone">
-                <?= htmlspecialchars($fetch_profile['phone']); ?>
-
-              </div>
+              <input type="text" class="form-control" name="phone"
+                value="<?= htmlspecialchars($fetch_profile['phone']); ?>" required>
               <div class="invalid-feedback">
                 Valid last name is required.
               </div>
             </div>
 
-
             <div class="col-12">
-              <label for="email" class="form-label">Email </label>
-              <div class="form-control" name="email">
-                <?= htmlspecialchars($fetch_profile['email']); ?>
-
-              </div>
+              <label for="email" class="form-label">Email</label>
+              <input type="email" class="form-control" name="email"
+                value="<?= htmlspecialchars($fetch_profile['email']); ?>" required>
               <div class="invalid-feedback">
                 Please enter a valid email address for shipping updates.
               </div>
@@ -236,44 +288,26 @@ if (isset($_POST['order'])) {
 
             <div class="col-12">
               <label for="address" class="form-label">Address</label>
-              <div class="form-control" name="address">
-                <?php
-                if (!empty($fetch_profile['address'])) {
-                  echo htmlspecialchars($fetch_profile['address']);
-                } else {
-                  echo 'Please enter your shipping address. ';
-                  echo '<a style="text-decoration: none;" href="user_edit_account.php">Change your information? Click here</a> ';
-                }
-                ?>
-              </div>
+              <textarea class="form-control" name="address" required><?php
+              echo htmlspecialchars($fetch_profile['address']);
+              ?></textarea>
               <div class="invalid-feedback">
                 Please enter your shipping address.
               </div>
             </div>
-
-            <hr class="my-4">
-
-
-
-
-            <hr class="my-4">
-
-            <h4 class="mb-3">Payment</h4>
+            <h4 class="text-primary">Payment</h4>
             <select name="method" class="form-control" required>
               <option value="cash on delivery">Cash on delivery</option>
               <option value="credit card">Credit card</option>
               <option value="MoMo">MoMo</option>
               <option value="Zalo Pay">Zalo Pay</option>
             </select>
-            <button class="w-100 btn btn-primary btn-lg  <?= ($cart_grand_total > 1) ? '' : 'disabled'; ?>" name="order"
-              type="submit">Continue to order </button>
-
+            <button class="w-100 btn btn-primary btn-lg mt-3 <?= ($cart_grand_total > 1) ? '' : 'disabled'; ?>"
+              name="order" type="submit">Accept Payment</button>
         </form>
       </div>
     </div>
   </main>
-
 </div>
 <?php
-
 include_once __DIR__ . '../../partials/footer.php';

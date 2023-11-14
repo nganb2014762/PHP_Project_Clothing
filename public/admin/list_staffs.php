@@ -110,7 +110,7 @@ if (isset($_GET['delete'])) {
                                                     echo '<div class="col-2"><img src="../img/account/user0.png" width="70" height="70" ></div>';
                                                 } else {
                                                     ?>
-                                                    <div class="col-2"><img src="../img/account/<?= $fetch_users['image']; ?>"
+                                                    <div class="col-2"><img src="../img/account/<?= htmlspecialchars($fetch_users['image']); ?>"
                                                             width="70" height="70"></div>
                                                     <?php
                                                 }
@@ -119,16 +119,16 @@ if (isset($_GET['delete'])) {
 
                                             <td class="pt-4">
                                                 <span>
-                                                    <?= $fetch_users['name']; ?>
+                                                    <?= htmlspecialchars($fetch_users['name']); ?>
                                                 </span>
                                             </td>
 
                                             <td class="pt-4">
                                                 <span>
                                                     <?php if ($fetch_users['sex'] == '0') {
-                                                        echo 'female';
+                                                        echo htmlspecialchars('female');
                                                     } else {
-                                                        echo 'male';
+                                                        echo htmlspecialchars('male');
                                                     }
                                                     ?>
                                                 </span>
@@ -143,51 +143,36 @@ if (isset($_GET['delete'])) {
                                             <td class="pt-4">
                                                 <span>
                                                     <?php if ($fetch_users['address'] == '') {
-                                                        echo 'No address';
+                                                        echo htmlspecialchars('No address');
                                                     }
                                                     ;
                                                     ?>
-                                                    <?= $fetch_users['address']; ?>
+                                                    <?= htmlspecialchars($fetch_users['address']); ?>
                                                 </span>
                                             </td>
 
                                             <td class="pt-4">
                                                 <span>
-                                                    <?= $fetch_users['phone']; ?>
+                                                    <?= htmlspecialchars($fetch_users['phone']); ?>
                                                 </span>
                                             </td>
 
                                             <td class="pt-4">
                                                 <span>
-                                                    <?= $fetch_users['email']; ?>
+                                                    <?= htmlspecialchars($fetch_users['email']); ?>
                                                 </span>
                                             </td>
 
                                             <td class="pt-4">
                                                 <span>
                                                     <?php if ($fetch_users['role'] == '1') {
-                                                        echo 'admin';
+                                                        echo htmlspecialchars('admin');
                                                     } else {
-                                                        echo 'user';
+                                                        echo htmlspecialchars('user');
                                                     }
                                                     ?>
                                                 </span>
-                                            </td>
-
-                                            <!-- <td class="pt-4">
-                                                <span>
-                                                    <a href="liststaff?edit=<?= $fetch_users['id']; ?>"
-                                                        class="edit-btn">edit</a>
-                                                </span>
-                                            </td>
-
-                                            <td class="pt-4">
-                                                <span><a href="liststaff?delete=<?= $fetch_users['id']; ?>"
-                                                        onclick="return confirm('delete this user?');"
-                                                        class="delete-btn">delete</a></span>
-                                            </td> -->
-
-                                            
+                                            </td>                                           
 
                                             <td class="pt-4">
                                                 <a class="btn btn-danger my-1 my-lg-0"
