@@ -251,7 +251,7 @@ if (isset($_GET['delete'])) {
     </div>
 
     <!-- Delete Modal -->
-    <!-- <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" role="dialog"
+    <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" role="dialog"
         aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -270,9 +270,9 @@ if (isset($_GET['delete'])) {
                 </div>
             </div>
         </div>
-    </div> -->
+    </div>
 
-    <!-- <script>
+    <script>
         $(document).ready(function () {
             $('button.btn-danger').on('click', function () {
                 var id = $(this).data('id');
@@ -280,6 +280,7 @@ if (isset($_GET['delete'])) {
                 $('#deleteLink').attr('href', deleteLink);
             });
         });
-    </script> -->
+    </script>
+    
     <?php
     include_once __DIR__ . '../../../partials/admin_footer.php';
