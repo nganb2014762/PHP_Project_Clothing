@@ -163,7 +163,7 @@ if (isset($message)) {
                     <?php
                 }
             } else {
-                echo htmlspecialchars('<p class="empty">no result found!</p>');
+                echo '<p class="empty">no result found!</p>';
             }
         }
         ;

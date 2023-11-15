@@ -288,8 +288,7 @@ if (isset($message)) {
 
             <div class="col-12">
               <label for="address" class="form-label">Address</label>
-              <textarea class="form-control" name="address" required><?php
-              echo htmlspecialchars($fetch_profile['address']);
+              <textarea class="form-control" name="address" required><?= htmlspecialchars($fetch_profile['address']);
               ?></textarea>
               <div class="invalid-feedback">
                 Please enter your shipping address.
