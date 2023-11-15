@@ -130,10 +130,11 @@ if (isset($message)) {
                             <?= htmlspecialchars($fetch_orders['payment_status']); ?>
                         </p>
                         <td>
-                            <!-- Trong HTML của trang hiển thị đơn đặt hàng -->
                             <form action="user_my_order.php" method="POST">
                                 <input type="hidden" name="order_id" value="<?= htmlspecialchars($fetch_orders['order_id']) ?>">
-                                <button type="submit" name="cancel_order" class="buy-btn">Cancel</button>
+                                <button type="submit" name="cancel_order"
+                                    class="buy-btn btn btn-primary mt-3 <?= ($fetch_orders['payment_status'] != 'pending') ? 'disabled' : ''; ?>"
+                                    <?= ($fetch_orders['payment_status'] != 'pending') ? 'disabled' : ''; ?>>Cancel</button>
                             </form>
                         </td>
                     </div>

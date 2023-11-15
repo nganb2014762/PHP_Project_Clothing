@@ -73,22 +73,6 @@ if (isset($message)) {
 ;
 ?>
 <title>Fashion</title>
-<style>
-    #myBtn {
-        display: none;
-        /* Ẩn nút khi trang đầu tiên được tải */
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        font-size: 20px;
-        background-color: white;
-        color: black;
-        border: none;
-        border-radius: 50%;
-        padding: px;
-        cursor: pointer;
-    }
-</style>
 </head>
 
 <body>

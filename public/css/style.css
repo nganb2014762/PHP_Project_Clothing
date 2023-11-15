@@ -52,10 +52,11 @@ body {
 }
 
 .alert.alert-warning.alert-dismissible.fade.show.col-4.offset-4 {
-    margin-top: 50px!important;
-    z-index: 100!important;
-    position: absolute!important;
+    margin-top: 50px !important;
+    z-index: 100 !important;
+    position: absolute !important;
 }
+
 /* home page */
 
 /* navbar */
@@ -218,42 +219,48 @@ hr {
 }
 
 .sale {
-    background-color: pink!important;
+    background-color: pink !important;
     color: red !important;
-  }
-  
-  /* special */
-  .special-list .btn{
-      padding: 8px 20px!important;
-  }
-  .special-img img{
-      -webkit-transition: all 0.3s ease;
-      -o-transition: all 0.3s ease;
-      transition: all 0.3s ease;
-  }
-  .special-img:hover img{
-      -webkit-transform: scale(1.2);
-          -ms-transform: scale(1.2);
-              transform: scale(1.2);
-  }
-  
-  /* offers */
-  #offers{
-      background: url(../img/poster/3.png) center/cover no-repeat;
-  }
-  #offers .row{
-      min-height: 60vh;
-  }
-  .offers-content span{
-      font-size: 28px;
-  }
-  .offers-content h2{
-      font-size: 60px;
-      font-family: var(--lg-font);
-  }
-  .offers-content .btn{
-      border-color: transparent!important;
-  }
+}
+
+/* special */
+.special-list .btn {
+    padding: 8px 20px !important;
+}
+
+.special-img img {
+    -webkit-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+
+.special-img:hover img {
+    -webkit-transform: scale(1.2);
+    -ms-transform: scale(1.2);
+    transform: scale(1.2);
+}
+
+/* offers */
+#offers {
+    background: url(../img/poster/3.png) center/cover no-repeat;
+}
+
+#offers .row {
+    min-height: 60vh;
+}
+
+.offers-content span {
+    font-size: 28px;
+}
+
+.offers-content h2 {
+    font-size: 60px;
+    font-family: var(--lg-font);
+}
+
+.offers-content .btn {
+    border-color: transparent !important;
+}
 
 /* blogs */
 #blogs {
@@ -277,7 +284,7 @@ hr {
 }
 
 /* about */
-#about{
+#about {
     background-color: rgba(179, 179, 179, 0.05);
 }
 
@@ -465,5 +472,18 @@ th:last-child {
     margin-right: 40px;
 }
 
-
-
+#myBtn {
+    position: fixed;
+    right: 1rem;
+    bottom: 1rem;
+    display: none;
+    width: 2.75rem;
+    height: 2.75rem;
+    text-align: center;
+    color: #fff;
+    background: rgb(95, 97, 109, 0.5);
+    line-height: 46px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+}

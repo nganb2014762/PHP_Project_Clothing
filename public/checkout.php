@@ -117,11 +117,10 @@ if (isset($_POST['order'])) {
 
   $total_products = implode(',', array_column($orderDetails, 'pid'));
   
-  // $order_id = null;
-    try {
-      // Cập nhật địa chỉ trong bảng `user`
-      $update_user_address = $pdo->prepare("UPDATE `user` SET address = ? WHERE id = ?");
-      $update_user_address->execute([$address, $user_id]);
+  try {
+    $update_user_address = $pdo->prepare("UPDATE `user` SET address = ? WHERE id = ?");
+    $update_user_address->execute([$address, $user_id]);
+    if ($cart_grand_total > 0) {
       // Thêm đơn hàng vào bảng orders
       $insert_order = $pdo->prepare("INSERT INTO `orders`(user_id, method, total_products, total_price, placed_on) VALUES(?,?,?,?,?)");
       $insert_order->execute([$user_id, $method, $total_products, $cart_grand_total, $placed_on]);
@@ -148,8 +147,7 @@ if (isset($_POST['order'])) {
           // Xóa các sản phẩm trong giỏ hàng
           $delete_cart = $pdo->prepare("DELETE FROM `cart` WHERE user_id = ?");
           $delete_cart->execute([$user_id]);
-
-          $message[] = 'Order placed successfully!';
+          $message[] = 'Đặt hàng thành công';
         } else {
           // Xử lý trường hợp không đủ sản phẩm trong kho
           $message[] = "Bạn đã đặt số lượng vượt quá số lượng sản phẩm trong kho.Số lượng sản phẩm trong kho còn $current_quantity";
@@ -158,14 +156,15 @@ if (isset($_POST['order'])) {
         }
         // Kiểm tra xem cập nhật đã thành công hay không và hiển thị thông báo
         if ($update_user_address->rowCount() > 0) {
-          echo htmlspecialchars("Địa chỉ đã được cập nhật thành công!");
+          echo "Địa chỉ đã được cập nhật thành công!";
         } else {
-          echo htmlspecialchars("Có lỗi xảy ra khi cập nhật địa chỉ.");
+          echo "Có lỗi xảy ra khi cập nhật địa chỉ.";
         }
       }
-    } catch (PDOException $e) {
-      $message[] = 'Failed to place order. Error: ' . $e->getMessage();
     }
+  } catch (PDOException $e) {
+    $message[] = "Có lỗi xảy ra: " . $e->getMessage();
+  }
 }
 ;
 

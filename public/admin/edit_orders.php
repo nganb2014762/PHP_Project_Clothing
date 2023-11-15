@@ -15,27 +15,24 @@ if (isset($_POST['update_order'])) {
     $check_date = $_POST['check_date'];
     $cancel_date = $_POST['cancel_date'];
     $received_date = $_POST['received_date'];
-    $payment_status = $_POST['payment_status'];
-
-    $update_order = $pdo->prepare("
-        UPDATE orders
-        SET check_date = :check_date, cancel_date = :cancel_date, received_date = :received_date, payment_status = :payment_status
-        WHERE id = :update_id
-    ");
+    if(isset($_POST['payment_status'])) {
+        $payment_status = $_POST['payment_status'];
+    } else {
+        $payment_status = 'pending';
+    }
+    
+    $update_order = $pdo->prepare("UPDATE orders SET check_date = :check_date, cancel_date = :cancel_date, received_date = :received_date, payment_status = :payment_status WHERE id = :update_id");
 
     $update_order->bindParam(':check_date', $check_date);
     $update_order->bindParam(':cancel_date', $cancel_date);
     $update_order->bindParam(':received_date', $received_date);
     $update_order->bindParam(':update_id', $update_id);
     $update_order->bindParam(':payment_status', $payment_status);
-    
-
     $update_order->execute();
-
     header('location: list_orders.php');
     exit();
 }
-
+;
 if (isset($message)) {
     foreach ($message as $message) {
         echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -44,6 +41,7 @@ if (isset($message)) {
              </div>';
     }
 }
+;
 ?>
 
 <title>Edit Orders</title>

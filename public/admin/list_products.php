@@ -14,24 +14,29 @@ if (isset($_GET['delete'])) {
     $delete_id = $_GET['delete'];
 
     try {
+        // Kiểm tra sản phẩm có tồn tại không và lấy hình ảnh của sản phẩm
         $select_delete_image = $pdo->prepare("SELECT image FROM `products` WHERE id = ?");
         $select_delete_image->execute([$delete_id]);
         $fetch_delete_image = $select_delete_image->fetch(PDO::FETCH_ASSOC);
 
         if ($fetch_delete_image) {
             // Tìm tất cả các ID đơn đặt hàng liên quan đến sản phẩm
-            $select_order_ids = $pdo->prepare("SELECT DISTINCT order_id FROM `orders_details` WHERE pid = ?");
+            $select_order_ids = $pdo->prepare("SELECT DISTINCT orders.id FROM `orders`
+                                                INNER JOIN orders_details ON orders.id = orders_details.order_id
+                                                WHERE orders_details.pid = ?");
             $select_order_ids->execute([$delete_id]);
             $order_ids = $select_order_ids->fetchAll(PDO::FETCH_COLUMN);
+            
+            // Xóa các đơn đặt hàng liên quan trong bảng orders
+            if (!empty($order_ids)) {
+                $delete_orders = $pdo->prepare("DELETE FROM `orders` WHERE id IN (" . implode(',', $order_ids) . ")");
+                $delete_orders->execute();
+            }
 
             // Xóa các bản ghi liên quan trong bảng orders_details
             $delete_orders_details = $pdo->prepare("DELETE FROM `orders_details` WHERE pid = ?");
             $delete_orders_details->execute([$delete_id]);
 
-            // Xóa các đơn đặt hàng liên quan trong bảng orders
-            $delete_orders = $pdo->prepare("DELETE FROM `orders` WHERE id IN (" . implode(',', $order_ids) . ")");
-            $delete_orders->execute();
-            
             // Xóa hình ảnh của sản phẩm
             unlink('uploaded_img/' . $fetch_delete_image['image']);
 
@@ -39,12 +44,13 @@ if (isset($_GET['delete'])) {
             $delete_products = $pdo->prepare("DELETE FROM `products` WHERE id = ?");
             $delete_products->execute([$delete_id]);
 
-            header('location: list_products.php');
-        }
+            header('location:list_products.php');
+        } 
     } catch (Exception $e) {
         $message[] = $e->getMessage();
     }
 }
+;
 
 if (isset($message)) {
     foreach ($message as $message) {
