@@ -224,19 +224,11 @@ if (isset($message)) {
             $('#deleteConfirmationModal').on('show.bs.modal', function (event) {
                 var button = $(event.relatedTarget);
                 var Id = button.data('id');
-                // var checkDate = button.data('check-date');
-                // var cancelDate = button.data('cancel-date');
-
                 var deleteLink = 'list_orders.php?delete=' + Id;
                 $('#deleteLink').attr('href', deleteLink);
-
-                // Hiển thị thông tin ngày tháng năm trong modal
-                // $('#checkDateInfo').text(checkDate);
-                // $('#cancelDateInfo').text(cancelDate);
             });
         });
     </script>
 
     <?php
     include_once __DIR__ . '../../../partials/admin_footer.php';
-    ?>

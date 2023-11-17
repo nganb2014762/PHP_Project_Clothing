@@ -61,7 +61,7 @@
 
                         if ($fetch_profile !== false) {
                             echo ' <div class="dropdown">
-                                    <a  style="color:#222; text-decoration: none;" href="#" role="button" data-bs-toggle="dropdown">
+                                    <a  style="color:#222; text-decoration: none;" role="button" data-bs-toggle="dropdown">
                                         <i class="fa-solid fa-user"></i> <span>'.htmlspecialchars($fetch_profile['name']).'</span>
                                     </a>
                         
@@ -74,12 +74,9 @@
                                     </ul>
                                 </div> ';
                         } else {
-                            // Xử lý tình huống khi không tìm thấy người dùng
-                            // Ví dụ: Hiển thị thông báo lỗi hoặc thực hiện hành động khác
                             header('location:index.php');
                         }
                     } else {
-                        // Handle the case where the user is not logged in
                         echo '<button type="button" class="btn position-relative">
                                 <a href="login.php" style="color:#222;"><i class="fa fa-user"></i></a>
                             </button>';
@@ -88,7 +85,6 @@
                     <button class="btn position-relative" type="button">
                         <a href="cart.php" style="color:#222;"><i class="fa fa-shopping-cart"></i></a>
                     </button>
-
                 </div>
             </div>
         </div>

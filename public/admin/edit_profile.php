@@ -4,7 +4,6 @@ session_start();
 require_once __DIR__ . '../../../partials/connect.php';
 
 $admin_id = $_SESSION['admin_id'];
-$message = [];
 if (!isset($admin_id)) {
     header('location:login.php');
 }
@@ -38,22 +37,17 @@ if (isset($_POST['update_profile'])) {
                 $update_image->execute([$image, $id]);
 
                 if ($update_image) {
-                    // Kiểm tra nếu có tập tin cần xóa và tập tin đó tồn tại
                     if (!empty($old_image) && file_exists('uploaded_img/staff/' . $old_image)) {
                         if (!unlink('uploaded_img/staff/' . $old_image)) {
-                            // Nếu không xóa được, hiển thị thông báo lỗi
                             $message[] = 'Không thể xóa tập tin ảnh cũ.';
                         } else {
-                            // Nếu xóa thành công, di chuyển tập tin mới vào thư mục
                             move_uploaded_file($image_tmp_name, $image_folder);
                             $message[] = 'Tập tin ảnh cũ đã được xóa thành công và tập tin mới đã được cập nhật.';
                         }
                     } else {
-                        // Nếu không tìm thấy tập tin cần xóa, hiển thị thông báo tập tin không tồn tại
                         $message[] = 'Không tìm thấy tập tin ảnh cũ hoặc tập tin không tồn tại.';
                     }
                 } else {
-                    // Hiển thị thông báo nếu không thể cập nhật tập tin trong cơ sở dữ liệu
                     $message[] = 'Không thể cập nhật tập tin trong cơ sở dữ liệu.';
                 }
             }

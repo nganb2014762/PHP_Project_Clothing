@@ -28,7 +28,7 @@ if (isset($message)) {
         <hr class="mx-auto">
 
     </div>
-    <div class="mx-auto container">
+    <div class="mx-auto container my-5">
         <div class="card col-md-10 offset-1 shadow-sm rounded-5">
             <div class="card-body">
                 <div class="row">
@@ -44,7 +44,7 @@ if (isset($message)) {
                             } else {
                                 ?>
                                 <img class="img-fluid"
-                                    src="uploaded_img/staff/<?= htmlspecialchars($fetch_profile['image']); ?>" alt=""
+                                    src="admin/uploaded_img/user/<?= htmlspecialchars($fetch_profile['image']); ?>" alt=""
                                     width="315px" height="315px" />
                                 <?php
                             }
@@ -52,43 +52,43 @@ if (isset($message)) {
                         </div>
                     </div>
 
-                    <div class="col-md-7 pt-3">
-                        <div class="form-group d-flex">
+                    <div class="col-md-7 mt-3">
+                        <div class="form-group d-flex p-2">
                             <div class="col-md-3 col-12 p-2 fw-bold">Name</div>
                             <div class="col-md-9 col-10">
                                 <input type="text" class="form-control" name="name" disabled
                                     value="<?= htmlspecialchars($fetch_profile['name']); ?>">
                             </div>
                         </div>
-                        <div class="form-group d-flex">
+                        <div class="form-group d-flex p-2">
                             <div class="col-md-3 col-12 p-2 fw-bold">Sex</div>
                             <div class="col-md-9 col-10">
                                 <input type="text" class="form-control" name="sex" disabled
                                     value="<?= htmlspecialchars($fetch_profile['sex']) == '0' ? 'Female' : 'Male' ?>">
                             </div>
                         </div>
-                        <div class="form-group d-flex">
+                        <div class="form-group d-flex p-2">
                             <div class="col-md-3 col-12 p-2 fw-bold">Born</div>
                             <div class="col-md-9 col-10">
                                 <input class="form-control" type="text" name="born" disabled
                                     value="<?= htmlspecialchars($fetch_profile['born']); ?>">
                             </div>
                         </div>
-                        <div class="form-group d-flex">
+                        <div class="form-group d-flex p-2">
                             <div class="col-md-3 col-12 p-2 fw-bold">Address</div>
                             <div class="col-md-9 col-10">
                                 <textarea class="form-control" name="address" disabled cols="30"
                                     rows="1"><?= htmlspecialchars($fetch_profile['address']); ?></textarea>
                             </div>
                         </div>
-                        <div class="form-group d-flex">
+                        <div class="form-group d-flex p-2">
                             <div class="col-md-3 col-12 p-2 fw-bold">Phone</div>
                             <div class="col-md-9 col-10">
                                 <input class="form-control" type="tel" name="phone" disabled
                                     value="<?= htmlspecialchars($fetch_profile['phone']); ?>">
                             </div>
                         </div>
-                        <div class="form-group d-flex">
+                        <div class="form-group d-flex p-2">
                             <div class="col-md-3 col-12 p-2 fw-bold">Email</div>
                             <div class="col-md-9 col-10">
                                 <input class="form-control" type="email" name="email" disabled
@@ -96,7 +96,7 @@ if (isset($message)) {
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group p-2">
                         <div class="flex-btn">
                             <a href="edit_profile.php" class="btn btn-primary shadow-sm w-100">Change Information</a>
                         </div>
