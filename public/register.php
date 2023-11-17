@@ -4,19 +4,6 @@ include_once __DIR__ . '../../partials/boostrap.php';
 include_once __DIR__ . '../../partials/header.php';
 require_once __DIR__ . '../../partials/connect.php';
 
-// if ($select->rowCount() > 0) {
-//     $message[] = 'User email already exist!';
-// } else {
-//     if ($password != $cpassword) {
-//         $message[] = 'Confirm password not matched!';
-//     } else {
-//         $insert = $pdo->prepare("INSERT INTO `user`(name, phone, email, password) VALUES(?, ?, ?, ?)");
-//         $insert->execute([$name, $phone, $email, $password]);
-//         $message[] = 'registered successfully!';
-//         header('Location: login.php');
-//     }
-// }
-
 if (isset($_POST['submit'])) {
     $name = $_POST['name'];
     $phone = $_POST['phone'];
@@ -124,11 +111,6 @@ if (isset($message)) {
         </div>
     </section>
 
-
-    <?php
-    include_once __DIR__ . '/../partials/footer.php';
-    ?>
-
     <script>// step 1
         const ipnElement = document.querySelector('#register-password')
         const btnElement = document.querySelector('#btnPassword')
@@ -230,3 +212,8 @@ if (isset($message)) {
             });
         });
     </script>
+    <?php
+    include_once __DIR__ . '/../partials/footer.php';
+    ?>
+</body>
+</html>

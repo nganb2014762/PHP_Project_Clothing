@@ -4,14 +4,6 @@ include_once __DIR__ . '../../partials/boostrap.php';
 include_once __DIR__ . '../../partials/header.php';
 require_once __DIR__ . '../../partials/connect.php';
 
-// session_start();
-
-// $user_id = $_SESSION['user_id'];
-
-// if(!isset($user_id)){
-//    header('location:login.php');
-// };
-
 if (isset($_POST['add_to_wishlist'])) {
 
     $pid = $_POST['pid'];
@@ -175,5 +167,7 @@ if (isset($message)) {
 
 
 <?php
-include_once __DIR__ . '/../partials/footer.php';
-?>
+include_once __DIR__ . '/../partials/footer.php';?>
+</body>
+
+</html>

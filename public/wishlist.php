@@ -52,7 +52,8 @@ if (isset($message)) {
                                     <div class="card shadow rounded h-100">
                                         <div class="collection-img position-relative">
                                             <img class="rounded-top p-0 card-img-top"
-                                                src="admin/uploaded_img/<?= htmlspecialchars($fetch_products['image']); ?>" alt="">
+                                                src="admin/uploaded_img/<?= htmlspecialchars($fetch_products['image']); ?>"
+                                                alt="">
                                         </div>
 
                                         <div class="card-body">
@@ -64,8 +65,8 @@ if (isset($message)) {
                                                 </div>
 
                                                 <div class="col-4 text-end">
-                                                    <button class="text-capitalize border-0 bg-white"
-                                                        type="submit" name="delete_wishlist">
+                                                    <button class="text-capitalize border-0 bg-white" type="submit"
+                                                        name="delete_wishlist">
                                                         <i class="fa-solid fa-heart fa-lg text-danger heart"></i>
                                                     </button>
                                                 </div>
@@ -79,9 +80,10 @@ if (isset($message)) {
                                                     <a href="view_page.php?pid=<?= htmlspecialchars($fetch_products['id']); ?>"
                                                         class="btn btn-primary">View</a>
                                                 </div>
-                                            </div>                                            
-                                            
-                                            <input type="hidden" name="id" value="<?= htmlspecialchars($fetch_products['id']); ?>">
+                                            </div>
+
+                                            <input type="hidden" name="id"
+                                                value="<?= htmlspecialchars($fetch_products['id']); ?>">
                                         </div>
                                     </div>
                                 </div>
@@ -112,3 +114,7 @@ if (isset($message)) {
         }
     </script>
     <?php include_once __DIR__ . '/../partials/footer.php';
+    ?>
+</body>
+
+</html>

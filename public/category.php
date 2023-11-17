@@ -153,7 +153,7 @@ if (isset($message)) {
                 <?php
             }
         } else {
-            echo htmlspecialchars('<p class="empty">no products available!</p>');
+            echo '<p class="empty">no products available!</p>';
         }
         ?>
 
@@ -162,5 +162,7 @@ if (isset($message)) {
 </section>
 
 <?php
-
 include_once __DIR__ . '/../partials/footer.php';
+?>
+</body>
+</html>

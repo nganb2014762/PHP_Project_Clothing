@@ -27,23 +27,11 @@ if (isset($_GET['delete_all'])) {
 }
 ;
 
-// if (isset($_POST['update_qty'])) {
-//     $cart_id = $_POST['cart_id'];
-//     $p_qty = $_POST['p_qty'];
-//     $p_qty = filter_var($p_qty, FILTER_SANITIZE_STRING);
-//     $update_qty = $pdo->prepare("UPDATE `cart` SET quantity = ? WHERE id = ?");
-//     $update_qty->execute([$p_qty, $cart_id]);
-//     $message[] = 'cart quantity updated';
-// }
-// ;
-
 if (isset($_POST['update_qty'])) {
     $new_quantities = $_POST['p_qty'];
     
     foreach ($new_quantities as $cart_id => $new_quantity) {
-        // Kiểm tra nếu giá trị quantity hợp lệ (ví dụ: là một số dương)
         if (is_numeric($new_quantity) && $new_quantity > 0) {
-            // Cập nhật quantity trong bảng cart
             $update_qty = $pdo->prepare("UPDATE `cart` SET quantity = ? WHERE id = ?");
             $update_qty->execute([$new_quantity, $cart_id]);
         }else{
@@ -54,7 +42,6 @@ if (isset($_POST['update_qty'])) {
 
 if (isset($message)) {
     foreach ($message as $message) {
-        // echo '<script>alert(" ' . $message . ' ");</script>';
         echo '<div class="alert alert-warning alert-dismissible fade show col-4 offset-4" role="alert" tabindex="-1">
                 ' . htmlspecialchars($message) . '
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -189,3 +176,6 @@ if (isset($message)) {
     </section>
     <?php
     include_once __DIR__ . '../../partials/footer.php';
+    ?>
+</body>
+</html>

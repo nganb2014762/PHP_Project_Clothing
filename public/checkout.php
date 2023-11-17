@@ -236,7 +236,7 @@ if (isset($message)) {
             <?php
           }
         } else {
-          echo htmlspecialchars('<p class="empty"> Your bill is  empty!</p>');
+          echo '<p class="empty"> Your bill is  empty!</p>';
         }
         ?>
 
@@ -309,3 +309,6 @@ if (isset($message)) {
 </div>
 <?php
 include_once __DIR__ . '../../partials/footer.php';
+?>
+</body>
+</html>

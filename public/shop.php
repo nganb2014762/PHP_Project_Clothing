@@ -113,17 +113,19 @@ if (isset($message)) {
     <!-- end of shop -->
     <script>
         function addToWishllist() {
-            // Kiểm tra trạng thái đăng nhập ở phía client (trình duyệt)
             var loggedIn = <?= htmlspecialchars(isset($_SESSION['user_id']) ? 'true' : 'false'); ?>;
 
             if (!loggedIn) {
-                // Hiển thị thông báo hoặc chuyển hướng đến trang đăng nhập
                 alert('Bạn cần đăng nhập để thêm sản phẩm vào danh sách yêu thích.');
-                window.location.href = 'login.php'; // Chuyển hướng đến trang đăng nhập
-                return false; // Ngăn chặn gửi yêu cầu đến máy chủ
+                window.location.href = 'login.php';
+                return false;
             }
-            return true; // Cho phép gửi yêu cầu đến máy chủ
+            return true;
         }
     </script>
     <?php
     include_once __DIR__ . '/../partials/footer.php';
+    ?>
+</body>
+
+</html>

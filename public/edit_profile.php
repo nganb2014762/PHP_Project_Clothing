@@ -208,3 +208,6 @@ if (isset($message)) {
 
 <?php
 include_once __DIR__ . '../../partials/footer.php';
+?>
+</body>
+</html>

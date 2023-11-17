@@ -232,3 +232,7 @@ if (isset($_POST['update_profile'])) {
 
 <?php
 include_once __DIR__ . '/../partials/footer.php';
+?>
+</body>
+
+</html>

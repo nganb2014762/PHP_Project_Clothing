@@ -17,7 +17,7 @@ if (isset($_POST['submit'])) {
         ':email' => $email,
         ':password' => $password
     ]);
-    
+
     $rowCount = $stmt->rowCount();
 
     if (!empty($_POST['email']) && !empty($_POST['password'])) {
@@ -26,25 +26,26 @@ if (isset($_POST['submit'])) {
             $_SESSION['user_id'] = $row['id'];
             header('Location: index.php');
             exit();
-        }else{
+        } else {
             $message[] = 'Incorrect email or password!';
         }
     } else {
         $message[] = 'No user found';
     }
-}    
+}
 ;
 
 if (isset($message)) {
     foreach ($message as $message) {
-      // echo '<script>alert(" ' . $message . ' ");</script>';
-      echo '<div class="alert alert-warning alert-dismissible fade show col-4 offset-4" role="alert" tabindex="-1">
+        // echo '<script>alert(" ' . $message . ' ");</script>';
+        echo '<div class="alert alert-warning alert-dismissible fade show col-4 offset-4" role="alert" tabindex="-1">
                 ' . htmlspecialchars($message) . '
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
               </div>';
     }
-  };
-  ?>
+}
+;
+?>
 
 <title>Login</title>
 </head>
@@ -71,11 +72,11 @@ if (isset($message)) {
                                     name="password" placeholder="Password" for="password">
                             </div>
                             <div class="col-1">
-                                <span class="fas fa-eye flex-fill m-3 position-relative"
-                                    type="button" id="btnPassword"></span>
+                                <span class="fas fa-eye flex-fill m-3 position-relative" type="button"
+                                    id="btnPassword"></span>
                             </div>
                         </div>
-                        
+
                         <div class="form-group row">
                             <div class="form-check col-md-6">
                                 <input class="form-check-input" type="checkbox" id="agree" name="agree" value="agree" />
@@ -95,9 +96,6 @@ if (isset($message)) {
     </section>
     <!-- End Login -->
 
-    <?php
-    include_once __DIR__ . '/../partials/footer.php';
-    ?>
     <script>// step 1
         const ipnElement = document.querySelector('#login-password')
         const btnElement = document.querySelector('#btnPassword')
@@ -152,3 +150,9 @@ if (isset($message)) {
             });
         });
     </script>
+    <?php
+    include_once __DIR__ . '/../partials/footer.php';
+    ?>
+</body>
+
+</html>

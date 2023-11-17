@@ -19,7 +19,7 @@ if (isset($_POST['add_to_wishlist'])) {
       $insert_wishlist->execute([$user_id, $pid, $p_name, $p_price, $p_image]);
       $message[] = 'added to wishlist!';
    }
-}
+};
 
 if (isset($_POST['add_to_cart'])) {
    $pid = $_POST['pid'];
@@ -42,7 +42,7 @@ if (isset($_POST['add_to_cart'])) {
       $insert_cart->execute([$user_id, $pid, $p_name, $p_price, $p_qty, $p_image]);
       $message[] = 'added to cart!';
    }
-}
+};
 
 
 ?>
