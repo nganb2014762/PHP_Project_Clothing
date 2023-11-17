@@ -59,18 +59,16 @@
                         $select_profile->execute([$user_id]);
                         $fetch_profile = $select_profile->fetch(PDO::FETCH_ASSOC);
 
-                        // Kiểm tra xem đã tìm thấy người dùng hay chưa
                         if ($fetch_profile !== false) {
-                            // Nếu tìm thấy, hiển thị thông tin người dùng và dropdown menu
                             echo ' <div class="dropdown">
                                     <a  style="color:#222; text-decoration: none;" href="#" role="button" data-bs-toggle="dropdown">
                                         <i class="fa-solid fa-user"></i> <span>'.htmlspecialchars($fetch_profile['name']).'</span>
                                     </a>
                         
                                     <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="user_account.php">My Account</a></li>
-                                        <li><a class="dropdown-item" href="user_change_password.php">Change Password</a></li>
-                                        <li><a class="dropdown-item" href="user_my_order.php">My Orders</a></li>
+                                        <li><a class="dropdown-item" href="profile.php">My Account</a></li>
+                                        <li><a class="dropdown-item" href="change_password.php">Change Password</a></li>
+                                        <li><a class="dropdown-item" href="my_order.php">My Orders</a></li>
                                         <li><a class="dropdown-item" href="wishlist.php">My Favorite List</a></li>
                                         <li><a id="logout" class="dropdown-item" href="logout.php">Log Out</a></li>
                                     </ul>

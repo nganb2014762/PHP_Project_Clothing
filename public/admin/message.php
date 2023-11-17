@@ -13,7 +13,6 @@ if (!isset($admin_id)) {
 
 if (isset($message)) {
     foreach ($message as $message) {
-        // echo '<script>alert(" ' . $message . ' ");</script>';
         echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
             ' . htmlspecialchars($message) . '
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -145,7 +144,7 @@ if (isset($_GET['delete'])) {
                                             <?php
                                             }
                                         } else {
-                                            echo htmlspecialchars('<p class="empty">you have no messages!</p>');
+                                            echo '<p class="empty">you have no messages!</p>';
                                         }
                                         ?>
                                 </table>
