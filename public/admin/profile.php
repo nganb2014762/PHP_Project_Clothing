@@ -1,6 +1,7 @@
 <?php
-include_once __DIR__ . "../../../partials/admin_boostrap.php";
 session_start();
+include_once __DIR__ . "../../../partials/admin_boostrap.php";
+
 require_once __DIR__ . '../../../partials/connect.php';
 
 $admin_id = $_SESSION['admin_id'];
@@ -11,18 +12,6 @@ if (!isset($admin_id)) {
 ;
 
 $message = [];
-if (isset($_POST['update_profile'])) {
-
-    $name = $_POST['name'];
-    $sex = $_POST['sex'];
-    $email = $_POST['email'];
-    $phone = $_POST['phone'];
-    $address = $_POST['address'];
-    $born = $_POST['born'];
-    $update_profile = $pdo->prepare("UPDATE `user` SET name = ?, email = ? WHERE id = ?");
-    $update_profile->execute([$name, $sex, $phone, $address, $born, $email, $user_id]);
-
-}
 if (isset($message)) {
     foreach ($message as $message) {
         // echo '<script>alert(" ' . $message . ' ");</script>';
@@ -65,88 +54,82 @@ if (isset($message)) {
 
                     <div class="container title text-center ">
                         <h2 class="position-relative d-inline-block">My Account</h2>
-
                     </div>
+                    <div class="mx-auto container">
+                        <div class="card col-md-10 offset-1 shadow-sm rounded-5">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <input class="form-control" type="hidden" name="id"
+                                                value="<?= htmlspecialchars($fetch_profile['id']); ?>">
+                                        </div>
 
-                    <div class="d-flex justify-content-center vh-100">
-                        <div class="card mt-5 mb-5 w-50 p-2">
-                            <div class="card-body row">
-                                <div class="col-md-3 col-12">Profile photo</div>
-                                <div class="col-md-8 col-10">Your profile photo</div>
-                                <div class="col-md-1 col-2"><img class="float-end img-fuild"
-                                        src="../img/account/user0.png" width="70"></div>
-                                <!-- <hr class="mt-2"> -->
-                            </div>
-                            <div class="card-body row">
-                                <div class="col-md-3 col-12">Name</div>
-                                <div class="col-md-8 col-10">
-                                    <?= $fetch_profile['name']; ?>
+                                        <div class="form-group text-center">
+                                            <?php if ($fetch_profile['image'] == '') {
+                                                echo '<img class="img-fluid" src="../img/account/user0.png" alt="" width="315px" height="315px" />';
+                                            } else {
+                                                ?>
+                                                <img class="img-fluid"
+                                                    src="uploaded_img/staff/<?= htmlspecialchars($fetch_profile['image']); ?>"
+                                                    alt="" width="315px" height="315px" />
+                                                <?php
+                                            }
+                                            ?>
+                                        </div>
+                                    </div>
 
+                                    <div class="col-md-7 pt-3">
+                                        <div class="form-group d-flex">
+                                            <div class="col-md-3 col-12 p-2 fw-bold">Name</div>
+                                            <div class="col-md-9 col-10">
+                                                <input type="text" class="form-control" name="name" disabled
+                                                    value="<?= htmlspecialchars($fetch_profile['name']); ?>">
+                                            </div>
+                                        </div>
+                                        <div class="form-group d-flex">
+                                            <div class="col-md-3 col-12 p-2 fw-bold">Sex</div>
+                                            <div class="col-md-9 col-10">
+                                                <input type="text" class="form-control" name="sex" disabled
+                                                    value="<?= htmlspecialchars($fetch_profile['sex']) == '0' ? 'Female' : 'Male' ?>">
+                                            </div>
+                                        </div>
+                                        <div class="form-group d-flex">
+                                            <div class="col-md-3 col-12 p-2 fw-bold">Born</div>
+                                            <div class="col-md-9 col-10">
+                                                <input class="form-control" type="text" name="born" disabled
+                                                    value="<?= htmlspecialchars($fetch_profile['born']); ?>">
+                                            </div>
+                                        </div>
+                                        <div class="form-group d-flex">
+                                            <div class="col-md-3 col-12 p-2 fw-bold">Address</div>
+                                            <div class="col-md-9 col-10">
+                                                <textarea class="form-control" name="address" disabled cols="30"
+                                                    rows="1"><?= htmlspecialchars($fetch_profile['address']); ?></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="form-group d-flex">
+                                            <div class="col-md-3 col-12 p-2 fw-bold">Phone</div>
+                                            <div class="col-md-9 col-10">
+                                                <input class="form-control" type="tel" name="phone" disabled
+                                                    value="<?= htmlspecialchars($fetch_profile['phone']); ?>">
+                                            </div>
+                                        </div>
+                                        <div class="form-group d-flex">
+                                            <div class="col-md-3 col-12 p-2 fw-bold">Email</div>
+                                            <div class="col-md-9 col-10">
+                                                <input class="form-control" type="email" name="email" disabled
+                                                    value="<?= htmlspecialchars($fetch_profile['email']); ?>">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="flex-btn">
+                                            <a href="edit_profile.php" class="btn btn-primary shadow-sm w-100">Change Information</a>
+                                        </div>
+                                    </div>
                                 </div>
-
-                                <!-- <hr class="mt-2"> -->
                             </div>
-                            <div class="card-body row">
-                                <div class="col-md-3 col-12">Sex</div>
-                                <div class="col-md-8 col-10">
-                                    <?php
-                                    // Lấy giá trị sex từ $fetch_profile
-                                    $sex = $fetch_profile['sex'];
-
-                                    // Chuyển đổi giá trị sex thành chuỗi "male" hoặc "female"
-                                    if ($sex == 1) {
-                                        $sex_string = 'male';
-                                    } elseif ($sex == 0) {
-                                        $sex_string = 'female';
-                                    } else {
-                                        $sex_string = 'unknown';
-                                    }
-
-                                    // In ra kết quả
-                                    echo htmlspecialchars($sex_string);
-                                    ?>
-                                </div>
-
-                            </div>
-                            <div class="card-body row">
-                                <div class="col-md-3 col-12">Birthday</div>
-                                <div class="col-md-8 col-10">
-                                    <?= htmlspecialchars($fetch_profile['born']); ?>
-
-                                </div>
-
-                                <!-- <hr class="mt-2"> -->
-                            </div>
-
-                            <div class="card-body row">
-                                <div class="col-md-3 col-12">Email</div>
-                                <div class="col-md-8 col-10">
-                                    <?= htmlspecialchars($fetch_profile['email']); ?>
-                                </div>
-
-                                <!-- <hr class="mt-2"> -->
-                            </div>
-                            <div class="card-body row">
-                                <div class="col-md-3 col-12">Phone</div>
-                                <div class="col-md-8 col-10">
-                                    <?= htmlspecialchars($fetch_profile['phone']); ?>
-                                </div>
-
-                                <!-- <hr class="mt-2"> -->
-                            </div>
-
-                            <div class="card-body row">
-                                <div class="col-md-3 col-12">Address</div>
-                                <div class="col-md-8 col-10">
-                                    <?= htmlspecialchars($fetch_profile['address']); ?>
-                                </div>
-
-                                <!-- <hr class="mt-2"> -->
-                            </div>
-                            <div class="d-grid">
-                                <a href="edit_profile.php" class="btn btn-primary w-100">Change Information</a>
-                            </div>
-
                         </div>
                     </div>
 
