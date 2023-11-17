@@ -80,7 +80,7 @@ if (isset($_GET['delete'])) {
                                     <th scope="col">Phone</th>
                                     <th scope="col">Email</th>
                                     <th scope="col">Role</th>
-
+                                    <th scope="col">Edit</th>
                                     <th scope="col">Delete</th>
                                 </tr>
                             </thead>
@@ -110,7 +110,7 @@ if (isset($_GET['delete'])) {
                                                 } else {
                                                     ?>
                                                     <div class="col-2"><img
-                                                            src="../img/account/<?= htmlspecialchars($fetch_users['image']); ?>"
+                                                            src="uploaded_img/user/<?= htmlspecialchars($fetch_users['image']); ?>"
                                                             width="70" height="70"></div>
                                                     <?php
                                                 }
@@ -170,11 +170,15 @@ if (isset($_GET['delete'])) {
                                                     ?>
                                                 </span>
                                             </td>
-
+                                            <td class="pt-4">
+                                                <a class="btn btn-primary my-1 my-lg-0"
+                                                    href="edit_customers.php?update=<?= htmlspecialchars($fetch_users['id']); ?>"
+                                                    class="option-btn">Edit</a>
+                                            </td>
                                             <td class="pt-4">
                                                 <a class="btn btn-danger my-1 my-lg-0"
                                                     data-id="<?= htmlspecialchars($fetch_users['id']); ?>"
-                                                    data-toggle="modal" data-target="#deleteConfirmationModal">delete</a>
+                                                    data-toggle="modal" data-target="#deleteConfirmationModal">Delete</a>
                                             </td>
                                         </tr>
                                 </tbody>

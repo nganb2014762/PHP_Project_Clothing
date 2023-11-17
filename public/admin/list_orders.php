@@ -89,7 +89,7 @@ if (isset($message)) {
                             <tbody class="table-group-divider">
                                 <?php
                                 $i = 1;
-                                $select_info = $pdo->prepare("SELECT user.name, user.email, user.phone, orders.address,
+                                $select_info = $pdo->prepare("SELECT user.name, user.email, user.phone, user.address,
                                                                     orders.placed_on, orders.check_date,orders.cancel_date,orders.received_date,orders.total_products,
                                                                     orders.total_price,
                                                                     orders.method, orders.payment_status, orders.id
@@ -97,7 +97,6 @@ if (isset($message)) {
                                                                 INNER JOIN orders ON user.id = orders.user_id
                                                             ");
                                 $select_info->execute();
-
                                 if ($select_info->rowCount() > 0) {
                                     while ($row = $select_info->fetch(PDO::FETCH_ASSOC)) {
                                         ?>
@@ -148,20 +147,20 @@ if (isset($message)) {
                                             <td class="pt-4">
                                                 <a class="btn btn-primary"
                                                     href="edit_orders.php?update=<?= htmlspecialchars($row['id']); ?>&check_date=<?= date('Y-M-d', strtotime($row['check_date'])); ?>&cancel_date=<?= date('Y-M-d', strtotime($row['cancel_date'])); ?>"
-                                                    class="option-btn">edit</a>
+                                                    class="option-btn">Edit</a>
                                             </td>
                                             <td class="pt-4">
                                                 <a class="btn btn-danger" data-id="<?= htmlspecialchars($row['id']); ?>"
                                                     data-check-date="<?= date('Y-M-d', strtotime($row['check_date'])); ?>" 
                                                     data-cancel-date="<?= date('Y-M-d', strtotime($row['cancel_date'])); ?>" 
                                                     data-toggle="modal"
-                                                    data-target="#deleteConfirmationModal">delete</a>
+                                                    data-target="#deleteConfirmationModal">Delete</a>
                                             </td>
                                         </tr>
                                         <?php
                                     }
                                 } else {
-                                    echo htmlspecialchars("<tr><td colspan='15'>Không có dữ liệu.</td></tr>");
+                                    echo "<tr><td colspan='15'>Không có dữ liệu.</td></tr>";
                                 }
 
                                 ?>

@@ -169,13 +169,13 @@ if (isset($message)) {
                                             <td class="pt-4">
                                                 <a class="btn btn-primary my-1 my-lg-0"
                                                     href="edit_products.php?update=<?= htmlspecialchars($fetch_products['id']); ?>"
-                                                    class="option-btn">edit</a>
+                                                    class="option-btn">Edit</a>
                                             </td>
 
                                             <td class="pt-4">
                                                 <a class="btn btn-danger my-1 my-lg-0"
                                                     data-id="<?= htmlspecialchars($fetch_products['id']); ?>"
-                                                    data-toggle="modal" data-target="#deleteConfirmationModal">delete</a>
+                                                    data-toggle="modal" data-target="#deleteConfirmationModal">Delete</a>
                                             </td>
                                         </tr>
                                     </tbody>
