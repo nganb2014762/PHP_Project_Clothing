@@ -91,7 +91,15 @@ if (isset($message)) {
                             <?php
                         }
                     } else {
-                        echo '<p class="empty">No products added yet!</p>';
+                        ?>
+                        <div class="container text-center pt-3">
+                            <h6 class="position-relative d-inline-block">No item found </h6>
+                            <div>
+                                <a type="submit" class="buy-btn text-capitalize text-decoration-none mt-3" name="shop now"
+                                    href="shop.php">Shop now</a>
+                            </div>
+                        </div>
+                        <?php
                     }
                     ?>
                 </div>

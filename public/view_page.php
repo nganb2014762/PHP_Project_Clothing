@@ -6,9 +6,13 @@ require_once __DIR__ . '../../partials/connect.php';
 
 if (isset($_POST['add_to_wishlist'])) {
    $pid = $_POST['pid'];
+   $pid = filter_var($pid, FILTER_SANITIZE_STRING);
    $p_name = $_POST['p_name'];
+   $p_name = filter_var($p_name, FILTER_SANITIZE_STRING);
    $p_price = $_POST['p_price'];
+   $p_price = filter_var($p_price, FILTER_SANITIZE_STRING);
    $p_image = $_POST['p_image'];
+   $p_image = filter_var($p_image, FILTER_SANITIZE_STRING);
 
    $check_wishlist_numbers = $pdo->prepare("SELECT * FROM `wishlist` WHERE name = :p_name AND user_id = :user_id");
    $check_wishlist_numbers->execute([':p_name' => $p_name, ':user_id' => $user_id]);
@@ -19,14 +23,20 @@ if (isset($_POST['add_to_wishlist'])) {
       $insert_wishlist->execute([$user_id, $pid, $p_name, $p_price, $p_image]);
       $message[] = 'added to wishlist!';
    }
-};
+}
+
 
 if (isset($_POST['add_to_cart'])) {
    $pid = $_POST['pid'];
+   $pid = filter_var($pid, FILTER_SANITIZE_STRING);
    $p_name = $_POST['p_name'];
+   $p_name = filter_var($p_name, FILTER_SANITIZE_STRING);
    $p_price = $_POST['p_price'];
+   $p_price = filter_var($p_price, FILTER_SANITIZE_STRING);
    $p_image = $_POST['p_image'];
+   $p_image = filter_var($p_image, FILTER_SANITIZE_STRING);
    $p_qty = $_POST['p_qty'];
+   $p_qty = filter_var($p_qty, FILTER_SANITIZE_STRING);
 
    $check_cart_numbers = $pdo->prepare("SELECT * FROM `cart` WHERE name = ? AND user_id = ?");
    $check_cart_numbers->execute([$p_name, $user_id]);
@@ -42,9 +52,35 @@ if (isset($_POST['add_to_cart'])) {
       $insert_cart->execute([$user_id, $pid, $p_name, $p_price, $p_qty, $p_image]);
       $message[] = 'added to cart!';
    }
+;}
+
+
+if (isset($_POST['comment'])) {
+    $pid = $_POST['pid'];
+    $pid = filter_var($pid, FILTER_SANITIZE_STRING);
+    $comment = $_POST['comment'];
+    $comment = filter_var($comment, FILTER_SANITIZE_STRING);
+
+    // Giả sử $user_id đã được định nghĩa ở đâu đó trong mã của bạn
+    $kiem_tra_so_luong = $pdo->prepare("SELECT * FROM `review` WHERE pid = :p_id AND user_id = :user_id");
+    $kiem_tra_so_luong->execute([':p_id' => $pid, ':user_id' => $user_id]);
+
+    if ($kiem_tra_so_luong->rowCount() > 0) {
+        $them_vao_danh_gia = $pdo->prepare("INSERT INTO `review` (user_id, pid, comment) VALUES (?, ?, ?)");
+        $them_vao_danh_gia->execute([$user_id, $pid, $comment]);
+        $message[] = 'Bình luận đã được thêm thành công!';
+    }
 };
 
-
+if (isset($message)) {
+   foreach ($message as $message) {
+       echo '<div class="alert alert-warning alert-dismissible fade show col-4 offset-4 alert_message" role="alert" tabindex="-1">
+               ' . htmlspecialchars($message) . '
+               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+             </div>';
+   }
+}
+;
 ?>
 
 <title>Features Product</title>
@@ -246,7 +282,7 @@ if (isset($_POST['add_to_cart'])) {
    </section>
    <!-- end of quick-view -->
 
-   <!-- Related items section-->
+   <!-- Reviews-->
    <section id="collection">
       <div class="container">
          <div class="title text-center mt-5 pt-5">
@@ -257,17 +293,14 @@ if (isset($_POST['add_to_cart'])) {
             <div class="col-4">
                <img src="img/undraw_posting_photo.svg" alt="" width="70%">
             </div>
-            <div class="col-8">
+            <div class="col-lg-6 mt-5">
                <p class="card-text text-capitalize text-truncate fw-bold">
                   Tên người bình luận
                </p>
                <p class="text-truncate text-capitalize">
                   Bình luận nội dung
                </p>
-            </div>
-            <p class="text-primary">Bình luận</p>
-            <input type="text">
-            <button type="submit" class="mt-2">bình luận</button>
+            </div>          
 
          </div>
       </div>
@@ -339,7 +372,7 @@ if (isset($_POST['add_to_cart'])) {
    <script>
       function addToWishlist() {
          // Kiểm tra trạng thái đăng nhập ở phía client (trình duyệt)
-         var loggedIn = <?= htmlspecialchars(isset($_SESSION['user_id']) ? 'true' : 'false'); ?>;
+         var loggedIn = <?php echo isset($_SESSION['user_id']) ? 'true' : 'false'; ?>;
 
          if (!loggedIn) {
             // Hiển thị thông báo hoặc chuyển hướng đến trang đăng nhập
@@ -354,7 +387,7 @@ if (isset($_POST['add_to_cart'])) {
    <script>
       function addToCart() {
          // Kiểm tra trạng thái đăng nhập ở phía client (trình duyệt)
-         var loggedIn = <?php echo htmlspecialchars(isset($_SESSION['user_id']) ? 'true' : 'false'); ?>;
+         var loggedIn = <?php echo isset($_SESSION['user_id']) ? 'true' : 'false'; ?>;
 
          if (!loggedIn) {
             // Hiển thị thông báo hoặc chuyển hướng đến trang đăng nhập
