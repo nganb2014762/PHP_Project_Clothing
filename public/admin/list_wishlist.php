@@ -101,7 +101,7 @@ if (isset($_GET['delete'])) {
                                                         </b>
                                                     </td>
 
-                                                    <td>
+                                                    <td class="pt-4">
                                                         <?= htmlspecialchars($fetch_message['user_id']); ?>
                                                     </td>
 
