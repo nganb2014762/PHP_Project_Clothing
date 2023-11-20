@@ -3,11 +3,11 @@ include_once __DIR__ . '../../partials/boostrap.php';
 include_once __DIR__ . '/../partials/header.php';
 require_once __DIR__ . '../../partials/connect.php';
 
-$user_id = $_SESSION['user_id'];
-if (!isset($user_id)) {
-    header('location:login.php');
-}
-;
+// $user_id = $_SESSION['user_id'];
+// if (!isset($user_id)) {
+//     header('location:login.php');
+// }
+// ;
 
 if (isset($_POST['add_to_wishlist'])) {
 
@@ -66,9 +66,14 @@ if (isset($_POST['add_to_cart'])) {
 ;
 ?>
 
-<section class="pt-5">
+
+<title>Products categories</title>
+</head>
+
+<!-- shop -->
+<section id="category" class="pt-5">
     <div class="container">
-        <div class="title text-center ">
+        <div class="title text-center mt-5 pt-5">
             <h2 class="position-relative d-inline-block">Products categories</h2>
         </div>
         <?php
@@ -82,85 +87,76 @@ if (isset($_POST['add_to_cart'])) {
         }
         ;
         ?>
-        <div class="row g-0">
-            <div class="collection-list mt-4 row gx-0 gy-3">
-
+        <div class="row g-0 container">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4 mt-3">
                 <?php
-                $category_name = $_GET['category'];
-                $select_products = $pdo->prepare("SELECT * FROM `products` WHERE category = ?");
-                $select_products->execute([$category_name]);
+                $category_id = $_GET['id'];
+                $select_products = $pdo->prepare("SELECT * FROM `products` WHERE category_id = ?");
+                $select_products->execute([$category_id]);
                 if ($select_products->rowCount() > 0) {
                     while ($fetch_products = $select_products->fetch(PDO::FETCH_ASSOC)) {
                         ?>
-                        <div class="col-md-6 col-lg-4 col-xl-3 p-2 best">
-                            <div class="collection-img position-relative">
-                                <img src="admin/uploaded_img/<?= $fetch_products['image']; ?>" alt="" class="w-100">
+                        <form action="" method="POST" onsubmit="return addToWishllist();">
+                            <div class="col">
+                                <div class="card shadow rounded h-100">
+                                    <div class="collection-img position-relative">
+                                        <img class="rounded-top p-0 card-img-top"
+                                            src="admin/uploaded_img/<?= $fetch_products['image']; ?>" alt="">
+                                    </div>
+
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-8">
+                                                <p class="card-text text-capitalize text-truncate fw-bold">
+                                                    <?= htmlspecialchars($fetch_products['name']); ?>
+                                                </p>
+                                            </div>
+
+                                            <div class="col-4 text-end"><button class="text-capitalize border-0 bg-white"
+                                                    type="submit" name="add_to_wishlist"><i
+                                                        class="fa-regular fa-heart fa-lg text-dark heart"></i></button>
+                                            </div>
+
+                                        </div>
+
+                                        <p class="text-truncate text-capitalize">
+                                            <?= htmlspecialchars($fetch_products['details']); ?>
+                                        </p>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span class="fw-bold d-block h5">$
+                                                <?= htmlspecialchars($fetch_products['price']); ?>
+                                            </span>
+                                            <div class="btn-group">
+                                                <a href="view_page.php?pid=<?= htmlspecialchars($fetch_products['id']); ?>"
+                                                    class="btn btn-primary">View</a>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" name="pid" value="<?= htmlspecialchars($fetch_products['id']); ?>">
+                                        <input type="hidden" name="p_name"
+                                            value="<?= htmlspecialchars($fetch_products['name']); ?>">
+                                        <input type="hidden" name="p_price"
+                                            value="<?= htmlspecialchars($fetch_products['price']); ?>">
+                                        <input type="hidden" name="p_image"
+                                            value="<?= htmlspecialchars($fetch_products['image']); ?>">
+
+                                    </div>
+                                </div>
                             </div>
-                            <div class="text-center">
-                                <p class="text-capitalize mt-3 mb-1">
-                                    <?= $fetch_products['name']; ?>
-                                </p>
-                                <span class="fw-bold d-block">$
-                                    <?= $fetch_products['price']; ?>
-                                </span>
-                                <a href="view_page.php?pid=<?= $fetch_products['id']; ?>" class="btn btn-primary mt-3">View</a>
-                            </div>
-                        </div>
+                        </form>
                         <?php
                     }
+                    ?>
+                </div>
+
+                <?php
                 } else {
-                    echo htmlspecialchars('<p class="empty">no products added yet!</p>');
+                    echo '<p class="empty">No products added yet!</p>';
                 }
                 ?>
-            </div>
         </div>
-
-
     </div>
-    </div>
-
-
-
-    <!-- <div class="box-container">
-
-        <?php
-        $category_name = $_GET['category'];
-        $select_products = $pdo->prepare("SELECT * FROM `products` WHERE category = ?");
-        $select_products->execute([$category_name]);
-        if ($select_products->rowCount() > 0) {
-            while ($fetch_products = $select_products->fetch(PDO::FETCH_ASSOC)) {
-                ?>
-                <form action="" class="box" method="POST">
-                    <div class="price">$<span>
-                            <?= $fetch_products['price']; ?>
-                        </span>/-</div>
-                    <a href="view_page.php?pid=<?= $fetch_products['id']; ?>" class="fas fa-eye"></a>
-                    <img src="uploaded_img/<?= $fetch_products['image']; ?>" alt="">
-                    <div class="name">
-                        <?= $fetch_products['name']; ?>
-                    </div>
-                    <input type="hidden" name="pid" value="<?= $fetch_products['id']; ?>">
-                    <input type="hidden" name="p_name" value="<?= $fetch_products['name']; ?>">
-                    <input type="hidden" name="p_price" value="<?= $fetch_products['price']; ?>">
-                    <input type="hidden" name="p_image" value="<?= $fetch_products['image']; ?>">
-                    <input type="number" min="1" value="1" name="p_qty" class="qty">
-                    <input type="submit" value="add to wishlist" class="option-btn" name="add_to_wishlist">
-                    <input type="submit" value="add to cart" class="btn" name="add_to_cart">
-                </form>
-                <?php
-            }
-        } else {
-            echo '<p class="empty">no products available!</p>';
-        }
-        ?>
-
-    </div> -->
-
 </section>
+<!-- end of shop -->
 
 <?php
 include_once __DIR__ . '/../partials/footer.php';
-?>
-</body>
-
-</html>

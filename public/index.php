@@ -101,65 +101,37 @@ if (isset($_POST['add_to_cart'])) {
     </header>
     <!-- end of slide -->
 
-    <!-- <section id="collection" class="pt-5">
-        <div class="container">
-            <div class="title text-center ">
-                <h2 class="position-relative d-inline-block">Shop by category</h2>
-            </div>
-
-            <div class="row g-0 justify-content-center">
-                <div class="d-flex flex-wrap justify-content-center mt-5 filter-button-group">
-                    <button type="button" class="btn m-2 text-dark active-filter-btn" data-filter="*">All</button>
-                    <button type="button" class="btn m-2 text-dark" data-filter=".best">Best Sellers</button>
-                    <button type="button" class="btn m-2 text-dark" data-filter=".feat">Featured</button>
-                    <button type="button" class="btn m-2 text-dark" data-filter=".new">New Arrival</button>
-                </div>
-                <div class="col-md-8 col-lg-3 col-xl-3 p-2 best">
-                    <div class=" position-relative "
-                        style="display: flex; flex-direction: column; align-items: center; text-align: center;">
-
-                        <img src="img/shop/cat-1.jpg" alt="">
-                        <br>
-                        <a href="category.php?category=Shirts" class="btn">Shirt</a>
-
-                    </div>
-                </div>
-
-                <div class="col-md-8 col-lg-3 col-xl-3 p-2 best">
-                    <div class=" position-relative"
-                        style="display: flex; flex-direction: column; align-items: center; text-align: center;">
-
-                        <img src="img/shop/cat-2.jpg" alt="">
-                        <br>
-                        <a href="category.php?category=Pan" class="btn">Pan</a>
-
-                    </div>
-                </div>
-
-                <div class="col-md-8 col-lg-3 col-xl-3 p-2 best ">
-                    <div class=" position-relative "
-                        style="display: flex; flex-direction: column; align-items: center; text-align: center;">
-
-                        <img src="img/shop/cat-3.jpg" alt="">
-                        <br>
-
-                        <a href="category.php?category=Dress" class="btn">Dress</a>
-
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section> -->
-
-
     <!-- shop -->
     <section id="collection" class="pt-5">
         <div class="container">
             <div class="title text-center">
                 <h2 class="position-relative d-inline-block">New Collection</h2>
             </div>
-
+            
+            <div class="row g-0 justify-content-center">
+                <div class="d-flex flex-wrap justify-content-center mt-5 filter-button-group">
+                    <button type="button" class="btn m-2 text-dark active-filter-btn" data-filter="*"><a
+                            class="text-decoration-none text-dark" href="shop.php">
+                            All</button>
+                    <?php
+                    $select_categorys = $pdo->prepare("SELECT * FROM `category`");
+                    $select_categorys->execute();
+                    if ($select_categorys->rowCount() > 0) {
+                        while ($fetch_categorys = $select_categorys->fetch(PDO::FETCH_ASSOC)) {
+                            ?>
+                            <button type="button" class="btn m-2" data-filter=".best"><a class="text-decoration-none text-dark"
+                                    href="category.php?id=<?= htmlspecialchars($fetch_categorys['id']); ?>">
+                                    <?= htmlspecialchars($fetch_categorys['name']); ?>
+                                </a>
+                            </button>
+                            <?php
+                        }
+                    } else {
+                        echo '<p>No categorys added yet!</p>';
+                    }
+                    ?>
+                </div>
+            </div>
             <div class="row g-0 container">
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4 mt-3">
                     <?php
@@ -231,7 +203,7 @@ if (isset($_POST['add_to_cart'])) {
                     </nav>
                     <?php
                     } else {
-                        echo htmlspecialchars('<p class="empty">no products added yet!</p>');
+                        echo '<p class="empty">no products added yet!</p>';
                     }
                     ?>
             </div>
