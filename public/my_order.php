@@ -130,7 +130,7 @@ if (isset($message)) {
                             <?= htmlspecialchars($fetch_orders['payment_status']); ?>
                         </p>
                         <td>
-                            <form action="user_my_order.php" method="POST">
+                            <form action="my_order.php" method="POST">
                                 <input type="hidden" name="order_id" value="<?= htmlspecialchars($fetch_orders['order_id']) ?>">
                                 <button type="submit" name="cancel_order"
                                     class="buy-btn btn btn-primary mt-3 <?= ($fetch_orders['payment_status'] != 'pending') ? 'disabled' : ''; ?>"
