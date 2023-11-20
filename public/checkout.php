@@ -158,7 +158,6 @@ if (isset($_POST['order'])) {
         }
         // Kiểm tra xem cập nhật đã thành công hay không và hiển thị thông báo
         if ($update_user_address->rowCount() > 0) {
-
           echo "Địa chỉ đã được cập nhật thành công!";
         } else {
           echo "Có lỗi xảy ra khi cập nhật địa chỉ.";
