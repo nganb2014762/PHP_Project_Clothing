@@ -42,14 +42,15 @@ if (isset($_POST['send'])) {
 }
 ;
 if (isset($message)) {
-foreach ($message as $message) {
-// echo '<script>alert(" ' . $message . ' ");</script>';
-echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
-' . htmlspecialchars($message) . '
-<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>';
+    foreach ($message as $message) {
+        // echo '<script>alert(" ' . $message . ' ");</script>';
+        echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
+                ' . htmlspecialchars($message) . '
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>';
+    }
 }
-  };
+;
 ?>
 
 <title>Contact</title>

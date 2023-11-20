@@ -329,7 +329,7 @@ if (isset($_POST['add_to_cart'])) {
 
                <?php
                } else {
-                  echo htmlspecialchars('<p class="empty">no products added yet!</p>');
+                  echo '<p class="empty">no products added yet!</p>';
                }
                ?>
          </div>
@@ -339,7 +339,7 @@ if (isset($_POST['add_to_cart'])) {
    <script>
       function addToWishlist() {
          // Kiểm tra trạng thái đăng nhập ở phía client (trình duyệt)
-         var loggedIn = <?php echo htmlspecialchars(isset($_SESSION['user_id']) ? 'true' : 'false'); ?>;
+         var loggedIn = <?= htmlspecialchars(isset($_SESSION['user_id']) ? 'true' : 'false'); ?>;
 
          if (!loggedIn) {
             // Hiển thị thông báo hoặc chuyển hướng đến trang đăng nhập

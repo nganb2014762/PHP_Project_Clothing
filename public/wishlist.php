@@ -89,7 +89,7 @@ if (isset($message)) {
                             <?php
                         }
                     } else {
-                        echo htmlspecialchars('<p class="empty">No products added yet!</p>');
+                        echo '<p class="empty">No products added yet!</p>';
                     }
                     ?>
                 </div>
@@ -100,7 +100,7 @@ if (isset($message)) {
     <script>
         function addToWishlist() {
             // Check the login status on the client side (browser)
-            var loggedIn = <?php echo htmlspecialchars(isset($_SESSION['user_id']) ? 'true' : 'false'); ?>;
+            var loggedIn = <?= htmlspecialchars(isset($_SESSION['user_id']) ? 'true' : 'false'); ?>;
 
             if (!loggedIn) {
                 // Display a message or redirect to the login page

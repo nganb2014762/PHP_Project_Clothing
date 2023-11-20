@@ -84,9 +84,8 @@ if (isset($message)) {
 
             </div>
             <div class="form-group p-2">
-                <input type="submit" name="search_btn" value="search" class="btn">
+                <input type="submit" name="search_btn" value="Search" class="btn">
             </div>
-
         </form>
     </div>
 </section>
@@ -164,9 +163,8 @@ if (isset($message)) {
                     <?php
                 }
             } else {
-                echo htmlspecialchars('<p class="empty">no result found!</p>');
+                echo '<p class="empty">no result found!</p>';
             }
-
         }
         ;
         ?>
