@@ -25,7 +25,7 @@
 
 <!-- Heading -->
 <div class="sidebar-heading">
-    Interface
+    Danh sách quản lý
 </div>
 
 
@@ -43,7 +43,7 @@
             <a class="collapse-item" href="list_products.php">Danh sách sản phẩm</a>
             <a class="collapse-item" href="add_products.php">Thêm sản phẩm</a>
             <a class="collapse-item" href="list_wishlist.php">Sản phẩm được yêu thích</a>
-            <a class="collapse-item" href="comment.php">Bình luận về sản phẩm</a>
+            <a class="collapse-item" href="comment.php">Đánh giá về sản phẩm</a>
         </div>
     </div>
 </li>

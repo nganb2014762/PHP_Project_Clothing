@@ -1,9 +1,6 @@
 <?php
-
 include_once __DIR__ . '../../partials/boostrap.php';
-
 include_once __DIR__ . '/../partials/header.php';
-
 require_once __DIR__ . '../../partials/connect.php';
 
 if (isset($_POST['add_to_wishlist'])) {

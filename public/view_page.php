@@ -43,25 +43,52 @@ if (isset($_POST['add_to_cart'])) {
       $insert_cart->execute([$user_id, $pid, $p_name, $p_price, $p_qty, $p_image]);
       $message[] = 'added to cart!';
    }
-;}
+}
+;
 
+// Kiểm tra xem người dùng đã đăng nhập hay chưa
+if (!isset($_SESSION['user_id'])) {
+   $message[] = 'Bạn cần đăng nhập để đánh giá sản phẩm.';
+   exit();
+}
 
-if (isset($_POST['comment'])) {
-    $pid = $_POST['pid'];
-    $pid = filter_var($pid, FILTER_SANITIZE_STRING);
-    $comment = $_POST['comment'];
-    $comment = filter_var($comment, FILTER_SANITIZE_STRING);
+// Trong phần xử lý form hoặc phần PHP của trang chi tiết sản phẩm
+if (isset($_POST['send'])) {
+   if (isset($_SESSION['user_id'])) {
+      // Lấy thông tin người dùng đăng nhập
+      $user_id = $_SESSION['user_id'];
 
-    // Giả sử $user_id đã được định nghĩa ở đâu đó trong mã của bạn
-    $kiem_tra_so_luong = $pdo->prepare("SELECT * FROM `review` WHERE pid = :p_id AND user_id = :user_id");
-    $kiem_tra_so_luong->execute([':p_id' => $pid, ':user_id' => $user_id]);
+      // Lấy thông tin về đánh giá từ form
+      $comment = $_POST['comment'];
 
-    if ($kiem_tra_so_luong->rowCount() > 0) {
-        $them_vao_danh_gia = $pdo->prepare("INSERT INTO `review` (user_id, pid, comment) VALUES (?, ?, ?)");
-        $them_vao_danh_gia->execute([$user_id, $pid, $comment]);
-        $message[] = 'Bình luận đã được thêm thành công!';
-    }
-};
+      // Lấy ID của sản phẩm mà người dùng đang xem
+      $pid = $_GET['pid']; // Chú ý rằng cần kiểm tra và xử lý dữ liệu này để tránh tấn công SQL Injection
+
+      if (isset($_GET['pid'])) {
+         $pid = $_GET['pid']; // Gán giá trị từ URL vào biến $pid
+         try {
+            // Thêm đánh giá vào cơ sở dữ liệu
+            $insert_comment = $pdo->prepare("INSERT INTO `reviews` (user_id, pid, comment) VALUES (?, ?, ?)");
+            $insert_comment->execute([$user_id, $pid, $comment]);
+
+            // Đánh dấu thông báo bình luận đã được thêm thành công
+            $_SESSION['comment'] = 'Bình luận thành công!';
+            header('Location:view_page.php?pid=' . $pid);
+            exit();
+         } catch (PDOException $e) {
+            // Xử lý lỗi nếu có ngoại lệ xảy ra trong quá trình thêm vào cơ sở dữ liệu
+            echo "Lỗi khi thực hiện truy vấn: " . $e->getMessage();
+         }
+      } else {
+         // Xử lý khi không tìm thấy giá trị pid trong URL
+         echo "Không tìm thấy sản phẩm!";
+      }
+   } else {
+      // Nếu người dùng chưa đăng nhập, hiển thị thông báo
+      $_SESSION['comment'] = 'Bạn cần đăng nhập để đánh giá sản phẩm.';
+   }
+}
+;
 
 if (isset($message)) {
    foreach ($message as $message) {
@@ -279,21 +306,64 @@ if (isset($message)) {
             <h2 class="position-relative d-inline-block">Reviews</h2>
          </div>
 
-         <div class="row g-0 container">
-            <div class="col-4">
-               <img src="img/undraw_posting_photo.svg" alt="" width="70%">
-            </div>
-            <div class="col-lg-6 mt-5">
-               <p class="card-text text-capitalize text-truncate fw-bold">
-                  Tên người bình luận
-               </p>
-               <p class="text-truncate text-capitalize">
-                  Bình luận nội dung
-               </p>
-            </div>          
+         <div class="container">
+            <div class="row" >
+            <?php
+               // Kiểm tra xem $pid có tồn tại không trước khi sử dụng
+               if (isset($_GET['pid'])) {
+                  $pid = $_GET['pid'];
 
+                  // Sử dụng $pid trong câu truy vấn SQL
+                  $select_comment = $pdo->prepare('SELECT reviews.comment, user.name FROM `reviews` 
+                                    INNER JOIN `user` ON user.id = reviews.user_id 
+                                    WHERE reviews.pid = ?');
+                  $select_comment->execute([$pid]);
+
+
+                  if ($select_comment && $select_comment->rowCount() > 0) {
+                     // Lặp qua các bản ghi và hiển thị dữ liệu
+                     while ($fetch_comments = $select_comment->fetch(PDO::FETCH_ASSOC)) {
+                        ?>
+                        <!-- // Hiển thị thông tin đánh giá ở đây -->
+                        <div class="row">
+                           <div class="col-8">
+                              <p class="card-text text-capitalize text-truncate fw-bold">
+                                 Tên người bình luận:
+                                 <?= $fetch_comments['name']; ?>
+                              </p>
+                              <p class="text-truncate text-capitalize">
+                                 Bình luận nội dung:
+                                 <?= $fetch_comments['comment']; ?>
+                              </p>
+                           </div>
+                        </div>
+
+                        <?php
+                     }
+                  } else {
+                     echo '<p>Chưa có đánh giá</p>';
+                  }
+               } else {
+                  echo "Không tìm thấy ID sản phẩm!";
+               }
+               ?>
+               <form action= ""  method="POST">
+                  <div class="col-sm-12 ">
+                     <?php if (isset($_SESSION['comment'])): ?>
+                        <div>
+                           <?= $_SESSION['comment'] ?>
+                        </div>
+                        <?php unset($_SESSION['comment']) ?>
+                     <?php endif ?>
+                     <label for="" style="font-weight: bold;color: #00b9b3">Reviews</label>
+                     <br>
+                     <textarea name="comment" class="form-control"placeholder="Type reviews" style="width: 600px;"></textarea>
+                     <br>
+                     <button value="send" name="send" type="submit" class="btn">send</button>
+                  </div>
+               </form>              
+            </div>
          </div>
-      </div>
       </div>
    </section>
 
@@ -393,7 +463,3 @@ if (isset($message)) {
 
    <?php
    include_once __DIR__ . '../../partials/footer.php';
-   ?>
-</body>
-
-</html>
