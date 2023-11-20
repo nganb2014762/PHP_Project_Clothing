@@ -148,15 +148,22 @@ if (isset($message)) {
                                             </td>
                                             <td class="pt-4">
                                                 <a class="btn btn-primary"
-                                                    href="edit_orders.php?update=<?= htmlspecialchars($row['id']); ?>&check_date=<?= date('Y-M-d', strtotime($row['check_date'])); ?>&cancel_date=<?= date('Y-M-d', strtotime($row['cancel_date'])); ?>"
+                                                    href="edit_orders.php?update=<?= htmlspecialchars($row['id']);?>&check_date=<?= date('Y-M-d', strtotime($row['check_date']));?>&cancel_date=<?= date('Y-M-d', strtotime($row['cancel_date']));?>"
                                                     class="option-btn">edit</a>
                                             </td>
                                             <td class="pt-4">
+<<<<<<< HEAD
+                                                <a class="btn btn-danger" data-id="<?= htmlspecialchars($row['id']);?>"
+                                                    data-check-date="<?= date('Y-M-d', strtotime($row['check_date']));?>"
+                                                    data-cancel-date="<?= date('Y-M-d', strtotime($row['cancel_date']));?>"
+                                                    data-toggle="modal" data-target="#deleteConfirmationModal">delete</a>
+=======
                                                 <a class="btn btn-danger" data-id="<?= htmlspecialchars($row['id']); ?>"
                                                     data-check-date="<?= date('Y-M-d', strtotime($row['check_date'])); ?>" 
                                                     data-cancel-date="<?= date('Y-M-d', strtotime($row['cancel_date'])); ?>" 
                                                     data-toggle="modal"
                                                     data-target="#deleteConfirmationModal">delete</a>
+>>>>>>> f0963988242f6f0cbfa40366981e94c963d8e845
                                             </td>
                                         </tr>
                                         <?php
