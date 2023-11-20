@@ -49,6 +49,7 @@
                             <i class="fa fa-search" style="color:black;"></i>
                         </a>
                     </span>
+
                     <?php
                     require_once __DIR__ . '../../partials/connect.php';
                     session_start();
@@ -62,7 +63,7 @@
                         if ($fetch_profile !== false) {
                             echo ' <div class="dropdown">
                                     <a  style="color:#222; text-decoration: none;" role="button" data-bs-toggle="dropdown">
-                                        <i class="fa-solid fa-user"></i> <span>'.htmlspecialchars($fetch_profile['name']).'</span>
+                                        <i class="fa-solid fa-user"></i> <span>' . htmlspecialchars($fetch_profile['name']) . '</span>
                                     </a>
                         
                                     <ul class="dropdown-menu">
@@ -70,6 +71,7 @@
                                         <li><a class="dropdown-item" href="change_password.php">Change Password</a></li>
                                         <li><a class="dropdown-item" href="my_order.php">My Orders</a></li>
                                         <li><a class="dropdown-item" href="wishlist.php">My Favorite List</a></li>
+                                        <li><a class="dropdown-item" href="message.php">My Message</a></li>
                                         <li><a id="logout" class="dropdown-item" href="logout.php">Log Out</a></li>
                                     </ul>
                                 </div> ';
