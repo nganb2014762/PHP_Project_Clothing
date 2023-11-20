@@ -21,15 +21,6 @@ if (isset($_POST['add_to_wishlist'])) {
 }
 ;
 
-if (isset($message)) {
-    foreach ($message as $message) {
-        echo '<div class="alert alert-warning alert-dismissible fade show col-4 offset-4 alert_message" role="alert" tabindex="-1">
-                ' . htmlspecialchars($message) . '
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-              </div>';
-    }
-}
-;
 ?>
 <title>Shop</title>
 </head>
@@ -41,7 +32,17 @@ if (isset($message)) {
             <div class="title text-center mt-5 pt-5">
                 <h2 class="position-relative d-inline-block">Collection</h2>
             </div>
-
+            <?php
+            if (isset($message)) {
+                foreach ($message as $message) {
+                    echo '<div class="alert alert-warning alert-dismissible fade show col-6 offset-3" role="alert" tabindex="-1">
+                            ' . htmlspecialchars($message) . '
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                          </div>';
+                }
+            }
+            ;
+            ?>
             <div class="row g-0 container">
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4 mt-3">
                     <?php
@@ -85,10 +86,14 @@ if (isset($message)) {
                                                         class="btn btn-primary">View</a>
                                                 </div>
                                             </div>
-                                            <input type="hidden" name="pid" value="<?= htmlspecialchars($fetch_products['id']); ?>">
-                                            <input type="hidden" name="p_name" value="<?= htmlspecialchars($fetch_products['name']); ?>">
-                                            <input type="hidden" name="p_price" value="<?= htmlspecialchars($fetch_products['price']); ?>">
-                                            <input type="hidden" name="p_image" value="<?= htmlspecialchars($fetch_products['image']); ?>">
+                                            <input type="hidden" name="pid"
+                                                value="<?= htmlspecialchars($fetch_products['id']); ?>">
+                                            <input type="hidden" name="p_name"
+                                                value="<?= htmlspecialchars($fetch_products['name']); ?>">
+                                            <input type="hidden" name="p_price"
+                                                value="<?= htmlspecialchars($fetch_products['price']); ?>">
+                                            <input type="hidden" name="p_image"
+                                                value="<?= htmlspecialchars($fetch_products['image']); ?>">
 
                                         </div>
                                     </div>
@@ -122,7 +127,3 @@ if (isset($message)) {
     </script>
     <?php
     include_once __DIR__ . '/../partials/footer.php';
-    ?>
-</body>
-
-</html>

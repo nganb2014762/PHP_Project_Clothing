@@ -35,15 +35,6 @@ if (isset($_POST['update_password'])) {
 
 };
 
-if (isset($message)) {
-   foreach ($message as $message) {
-       echo '<div class="alert alert-warning alert-dismissible fade show col-4 offset-4" role="alert" tabindex="-1">
-               ' . htmlspecialchars($message) . '
-               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-             </div>';
-   }
-}
-;
 ?>
 
 <title>Change Password</title>
@@ -52,10 +43,18 @@ if (isset($message)) {
 <section class="container my-5 pt-5">
    <div class="container title text-center mt-3 pt-5">
       <h2 class="position-relative d-inline-block">Change Password</h2>
-      <hr class="mx-auto">
-
-
    </div>
+   <?php
+            if (isset($message)) {
+                foreach ($message as $message) {
+                    echo '<div class="alert alert-warning alert-dismissible fade show col-6 offset-3" role="alert" tabindex="-1">
+                            ' . htmlspecialchars($message) . '
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                          </div>';
+                }
+            }
+            ;
+            ?>
    <div class="mx-auto container">
       <div class="card col-md-6 offset-md-3">
          <div class="card-body">

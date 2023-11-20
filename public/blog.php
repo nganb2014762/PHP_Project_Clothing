@@ -1,11 +1,7 @@
 <?php
-
 include_once __DIR__ . '../../partials/boostrap.php';
-
 include_once __DIR__ . '../../partials/header.php';
-
 require_once __DIR__ . '../../partials/connect.php';
-
 ?>
 
 <title>Blog</title>
@@ -57,6 +53,3 @@ require_once __DIR__ . '../../partials/connect.php';
 
 <?php
 include_once __DIR__ . '../../partials/footer.php';
-?>
-</body>
-</html>

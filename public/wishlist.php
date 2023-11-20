@@ -7,7 +7,7 @@ if (isset($_POST['delete_wishlist'])) {
     $user_id = $_SESSION['user_id']; // Assume that $_SESSION['user_id'] is set and valid
 
     $id = $_POST['id'];
-    
+
 
     // Use "DELETE FROM" instead of "delete * FROM"
     $check_wishlist_numbers = $pdo->prepare("DELETE FROM `wishlist` WHERE id = :id AND user_id = :user_id");
@@ -38,7 +38,17 @@ if (isset($message)) {
             <div class="title text-center mt-5 pt-5">
                 <h2 class="position-relative d-inline-block">My Favorite List</h2>
             </div>
-
+            <?php
+            if (isset($message)) {
+                foreach ($message as $message) {
+                    echo '<div class="alert alert-warning alert-dismissible fade show col-6 offset-3" role="alert" tabindex="-1">
+                            ' . htmlspecialchars($message) . '
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                          </div>';
+                }
+            }
+            ;
+            ?>
             <div class="row g-0 container">
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4 mt-3">
                     <?php

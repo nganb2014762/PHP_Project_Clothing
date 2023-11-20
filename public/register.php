@@ -36,16 +36,6 @@ if (isset($_POST['submit'])) {
 }
 ;
 
-if (isset($message)) {
-    foreach ($message as $message) {
-        // echo '<script>alert(" ' . $message . ' ");</script>';
-        echo '<div class="alert alert-warning alert-dismissible fade show col-4 offset-4" role="alert" tabindex="-1">
-                    ' . htmlspecialchars($message) . '
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                  </div>';
-    }
-}
-;
 ?>
 <title>Register</title>
 </head>
@@ -55,8 +45,18 @@ if (isset($message)) {
     <section class="my-5 py-5">
         <div class="container title text-center mt-3 pt-5">
             <h2 class="position-relative d-inline-block">Register</h2>
-            <hr class="mx-auto">
         </div>
+        <?php
+        if (isset($message)) {
+            foreach ($message as $message) {
+                echo '<div class="alert alert-warning alert-dismissible fade show col-6 offset-3" role="alert" tabindex="-1">
+                            ' . htmlspecialchars($message) . '
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                          </div>';
+            }
+        }
+        ;
+        ?>
         <div class="mx-auto container mt-3">
             <div class="card col-md-6 offset-md-3">
                 <div class="card-body">

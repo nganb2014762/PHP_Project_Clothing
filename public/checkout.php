@@ -64,7 +64,7 @@ if (isset($_POST['order'])) {
   foreach ($orderDetails as $orderDetail) {
     $total_products .= 'ID(' . $orderDetail['pid'] . '),SL(' . $orderDetail['quantity'] . '); ';
   }
-  
+
   try {
     // Cập nhật địa chỉ trong bảng `user`
     $update_user_address = $pdo->prepare("UPDATE `user` SET address = ? WHERE id = ?");
@@ -114,71 +114,9 @@ if (isset($_POST['order'])) {
     $message[] = 'Failed to place order. Error: ' . $e->getMessage();
 
   }
-
-  $total_products = implode(',', array_column($orderDetails, 'pid'));
-  
-  // $order_id = null;
-    try {
-      // Cập nhật địa chỉ trong bảng `user`
-      $update_user_address = $pdo->prepare("UPDATE `user` SET address = ? WHERE id = ?");
-      $update_user_address->execute([$address, $user_id]);
-      // Thêm đơn hàng vào bảng orders
-      $insert_order = $pdo->prepare("INSERT INTO `orders`(user_id, method, total_products, total_price, placed_on) VALUES(?,?,?,?,?)");
-      $insert_order->execute([$user_id, $method, $total_products, $cart_grand_total, $placed_on]);
-      // Lấy id của đơn hàng vừa chèn
-      $order_id = $pdo->lastInsertId();
-
-      // Giảm số lượng sản phẩm trong bảng product
-      foreach ($orderDetails as $orderDetail) {
-        $product_id = $orderDetail['pid'];
-        $quantity = $orderDetail['quantity'];
-
-        // Lấy số lượng sản phẩm hiện tại từ bảng product
-        $product_query = $pdo->prepare("SELECT quantity FROM `products` WHERE id = ?");
-        $product_query->execute([$product_id]);
-        $current_quantity = $product_query->fetchColumn();
-
-        // Kiểm tra số lượng sản phẩm đủ để giảm không
-        if ($current_quantity >= $quantity) {
-          // Giảm số lượng sản phẩm trong bảng product
-          $update_product_quantity = $pdo->prepare("UPDATE `products` SET quantity = ? WHERE id = ?");
-          $update_product_quantity->execute([$current_quantity - $quantity, $product_id]);
-          $insert_orders_details = $pdo->prepare("INSERT INTO orders_details (order_id, pid, quantity) VALUES (?, ?, ?)");
-          $insert_orders_details->execute([$order_id, $orderDetail['pid'], $orderDetail['quantity']]);
-          // Xóa các sản phẩm trong giỏ hàng
-          $delete_cart = $pdo->prepare("DELETE FROM `cart` WHERE user_id = ?");
-          $delete_cart->execute([$user_id]);
-
-          $message[] = 'Order placed successfully!';
-        } else {
-          // Xử lý trường hợp không đủ sản phẩm trong kho
-          $message[] = "Bạn đã đặt số lượng vượt quá số lượng sản phẩm trong kho.Số lượng sản phẩm trong kho còn $current_quantity";
-          $delete_order = $pdo->prepare("DELETE FROM `orders` WHERE id = ?");
-          $delete_order->execute([$user_id]);
-        }
-        // Kiểm tra xem cập nhật đã thành công hay không và hiển thị thông báo
-        if ($update_user_address->rowCount() > 0) {
-          echo htmlspecialchars("Địa chỉ đã được cập nhật thành công!");
-        } else {
-          echo htmlspecialchars("Có lỗi xảy ra khi cập nhật địa chỉ.");
-        }
-      }
-    } catch (PDOException $e) {
-      $message[] = 'Failed to place order. Error: ' . $e->getMessage();
-    }
 }
 ;
 
-
-if (isset($message)) {
-  foreach ($message as $message) {
-    // echo '<script>alert(" ' . $message . ' ");</script>';
-    echo '<div class="alert alert-warning alert-dismissible fade show col-4 offset-4" role="alert" tabindex="-1">
-              ' . htmlspecialchars($message) . '
-              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>';
-  }
-}
 ?>
 
 <title>Checkout</title>
@@ -190,11 +128,19 @@ if (isset($message)) {
       <div class="container title text-center mt-3 pt-5">
         <h2 class="position-relative d-inline-block">Checkout form</h2>
       </div>
-
     </div>
-
+    <?php
+    if (isset($message)) {
+      foreach ($message as $message) {
+        echo '<div class="alert alert-warning alert-dismissible fade show col-6 offset-3" role="alert" tabindex="-1">
+                            ' . htmlspecialchars($message) . '
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                          </div>';
+      }
+    }
+    ;
+    ?>
     <div class="row g-5">
-
       <div class="col-md-5 col-lg-4 order-md-last">
         <h4 class="d-flex justify-content-between align-items-center mb-3">
           <span class="text-primary ">Your cart</span>

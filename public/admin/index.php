@@ -7,7 +7,7 @@ require_once __DIR__ . '../../../partials/connect.php';
 $admin_id = $_SESSION['admin_id'];
 
 if (!isset($admin_id)) {
-   header('location:login.php');
+    header('location:login.php');
 }
 ;
 ?>
@@ -56,7 +56,8 @@ if (!isset($admin_id)) {
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                                Doanh thu bán được</div>
+                                                Doanh thu bán được
+                                            </div>
                                             <?php
                                             $total_completed = 0;
                                             $select_completed = $pdo->prepare("SELECT * FROM `orders` WHERE payment_status = ?");
@@ -85,7 +86,8 @@ if (!isset($admin_id)) {
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
-                                                Doanh thu đang chờ</div>
+                                                Doanh thu đang chờ
+                                            </div>
                                             <?php
                                             $total_pendings = 0;
                                             $select_pendings = $pdo->prepare("SELECT * FROM `orders` WHERE payment_status = ?");
@@ -106,15 +108,16 @@ if (!isset($admin_id)) {
                                 </div>
                             </div>
                         </div>
-                        
+
                         <!-- Product Card Example -->
                         <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card border-left-primary shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Sản
-                                                phẩm</div>
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                <a href="list_products" class="text-decoration-none">Sản phẩm</a>
+                                            </div>
                                             <?php
                                             $select_products = $pdo->prepare("SELECT * FROM `products`");
                                             $select_products->execute();
@@ -135,14 +138,15 @@ if (!isset($admin_id)) {
                                 </div>
                             </div>
                         </div>
-                        
+
                         <!-- Order Card Example -->
                         <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card border-left-info shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Đơn hàng
+                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                            <a href="list_orders.php" class="text-decoration-none">Đơn hàng</a>
                                             </div>
                                             <?php
                                             $select_orders = $pdo->prepare("SELECT * FROM `orders`");
@@ -197,7 +201,8 @@ if (!isset($admin_id)) {
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
-                                                Đơn hàng đang chờ xử lý</div>
+                                                Đơn hàng đang chờ xử lý
+                                            </div>
                                             <?php
                                             $select_orders = $pdo->prepare("SELECT * FROM `orders` WHERE payment_status = ?");
                                             $select_orders->execute(['pending']);
@@ -222,8 +227,9 @@ if (!isset($admin_id)) {
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Khách
-                                                hàng</div>
+                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                                <a href="list_customers.php" class="text-decoration-none">Khách hàng</a>
+                                            </div>
                                             <?php
                                             $select_users = $pdo->prepare("SELECT * FROM `user` WHERE role = ?");
                                             $select_users->execute(['0']);
@@ -246,13 +252,17 @@ if (!isset($admin_id)) {
                         </div>
 
                         <!-- Pending Requests Card Example -->
+
                         <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card border-left-warning shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                                Yêu cầu</div>
+                                                <a href="message.php" class="text-decoration-none">
+                                                    Yêu cầu
+                                                </a>
+                                            </div>
                                             <?php
                                             $select_messages = $pdo->prepare("SELECT * FROM `message`");
                                             $select_messages->execute();

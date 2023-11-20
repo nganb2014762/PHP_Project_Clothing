@@ -1,11 +1,7 @@
 <?php
-
 include_once __DIR__ . '../../partials/boostrap.php';
-
 include_once __DIR__ . '../../partials/header.php';
-
 require_once __DIR__ . '../../partials/connect.php';
-
 ?>
 
 <title>About Us</title>
@@ -92,7 +88,6 @@ require_once __DIR__ . '../../partials/connect.php';
                     <i class="fas fa-star"></i>
                     <i class="fas fa-star"></i>
                     <i class="fas fa-star"></i>
-                    <!-- <i class="fas fa-star-half-alt"></i> -->
                 </div>
                 <p>The customer service at FASHION is top-notch! They were so helpful in helping me find the perfect
                     outfit
@@ -123,6 +118,3 @@ require_once __DIR__ . '../../partials/connect.php';
 
 <?php
 include_once __DIR__ . '../../partials/footer.php';
-?>
-</body>
-</html>

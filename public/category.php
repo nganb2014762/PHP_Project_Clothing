@@ -1,13 +1,9 @@
 <?php
-
 include_once __DIR__ . '../../partials/boostrap.php';
-
 include_once __DIR__ . '/../partials/header.php';
-
 require_once __DIR__ . '../../partials/connect.php';
 
 $user_id = $_SESSION['user_id'];
-
 if (!isset($user_id)) {
     header('location:login.php');
 }
@@ -67,16 +63,7 @@ if (isset($_POST['add_to_cart'])) {
     }
 
 }
-
-if (isset($message)) {
-    foreach ($message as $message) {
-        // echo '<script>alert(" ' . $message . ' ");</script>';
-        echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
-            ' . htmlspecialchars($message) . '
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-             </div>';
-    }
-}
+;
 ?>
 
 <section class="pt-5">
@@ -84,7 +71,17 @@ if (isset($message)) {
         <div class="title text-center ">
             <h2 class="position-relative d-inline-block">Products categories</h2>
         </div>
-
+        <?php
+        if (isset($message)) {
+            foreach ($message as $message) {
+                echo '<div class="alert alert-warning alert-dismissible fade show col-6 offset-3" role="alert" tabindex="-1">
+                            ' . htmlspecialchars($message) . '
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                          </div>';
+            }
+        }
+        ;
+        ?>
         <div class="row g-0">
             <div class="collection-list mt-4 row gx-0 gy-3">
 
@@ -165,4 +162,5 @@ if (isset($message)) {
 include_once __DIR__ . '/../partials/footer.php';
 ?>
 </body>
+
 </html>

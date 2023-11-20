@@ -1,10 +1,9 @@
 <?php
-include_once __DIR__ . "../../../partials/admin_boostrap.php";
 session_start();
+include_once __DIR__ . "../../../partials/admin_boostrap.php";
 require_once __DIR__ . '../../../partials/connect.php';
 
 $admin_id = $_SESSION['admin_id'];
-
 if (!isset($admin_id)) {
     header('location:login.php');
 }
@@ -13,7 +12,6 @@ if (!isset($admin_id)) {
 
 if (isset($message)) {
     foreach ($message as $message) {
-        // echo '<script>alert(" ' . $message . ' ");</script>';
         echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
             ' . htmlspecialchars($message) . '
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -25,9 +23,9 @@ if (isset($message)) {
 if (isset($_GET['delete'])) {
 
     $delete_id = $_GET['delete'];
-    $delete_message = $pdo->prepare("DELETE FROM `reviews` WHERE user_id = ?");
-    $delete_message->execute([$delete_id]);
-    header('location: index.php');
+    $delete_comment = $pdo->prepare("DELETE FROM `reviews` WHERE id = ?");
+    $delete_comment->execute([$delete_id]);
+    header('location: list_comment.php');
 }
 
 ?>
@@ -62,82 +60,73 @@ if (isset($_GET['delete'])) {
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800">Comment from customers</h1>
+                    </div>
 
+                    <div class="table-responsive">
+                        <form id="product-form" action="" method="POST" enctype="multipart/form-data"
+                            class="text_center form-horizontal">
+                            <table class="table text-center">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">STT</th>
+                                        <th scope="col">User ID</th>
+                                        <th scope="col">Pid</th>
+                                        <th scope="col">Image</th>
+                                        <th scope="col">Comment</th>
+                                        <th scope="col">Time</th>
+                                        <th scope="col">Delete</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="table-group-divider">
+                                    <?php
+                                    $i = 1;
+                                    $select_comment = $pdo->prepare("SELECT * from reviews");
+                                    $select_comment->execute();
+                                    if ($select_comment->rowCount() > 0) {
+                                        while ($fetch_comment = $select_comment->fetch(PDO::FETCH_ASSOC)) {
+                                            ?>
+                                            <tr>
+                                                <td class="pt-4">
+                                                    <b>
+                                                        <?= htmlspecialchars($i++); ?>
+                                                    </b>
+                                                </td>
 
-                    <section class="">
-                        <div class="container text-center">
-                            <h2 class="position-relative d-inline-block">Comment from customers</h2>
-                            <!-- <hr class="mx-auto"> -->
-                        </div>
+                                                <td class="pt-4">
+                                                    <?= htmlspecialchars($fetch_comment['user_id']); ?>
+                                                </td>
 
+                                                <td class="pt-4">
+                                                    <?= htmlspecialchars($fetch_comment['pid']); ?>
+                                                </td>
 
-                        <div class="table-responsive">
-                            <form id="product-form" action="" method="POST" enctype="multipart/form-data"
-                                class="text_center form-horizontal">
-                                <table class="table text-center">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">STT</th>
-                                            <th scope="col">User ID</th>
-                                            <th scope="col">Pid</th>
-                                            <th scope="col">Comment</th>
-                                            <th scope="col">Time</th>
-                                            <th scope="col">Delete</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="table-group-divider">
+                                                <td class="col-2">
+                                                    <img src="uploaded_img/reviews/<?= htmlspecialchars($fetch_comment['image']); ?>" alt="" width="50%">
+                                                </td>
+
+                                                <td class="pt-4">
+                                                    <?= htmlspecialchars($fetch_comment['comment']); ?>
+                                                </td>
+
+                                                <td class="pt-4">
+                                                    <?= htmlspecialchars($fetch_comment['review_time']); ?>
+                                                </td>
+
+                                                <td class="pt-4">
+                                                    <a class="btn btn-danger" data-id="<?= htmlspecialchars($fetch_comment['id']); ?>"
+                                                        data-toggle="modal" data-target="#deleteConfirmationModal">Delete</a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
                                         <?php
-                                        $i = 1;
-                                        $select_message = $pdo->prepare("SELECT * from reviews ");
-                                        $select_message->execute();
-                                        if ($select_message->rowCount() > 0) {
-                                            while ($fetch_message = $select_message->fetch(PDO::FETCH_ASSOC)) {
-                                                ?>
-                                                <tr>
-                                                    <td class="pt-4">
-                                                        <b>
-                                                            <?= htmlspecialchars($i++); ?>
-                                                        </b>
-                                                    </td>
-
-                                                    <td class="pt-4">
-                                                        <?= htmlspecialchars($fetch_message['user_id']); ?>
-                                                    </td>
-
-                                                    <td class="pt-4">
-                                                        <?= htmlspecialchars($fetch_message['pid']); ?>
-                                                    </td>
-
-                                                    <td class="pt-4">
-                                                        <?= htmlspecialchars($fetch_message['comment']); ?>
-                                                    </td>
-
-                                                    <td class="pt-4">
-                                                        <?= htmlspecialchars($fetch_message['review_time']); ?>
-                                                    </td>
-
-                                                    <!-- <td class="pt-4">
-                                                        <a href="comment.php?delete=<?= htmlspecialchars($fetch_message['user_id']); ?>"
-                                                            onclick="return confirm('delete this row?');"
-                                                            class="delete-btn">delete</a>
-                                                    </td> -->
-                                                    <td class="pt-4">
-                                                        <a class="btn btn-danger my-1 my-lg-0"
-                                                            data-id="<?= htmlspecialchars($fetch_message['user_id']); ?>"
-                                                            data-toggle="modal"
-                                                            data-target="#deleteConfirmationModal">Delete</a>
-                                                    </td>
-
-                                                </tr>
-                                            </tbody>
-                                            <?php
-                                            }
                                         }
-                                        ?>
-                                </table>
-                            </form>
-                        </div>
-                    </section>
+                                    }
+                                    ?>
+                            </table>
+                        </form>
+                    </div>
 
                 </div>
                 <!-- /.container-fluid -->
@@ -165,7 +154,25 @@ if (isset($_GET['delete'])) {
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
-
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" href="/logout">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Delete Modal -->
     <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" role="dialog"
         aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
@@ -197,7 +204,7 @@ if (isset($_GET['delete'])) {
                 var Id = button.data('id');
 
                 // Set the delete button link with productId
-                var deleteLink = 'comment.php?delete=' + Id;
+                var deleteLink = 'list_comment.php?delete=' + Id;
                 $('#deleteLink').attr('href', deleteLink);
             });
         });

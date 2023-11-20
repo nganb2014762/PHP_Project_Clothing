@@ -33,12 +33,10 @@ if (isset($_POST['add_to_cart'])) {
    $check_cart_numbers->execute([$p_name, $user_id]);
 
    if ($check_cart_numbers->rowCount() > 0) {
-      // Sản phẩm đã tồn tại trong giỏ hàng, cập nhật số lượng
       $update_qty = $pdo->prepare("UPDATE `cart` SET quantity = quantity + ? WHERE name = ? AND user_id = ?");
       $update_qty->execute([$p_qty, $p_name, $user_id]);
       $message[] = 'Quantity updated in cart!';
    } else {
-      // Sản phẩm chưa có trong giỏ hàng, thêm mới
       $insert_cart = $pdo->prepare("INSERT INTO `cart`(user_id, pid, name, price, quantity, image) VALUES(?,?,?,?,?,?)");
       $insert_cart->execute([$user_id, $pid, $p_name, $p_price, $p_qty, $p_image]);
       $message[] = 'added to cart!';
@@ -46,56 +44,40 @@ if (isset($_POST['add_to_cart'])) {
 }
 ;
 
-// Kiểm tra xem người dùng đã đăng nhập hay chưa
-if (!isset($_SESSION['user_id'])) {
-   $message[] = 'Bạn cần đăng nhập để đánh giá sản phẩm.';
-   exit();
-}
 
-// Trong phần xử lý form hoặc phần PHP của trang chi tiết sản phẩm
 if (isset($_POST['send'])) {
    if (isset($_SESSION['user_id'])) {
-      // Lấy thông tin người dùng đăng nhập
       $user_id = $_SESSION['user_id'];
-
-      // Lấy thông tin về đánh giá từ form
       $comment = $_POST['comment'];
+      $pid = $_GET['pid'];
+      $image = null;
 
-      // Lấy ID của sản phẩm mà người dùng đang xem
-      $pid = $_GET['pid']; // Chú ý rằng cần kiểm tra và xử lý dữ liệu này để tránh tấn công SQL Injection
+      if ($_FILES['image']['error'] === UPLOAD_ERR_OK) {
+         $image_name = $_FILES['image']['name'];
+         $temp_image_path = $_FILES['image']['tmp_name'];
+         $uploads_directory = 'admin/uploaded_img/reviews/';
+
+         $image = $uploads_directory . $image_name;
+
+         move_uploaded_file($temp_image_path, $image);
+      }
 
       if (isset($_GET['pid'])) {
-         $pid = $_GET['pid']; // Gán giá trị từ URL vào biến $pid
+         $pid = $_GET['pid'];
          try {
-            // Thêm đánh giá vào cơ sở dữ liệu
-            $insert_comment = $pdo->prepare("INSERT INTO `reviews` (user_id, pid, comment) VALUES (?, ?, ?)");
-            $insert_comment->execute([$user_id, $pid, $comment]);
+            $insert_comment = $pdo->prepare("INSERT INTO `reviews` (user_id, pid, comment, image) VALUES (?, ?, ?, ?)");
+            $insert_comment->execute([$user_id, $pid, $comment, $image_name]);
 
-            // Đánh dấu thông báo bình luận đã được thêm thành công
-            $_SESSION['comment'] = 'Bình luận thành công!';
             header('Location:view_page.php?pid=' . $pid);
             exit();
          } catch (PDOException $e) {
-            // Xử lý lỗi nếu có ngoại lệ xảy ra trong quá trình thêm vào cơ sở dữ liệu
-            echo "Lỗi khi thực hiện truy vấn: " . $e->getMessage();
+            $message[] = "Lỗi khi thực hiện truy vấn: " . $e->getMessage();
          }
       } else {
-         // Xử lý khi không tìm thấy giá trị pid trong URL
-         echo "Không tìm thấy sản phẩm!";
+         $message[] = "Không tìm thấy sản phẩm!";
       }
    } else {
-      // Nếu người dùng chưa đăng nhập, hiển thị thông báo
       $_SESSION['comment'] = 'Bạn cần đăng nhập để đánh giá sản phẩm.';
-   }
-}
-;
-
-if (isset($message)) {
-   foreach ($message as $message) {
-      echo '<div class="alert alert-warning alert-dismissible fade show col-4 offset-4 alert_message" role="alert" tabindex="-1">
-               ' . htmlspecialchars($message) . '
-               <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-             </div>';
    }
 }
 ;
@@ -111,7 +93,17 @@ if (isset($message)) {
          <div class="title text-center mt-5 pt-5">
             <h2 class="position-relative d-inline-block">Features Product</h2>
          </div>
-
+         <?php
+         if (isset($message)) {
+            foreach ($message as $message) {
+               echo '<div class="alert alert-warning alert-dismissible fade show col-6 offset-3" role="alert" tabindex="-1">
+                            ' . htmlspecialchars($message) . '
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                          </div>';
+            }
+         }
+         ;
+         ?>
          <div class="container align-text-center">
             <div class="row">
                <?php
@@ -299,78 +291,169 @@ if (isset($message)) {
          </div>
    </section>
    <!-- end of quick-view -->
-   <!-- Reviews-->
-   <section id="collection">
+
+
+   <!-- Reviews -->
+   <section id="reviews" class="">
       <div class="container">
          <div class="title text-center mt-5 pt-5">
             <h2 class="position-relative d-inline-block">Reviews</h2>
          </div>
 
-         <div class="container">
-            <div class="row" >
-            <?php
-               // Kiểm tra xem $pid có tồn tại không trước khi sử dụng
-               if (isset($_GET['pid'])) {
-                  $pid = $_GET['pid'];
+         <div class="container pt-5">
+            <div class="row d-flex">
 
-                  // Sử dụng $pid trong câu truy vấn SQL
-                  $select_comment = $pdo->prepare('SELECT reviews.comment, user.name FROM `reviews` 
-                                    INNER JOIN `user` ON user.id = reviews.user_id 
-                                    WHERE reviews.pid = ?');
-                  $select_comment->execute([$pid]);
+               <?php
+               $loggedIn = isset($_SESSION['user_id']);
 
+               if ($loggedIn) {
+                  if (isset($_GET['pid'])) {
+                     $pid = $_GET['pid'];
 
-                  if ($select_comment && $select_comment->rowCount() > 0) {
-                     // Lặp qua các bản ghi và hiển thị dữ liệu
-                     while ($fetch_comments = $select_comment->fetch(PDO::FETCH_ASSOC)) {
-                        ?>
-                        <!-- // Hiển thị thông tin đánh giá ở đây -->
-                        <div class="row">
-                           <div class="col-8">
-                              <p class="card-text text-capitalize text-truncate fw-bold">
-                                 Tên người bình luận:
-                                 <?= $fetch_comments['name']; ?>
-                              </p>
-                              <p class="text-truncate text-capitalize">
-                                 Bình luận nội dung:
-                                 <?= $fetch_comments['comment']; ?>
-                              </p>
+                     $select_comment = $pdo->prepare('SELECT reviews.comment, reviews.image, reviews.review_time, user.name FROM `reviews` 
+                                 INNER JOIN `user` ON user.id = reviews.user_id 
+                                 WHERE reviews.pid = ?');
+                     $select_comment->execute([$pid]);
+
+                     if ($select_comment && $select_comment->rowCount() > 0) { ?>
+                        <div class="col-8">
+                           <div class="card border-2">
+                              <div class="card-body p-2">
+                                 <?php
+                                 while ($fetch_comments = $select_comment->fetch(PDO::FETCH_ASSOC)) {
+                                    ?>
+
+                                    <div class="row">
+                                       <div class="col-12 row">
+                                          <div class="col-4 px-5 pb-3">
+                                             <img src="admin/uploaded_img/reviews/<?= $fetch_comments['image']; ?>" alt=""
+                                                width="70%">
+                                          </div>
+                                          <div class="col-8 px-3">
+                                             <p class="card-text text-capitalize text-truncate fw-bold">
+                                                <?= $fetch_comments['name']; ?>
+                                             </p>
+
+                                             <p class="text-capitalize">
+                                                <?= $fetch_comments['comment']; ?>
+                                             </p>
+                                             <p class="text-capitalize text-mute">
+                                                <?= $fetch_comments['review_time']; ?>
+                                             </p>
+
+                                          </div>
+                                          <hr class="d-block mx-2">
+                                       </div>
+                                    </div>
+                                    <?php
+                                 } ?>
+                              </div>
                            </div>
                         </div>
-
                         <?php
+                     } else {
+                        echo '<div class="text-center pt-3">
+                                    <h6 class="position-relative d-inline-block">Chưa có đánh giá</h6>
+                                 </div>';
                      }
                   } else {
-                     echo '<p>Chưa có đánh giá</p>';
+                     $message[] = "Không tìm thấy ID sản phẩm!";
                   }
-               } else {
-                  echo "Không tìm thấy ID sản phẩm!";
+                  ?>
+
+
+                  <div class="col-4">
+                     <div class="card border-2">
+                        <div class="card-body">
+                           <form action="" method="POST" enctype="multipart/form-data" class="col-sm-12">
+                              <?php if (isset($_SESSION['comment'])): ?>
+                                 <div>
+                                    <?= $_SESSION['comment'] ?>
+                                 </div>
+                                 <?php unset($_SESSION['comment']) ?>
+                              <?php endif ?>
+                              <label class="fs-3 fw-bold py-3 text-primary">Comment</label>
+                              <br>
+
+                              <label for="image" class="mx-1">Chọn ảnh:</label>
+                              <input type="file" name="image" id="image">
+
+                              <textarea name="comment" id="comment" class="form-control mt-3" placeholder="Type reviews"
+                                 rows="7" oninput="checkComment()"></textarea>
+                              <br>
+                              <button value="send" id="sendButton" name="send" type="submit" class="btn"
+                                 disabled>Send</button>
+                           </form>
+                        </div>
+                     </div>
+                  </div>
+               <?php } ?>
+
+
+               <!-- Hiển thị bình luận -->
+
+               <?php
+               // Nếu chưa đăng nhập, chỉ hiển thị bình luận đã có
+               if (!$loggedIn) {
+                  // Hiển thị bình luận đã có
+                  if (isset($_GET['pid'])) {
+                     $pid = $_GET['pid'];
+
+                     $select_comment = $pdo->prepare('SELECT reviews.comment, user.name FROM `reviews` 
+                                    INNER JOIN `user` ON user.id = reviews.user_id 
+                                    WHERE reviews.pid = ?');
+                     $select_comment->execute([$pid]);
+
+                     if ($select_comment && $select_comment->rowCount() > 0) {
+                        while ($fetch_comments = $select_comment->fetch(PDO::FETCH_ASSOC)) {
+                           ?>
+                           <div class="col-6 offset-3">
+                              <div class="card border-2">
+                                 <div class="card-body p-2">
+                                    <div class="row">
+                                       <div class="col-12 row">
+                                          <div class="col-4 px-5 pb-3">
+                                             <img src="admin/uploaded_img/reviews/<?= $fetch_comments['image']; ?>" alt=""
+                                                width="70%">
+                                          </div>
+                                          <div class="col-8 px-3">
+                                             <p class="card-text text-capitalize text-truncate fw-bold">
+                                                <?= $fetch_comments['name']; ?>
+                                             </p>
+
+                                             <p class="text-capitalize">
+                                                <?= $fetch_comments['comment']; ?>
+                                             </p>
+                                             <p class="text-capitalize text-mute">
+                                                <?= $fetch_comments['review_time']; ?>
+                                             </p>
+
+                                          </div>
+                                          <hr class="d-block mx-2">
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <?php
+                        }
+                     } else {
+                        echo '<div class="text-center pt-3">
+                              <h6 class="position-relative d-inline-block">Chưa có đánh giá</h6>
+                           </div>';
+                     }
+                  } else {
+                     $message[] = "Không tìm thấy ID sản phẩm!";
+                  }
                }
                ?>
-               <form action= ""  method="POST">
-                  <div class="col-sm-12 ">
-                     <?php if (isset($_SESSION['comment'])): ?>
-                        <div>
-                           <?= $_SESSION['comment'] ?>
-                        </div>
-                        <?php unset($_SESSION['comment']) ?>
-                     <?php endif ?>
-                     <label for="" style="font-weight: bold;color: #00b9b3">Reviews</label>
-                     <br>
-                     <textarea name="comment" class="form-control"placeholder="Type reviews" style="width: 600px;"></textarea>
-                     <br>
-                     <button value="send" name="send" type="submit" class="btn">send</button>
-                  </div>
-               </form>              
+
             </div>
          </div>
-      </div>
    </section>
 
-
-
    <!-- // <-- Related items section -->
-   <section id="collection" class="bg-light">
+   <section id="collection" class="">
       <div class="container">
          <div class="title text-center mt-5 pt-5">
             <h2 class="position-relative d-inline-block">You May Also Like</h2>
@@ -424,7 +507,9 @@ if (isset($message)) {
 
                <?php
                } else {
-                  echo htmlspecialchars('<p class="empty">no products added yet!</p>');
+                  echo '<div class="text-center pt-3">
+                           <h6 class="position-relative d-inline-block">No products added yet! </h6>
+                     </div>';
                }
                ?>
          </div>
@@ -433,31 +518,39 @@ if (isset($message)) {
 
    <script>
       function addToWishlist() {
-         // Kiểm tra trạng thái đăng nhập ở phía client (trình duyệt)
          var loggedIn = <?php echo htmlspecialchars(isset($_SESSION['user_id']) ? 'true' : 'false'); ?>;
 
          if (!loggedIn) {
-            // Hiển thị thông báo hoặc chuyển hướng đến trang đăng nhập
             alert('Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng.');
-            window.location.href = 'login.php'; // Chuyển hướng đến trang đăng nhập
-            return false; // Ngăn chặn gửi yêu cầu đến máy chủ
+            window.location.href = 'login.php';
+            return false;
          }
-         return true; // Cho phép gửi yêu cầu đến máy chủ
+         return true;
       }
    </script>
 
    <script>
       function addToCart() {
-         // Kiểm tra trạng thái đăng nhập ở phía client (trình duyệt)
          var loggedIn = <?php echo htmlspecialchars(isset($_SESSION['user_id']) ? 'true' : 'false'); ?>;
 
          if (!loggedIn) {
-            // Hiển thị thông báo hoặc chuyển hướng đến trang đăng nhập
             alert('Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng.');
-            window.location.href = 'login.php'; // Chuyển hướng đến trang đăng nhập
-            return false; // Ngăn chặn gửi yêu cầu đến máy chủ
+            window.location.href = 'login.php';
+            return false;
          }
-         return true; // Cho phép gửi yêu cầu đến máy chủ
+         return true;
+      }
+   </script>
+
+   <script>
+      function checkComment() {
+         var comment = document.getElementById("comment").value.trim();
+
+         if (comment === "") {
+            document.getElementById("sendButton").disabled = true;
+         } else {
+            document.getElementById("sendButton").disabled = false;
+         }
       }
    </script>
 

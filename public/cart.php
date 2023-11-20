@@ -6,7 +6,6 @@ include_once __DIR__ . '../../partials/header.php';
 require_once __DIR__ . '../../partials/connect.php';
 
 $user_id = $_SESSION['user_id'];
-
 if (!isset($user_id)) {
     header('location:login.php');
 }
@@ -29,23 +28,14 @@ if (isset($_GET['delete_all'])) {
 
 if (isset($_POST['update_qty'])) {
     $new_quantities = $_POST['p_qty'];
-    
+
     foreach ($new_quantities as $cart_id => $new_quantity) {
         if (is_numeric($new_quantity) && $new_quantity > 0) {
             $update_qty = $pdo->prepare("UPDATE `cart` SET quantity = ? WHERE id = ?");
             $update_qty->execute([$new_quantity, $cart_id]);
-        }else{
+        } else {
             $message[] = "Update fail";
         }
-    }
-}
-
-if (isset($message)) {
-    foreach ($message as $message) {
-        echo '<div class="alert alert-warning alert-dismissible fade show col-4 offset-4" role="alert" tabindex="-1">
-                ' . htmlspecialchars($message) . '
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-              </div>';
     }
 }
 ;
@@ -61,9 +51,18 @@ if (isset($message)) {
         <div class="container">
             <div class="title text-center mt-5 pt-5">
                 <h2 class="position-relative d-inline-block">Your Cart</h2>
-                <hr>
             </div>
-
+            <?php
+            if (isset($message)) {
+                foreach ($message as $message) {
+                    echo '<div class="alert alert-warning alert-dismissible fade show col-6 offset-3" role="alert" tabindex="-1">
+                            ' . htmlspecialchars($message) . '
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                          </div>';
+                }
+            }
+            ;
+            ?>
             <?php
             $total = 0.00;
             $sub_total = 0.00;
@@ -178,4 +177,5 @@ if (isset($message)) {
     include_once __DIR__ . '../../partials/footer.php';
     ?>
 </body>
+
 </html>

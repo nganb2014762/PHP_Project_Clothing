@@ -67,16 +67,6 @@ if (isset($_POST['update_profile'])) {
 }
 ;
 
-if (isset($message)) {
-    foreach ($message as $message) {
-        echo '<div class="alert alert-warning alert-dismissible fade show col-4 offset-4" role="alert" tabindex="-1">
-                ' . htmlspecialchars($message) . '
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-              </div>';
-    }
-}
-;
-
 ?>
 
 <title>Edit Profile</title>
@@ -87,7 +77,17 @@ if (isset($message)) {
         <h2 class="position-relative d-inline-block">Edit Profile</h2>
         <hr class="mx-auto">
     </div>
-
+    <?php
+    if (isset($message)) {
+        foreach ($message as $message) {
+            echo '<div class="alert alert-warning alert-dismissible fade show col-6 offset-3" role="alert" tabindex="-1">
+                            ' . htmlspecialchars($message) . '
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                          </div>';
+        }
+    }
+    ;
+    ?>
     <div class="mx-auto container my-5">
         <div class="card shadow-sm col-md-10 offset-1 rounded-5">
             <div class="card-body">
@@ -210,4 +210,5 @@ if (isset($message)) {
 include_once __DIR__ . '../../partials/footer.php';
 ?>
 </body>
+
 </html>

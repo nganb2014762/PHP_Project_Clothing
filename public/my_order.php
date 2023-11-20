@@ -5,10 +5,9 @@ include_once __DIR__ . '../../partials/header.php';
 require_once __DIR__ . '../../partials/connect.php';
 
 $user_id = $_SESSION['user_id'];
-
 if (!isset($user_id)) {
     header('location:login.php');
-    exit(); // Dừng chương trình để ngăn chạy tiếp sau lệnh header
+    exit();
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_order'])) {
@@ -23,7 +22,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_order'])) {
         // Cập nhật cột payment_status thành 'cancel'
         $update_order_query = $pdo->prepare("UPDATE `orders` SET payment_status = 'cancel', cancel_date = current_timestamp() WHERE id = ?");
         $update_order_query->execute([$order_id]);
-
         $message[] = "Đơn hàng đã được hủy thành công!";
     } else {
         $message[] = "Không tìm thấy đơn đặt hàng!";
@@ -31,16 +29,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_order'])) {
 }
 ;
 
-if (isset($message)) {
-    foreach ($message as $message) {
-        // echo '<script>alert(" ' . $message . ' ");</script>';
-        echo '<div class="alert alert-warning alert-dismissible fade show col-4 offset-4" role="alert" tabindex="-1">
-                ' . htmlspecialchars($message) . '
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-              </div>';
-    }
-}
-;
 ?>
 
 <!-- HTML và CSS của trang web -->
@@ -55,6 +43,17 @@ if (isset($message)) {
             <h2 class="position-relative d-inline-block">My order</h2>
             <hr>
         </div>
+        <?php
+        if (isset($message)) {
+            foreach ($message as $message) {
+                echo '<div class="alert alert-warning alert-dismissible fade show col-6 offset-3" role="alert" tabindex="-1">
+                            ' . htmlspecialchars($message) . '
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                          </div>';
+            }
+        }
+        ;
+        ?>
         <?php
         $total = 0.00;
         $sub_total = 0.00;
@@ -96,7 +95,8 @@ if (isset($message)) {
                                 ?>
                                 <tr>
                                     <td>
-                                        <img src="admin/uploaded_img/<?= htmlspecialchars($product['product_image']); ?>" alt="" class="w-25">
+                                        <img src="admin/uploaded_img/<?= htmlspecialchars($product['product_image']); ?>" alt=""
+                                            class="w-25">
                                     </td>
                                     <td>
                                         <?= htmlspecialchars($product['product_name']); ?>

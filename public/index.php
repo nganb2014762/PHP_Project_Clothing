@@ -60,23 +60,22 @@ if (isset($_POST['add_to_cart'])) {
 }
 ;
 
-if (isset($message)) {
-    foreach ($message as $message) {
-        echo '<div class="mt-5 pt-5">
-                <div class="alert alert-warning alert-dismissible fade show col-4 offset-4" role="alert" tabindex="-1">
-                ' . htmlspecialchars($message) . '
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-              </div>
-              </div>';
-    }
-}
-;
 ?>
 <title>Fashion</title>
 </head>
 
 <body>
-
+    <?php
+    if (isset($message)) {
+        foreach ($message as $message) {
+            echo '<div class="alert alert-warning alert-dismissible fade show col-6 offset-3" role="alert" tabindex="-1">
+                            ' . htmlspecialchars($message) . '
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                          </div>';
+        }
+    }
+    ;
+    ?>
     <!-- slide -->
     <header id="header" class="vh-100 carousel slide" data-bs-ride="carousel" style="padding-top: 104px;">
         <div class="container h-100 d-flex align-items-center carousel-inner">
@@ -204,10 +203,14 @@ if (isset($message)) {
                                                         class="btn btn-primary">View</a>
                                                 </div>
                                             </div>
-                                            <input type="hidden" name="pid" value="<?= htmlspecialchars($fetch_products['id']); ?>">
-                                            <input type="hidden" name="p_name" value="<?= htmlspecialchars($fetch_products['name']); ?>">
-                                            <input type="hidden" name="p_price" value="<?= htmlspecialchars($fetch_products['price']); ?>">
-                                            <input type="hidden" name="p_image" value="<?= htmlspecialchars($fetch_products['image']); ?>">
+                                            <input type="hidden" name="pid"
+                                                value="<?= htmlspecialchars($fetch_products['id']); ?>">
+                                            <input type="hidden" name="p_name"
+                                                value="<?= htmlspecialchars($fetch_products['name']); ?>">
+                                            <input type="hidden" name="p_price"
+                                                value="<?= htmlspecialchars($fetch_products['price']); ?>">
+                                            <input type="hidden" name="p_image"
+                                                value="<?= htmlspecialchars($fetch_products['image']); ?>">
 
                                         </div>
                                     </div>
@@ -362,7 +365,7 @@ if (isset($message)) {
         // Khi người dùng nhấp vào nút, cuộn đầu trang
         function topFunction() {
             document.body.scrollTop = 0; // Cho Safari
-            document.documentElement.scrollTop = 0; 
+            document.documentElement.scrollTop = 0;
         }
     </script>
 
@@ -377,4 +380,5 @@ if (isset($message)) {
 include_once __DIR__ . '/../partials/footer.php';
 ?>
 </body>
+
 </html>
