@@ -7,7 +7,7 @@ if (isset($_POST['delete_wishlist'])) {
     $user_id = $_SESSION['user_id']; // Assume that $_SESSION['user_id'] is set and valid
 
     $id = $_POST['id'];
-    $id = filter_var($id, FILTER_SANITIZE_STRING);
+    
 
     // Use "DELETE FROM" instead of "delete * FROM"
     $check_wishlist_numbers = $pdo->prepare("DELETE FROM `wishlist` WHERE id = :id AND user_id = :user_id");
