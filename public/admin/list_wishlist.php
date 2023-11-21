@@ -59,7 +59,7 @@ if (isset($_GET['delete'])) {
                 <div class="container-fluid">
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">List Favorite Products</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Danh sách sản phẩm được yêu thích</h1>
                     </div>
 
 

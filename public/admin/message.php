@@ -59,7 +59,7 @@ if (isset($_GET['delete'])) {
                 <div class="container-fluid">
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Message from customers</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Liên hệ hỗ trợ từ khách hàng</h1>
                     </div>
                     <div class="table-responsive">
                         <form id="product-form" action="" method="POST" enctype="multipart/form-data"

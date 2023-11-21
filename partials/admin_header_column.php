@@ -42,8 +42,8 @@
             <a class="collapse-item" href="list_category.php">Danh mục sản phẩm</a>
             <a class="collapse-item" href="list_products.php">Danh sách sản phẩm</a>
             <a class="collapse-item" href="add_products.php">Thêm sản phẩm</a>
-            <a class="collapse-item" href="list_wishlist.php">Sản phẩm được yêu thích</a>
-            <a class="collapse-item" href="list_comment.php">Đánh giá về sản phẩm</a>
+            <a class="collapse-item" href="list_wishlist.php">Danh sách sản phẩm được yêu thích</a>
+            <a class="collapse-item" href="list_comment.php">Danh sách đánh giá</a>
         </div>
     </div>
 </li>
