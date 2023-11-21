@@ -26,7 +26,7 @@ if (isset($_GET['delete'])) {
                                                 WHERE orders_details.pid = ?");
             $select_order_ids->execute([$delete_id]);
             $order_ids = $select_order_ids->fetchAll(PDO::FETCH_COLUMN);
-            
+
             // Xóa các đơn đặt hàng liên quan trong bảng orders
             if (!empty($order_ids)) {
                 $delete_orders = $pdo->prepare("DELETE FROM `orders` WHERE id IN (" . implode(',', $order_ids) . ")");
@@ -45,7 +45,7 @@ if (isset($_GET['delete'])) {
             $delete_products->execute([$delete_id]);
 
             header('location:list_products.php');
-        } 
+        }
     } catch (Exception $e) {
         $message[] = $e->getMessage();
     }
@@ -178,11 +178,14 @@ if (isset($message)) {
                                                     data-toggle="modal" data-target="#deleteConfirmationModal">Delete</a>
                                             </td>
                                         </tr>
-                                    </tbody>
-                                    <?php
+                                        <?php
                                     }
+                                } else {
+                                    echo "<tr><td colspan='15'>Không có dữ liệu.</td></tr>";
                                 }
+
                                 ?>
+                            </tbody>
                         </table>
                     </div>
 

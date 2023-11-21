@@ -131,13 +131,14 @@ if (isset($_GET['delete'])) {
                                                 </td>
 
                                             </tr>
-                                        </tbody>
-                                        <?php
+                                            <?php
                                         }
                                     } else {
-                                        echo '<p class="empty">you have no messages!</p>';
+                                        echo "<tr><td colspan='15'>Không có dữ liệu.</td></tr>";
                                     }
+
                                     ?>
+                                </tbody>
                             </table>
                         </form>
                     </div>

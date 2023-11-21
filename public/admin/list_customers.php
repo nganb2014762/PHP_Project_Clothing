@@ -259,17 +259,17 @@ if (isset($_GET['delete'])) {
     </div>
 
     <script>
-    // JavaScript code to handle delete from modal
-    $(document).ready(function() {
-        $('#deleteConfirmationModal').on('show.bs.modal', function(event) {
-            var button = $(event.relatedTarget);
-            var Id = button.data('id');
+        // JavaScript code to handle delete from modal
+        $(document).ready(function () {
+            $('#deleteConfirmationModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                var Id = button.data('id');
 
-            // Set the delete button link with productId
-            var deleteLink = 'list_customers.php?delete=' + Id;
-            $('#deleteLink').attr('href', deleteLink);
+                // Set the delete button link with productId
+                var deleteLink = 'list_customers.php?delete=' + Id;
+                $('#deleteLink').attr('href', deleteLink);
+            });
         });
-    });
     </script>
 
 
