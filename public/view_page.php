@@ -52,21 +52,25 @@ if (isset($_POST['send'])) {
       $pid = $_GET['pid'];
       $image = null;
 
-      if ($_FILES['image']['error'] === UPLOAD_ERR_OK) {
-         $image_name = $_FILES['image']['name'];
-         $temp_image_path = $_FILES['image']['tmp_name'];
-         $uploads_directory = 'admin/uploaded_img/reviews/';
-
-         $image = $uploads_directory . $image_name;
-
-         move_uploaded_file($temp_image_path, $image);
-      }
-
       if (isset($_GET['pid'])) {
          $pid = $_GET['pid'];
          try {
-            $insert_comment = $pdo->prepare("INSERT INTO `reviews` (user_id, pid, comment, image) VALUES (?, ?, ?, ?)");
-            $insert_comment->execute([$user_id, $pid, $comment, $image_name]);
+            if ($_FILES['image']['error'] === UPLOAD_ERR_OK) {
+               $image_name = $_FILES['image']['name'];
+               $temp_image_path = $_FILES['image']['tmp_name'];
+               $uploads_directory = 'admin/uploaded_img/reviews/';
+
+               $image = $uploads_directory . $image_name;
+
+               move_uploaded_file($temp_image_path, $image);
+
+               $insert_comment = $pdo->prepare("INSERT INTO `reviews` (user_id, pid, comment, image) VALUES (?, ?, ?, ?)");
+               $insert_comment->execute([$user_id, $pid, $comment, $image_name]);
+            } else {
+               $insert_comment = $pdo->prepare("INSERT INTO `reviews` (user_id, pid, comment) VALUES (?, ?, ?)");
+               $insert_comment->execute([$user_id, $pid, $comment]);
+            }
+
 
             header('Location:view_page.php?pid=' . $pid);
             exit();
@@ -249,10 +253,14 @@ if (isset($_POST['send'])) {
 
                                  <h6>Care Instruction:</h6>
                                  <ul class="list-unstyled">
-                                    <li><img src="img/shop/care_instruction/do_not_bleach.png" alt="" width="25px" class="p-1"> do not bleach</li>
-                                    <li><img src="img/shop/care_instruction/iron_on_low_heat.png" alt="" width="25px" class="p-1"> iron on low heat</li>
-                                    <li><img src="img/shop/care_instruction/dry_flat.png" alt="" width="25px" class="p-1"> dry flat</li>
-                                    <li><img src="img/shop/care_instruction/handwash.png" alt="" width="25px" class="p-1"> handwash</li>
+                                    <li><img src="img/shop/care_instruction/do_not_bleach.png" alt="" width="25px"
+                                          class="p-1"> do not bleach</li>
+                                    <li><img src="img/shop/care_instruction/iron_on_low_heat.png" alt="" width="25px"
+                                          class="p-1"> iron on low heat</li>
+                                    <li><img src="img/shop/care_instruction/dry_flat.png" alt="" width="25px" class="p-1"> dry
+                                       flat</li>
+                                    <li><img src="img/shop/care_instruction/handwash.png" alt="" width="25px" class="p-1">
+                                       handwash</li>
                                  </ul>
                                  <ul class="list-inline">
                                     <li class="list-inline-item text-right h6">
