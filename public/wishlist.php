@@ -11,7 +11,6 @@ if (isset($_POST['delete_wishlist'])) {
     if ($check_wishlist_numbers->rowCount() > 0) {
         $message[] = 'Delete successfully!!';
     }
-
 }
 ;
 ?>
