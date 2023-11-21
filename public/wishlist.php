@@ -9,7 +9,7 @@ if (isset($_POST['delete_wishlist'])) {
     $check_wishlist_numbers = $pdo->prepare("DELETE FROM `wishlist` WHERE id = :id AND user_id = :user_id");
     $check_wishlist_numbers->execute([':id' => $id, ':user_id' => $user_id]);
     if ($check_wishlist_numbers->rowCount() > 0) {
-        $message[] = 'delete successfully!!';
+        $message[] = 'Delete successfully!!';
     }
 
 }
