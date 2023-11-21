@@ -197,6 +197,11 @@ if (isset($_POST['update_profile'])) {
                                 name="update_profile">
                         </div>
                     </div>
+                    <div class="form-group p-2">
+                        <div class="flex-btn">
+                            <a href="profile.php" class="btn w-100 text-decoration-none">View profile</a>
+                        </div>
+                    </div>
                 </form>
 
 
