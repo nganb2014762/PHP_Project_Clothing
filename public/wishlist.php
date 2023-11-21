@@ -75,7 +75,7 @@ if (isset($_POST['delete_wishlist'])) {
                                                     <?= htmlspecialchars($fetch_products['price']); ?>
                                                 </span>
                                                 <div class="btn-group">
-                                                    <a href="view_page.php?pid=<?= htmlspecialchars($fetch_products['id']); ?>"
+                                                    <a href="view_page.php?pid=<?= htmlspecialchars($fetch_products['pid']); ?>"
                                                         class="btn btn-primary">View</a>
                                                 </div>
                                             </div>

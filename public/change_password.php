@@ -6,9 +6,10 @@ require_once __DIR__ . '../../partials/connect.php';
 
 $user_id = $_SESSION['user_id'];
 
-if(!isset($user_id)){
+if (!isset($user_id)) {
    header('location:login.php');
-};
+}
+;
 
 if (isset($_POST['update_password'])) {
 
@@ -33,7 +34,8 @@ if (isset($_POST['update_password'])) {
       }
    }
 
-};
+}
+;
 
 ?>
 
@@ -41,33 +43,35 @@ if (isset($_POST['update_password'])) {
 </head>
 
 <section class="container my-5 pt-5">
-   <div class="container title text-center mt-3 pt-5">
+   <div class="container title text-center my-5 pt-5">
       <h2 class="position-relative d-inline-block">Change Password</h2>
    </div>
    <?php
-            if (isset($message)) {
-                foreach ($message as $message) {
-                    echo '<div class="alert alert-warning alert-dismissible fade show col-6 offset-3" role="alert" tabindex="-1">
+   if (isset($message)) {
+      foreach ($message as $message) {
+         echo '<div class="alert alert-warning alert-dismissible fade show col-6 offset-3" role="alert" tabindex="-1">
                             ' . htmlspecialchars($message) . '
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                           </div>';
-                }
-            }
-            ;
-            ?>
+      }
+   }
+   ;
+   ?>
    <div class="mx-auto container">
       <div class="card col-md-6 offset-md-3">
          <div class="card-body">
             <form id="product-form" action="" method="POST" enctype="multipart/form-data"
                class="text_center form-horizontal">
                <div class="form-group p-2">
-                  <input class="form-control" type="text" name="name" value="<?= htmlspecialchars($fetch_profile['name']); ?>"
-                     placeholder="update username" required class="box">
+                  <input class="form-control" type="text" name="name"
+                     value="<?= htmlspecialchars($fetch_profile['name']); ?>" placeholder="update username" required
+                     class="box">
                </div>
 
                <div class="form-group p-2">
-                  <input class="form-control" type="email" name="email" value="<?= htmlspecialchars($fetch_profile['email']); ?>"
-                     placeholder="update email" required class="box">
+                  <input class="form-control" type="email" name="email"
+                     value="<?= htmlspecialchars($fetch_profile['email']); ?>" placeholder="update email" required
+                     class="box">
                </div>
 
                <div class="form-group p-2">
@@ -90,6 +94,12 @@ if (isset($_POST['update_password'])) {
                      <input type="submit" class="btn w-100" value="Update Password" name="update_password">
                   </div>
                </div>
+
+               <div class="form-group p-2">
+                  <div class="flex-btn">
+                     <input type="submit" class="btn w-100" value="View Profile" name="view_profile">
+                  </div>
+               </div>
             </form>
          </div>
       </div>
@@ -98,7 +108,8 @@ if (isset($_POST['update_password'])) {
 </section>
 
 <?php
-    include_once __DIR__ . '/../partials/footer.php';
-    ?>
+include_once __DIR__ . '/../partials/footer.php';
+?>
 </body>
+
 </html>

@@ -19,16 +19,16 @@ $message = [];
         <h2 class="position-relative d-inline-block">My Account</h2>
     </div>
     <?php
-        if (isset($message)) {
-            foreach ($message as $message) {
-                echo '<div class="alert alert-warning alert-dismissible fade show col-6 offset-3" role="alert" tabindex="-1">
+    if (isset($message)) {
+        foreach ($message as $message) {
+            echo '<div class="alert alert-warning alert-dismissible fade show col-6 offset-3" role="alert" tabindex="-1">
                             ' . htmlspecialchars($message) . '
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                           </div>';
-            }
         }
-        ;
-        ?>
+    }
+    ;
+    ?>
     <div class="mx-auto container my-5">
         <div class="card col-md-10 offset-1 shadow-sm rounded-5">
             <div class="card-body">
@@ -100,6 +100,12 @@ $message = [];
                     <div class="form-group p-2">
                         <div class="flex-btn">
                             <a href="edit_profile.php" class="btn btn-primary shadow-sm w-100">Change Information</a>
+                        </div>
+                    </div>
+                    <div class="form-group p-2">
+                        <div class="flex-btn">
+                            <a href="change_password.php" class="btn btn-primary shadow-sm w-100">Change
+                                Password</a>
                         </div>
                     </div>
                 </div>

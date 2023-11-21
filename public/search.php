@@ -59,7 +59,7 @@ if (isset($_POST['add_to_cart'])) {
 <title>Search</title>
 </head>
 
-<section class="my-5 py-5">
+<section class="my-5">
     <div class="container title text-center mt-3 pt-5">
         <form action="" method="POST" class="d-flex justify-content-center">
             <div class="form-group p-2">
@@ -74,7 +74,7 @@ if (isset($_POST['add_to_cart'])) {
 </section>
 
 
-<section class="container my-3 py-3">
+<section class="container">
     <div class="container title text-center">
         <h2 class="position-relative d-inline-block">Result</h2>
     </div>

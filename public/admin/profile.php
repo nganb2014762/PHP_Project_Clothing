@@ -124,7 +124,8 @@ if (isset($message)) {
                                     </div>
                                     <div class="form-group">
                                         <div class="flex-btn">
-                                            <a href="edit_profile.php" class="btn btn-primary shadow-sm w-100">Change Information</a>
+                                            <a href="edit_profile.php" class="btn btn-primary shadow-sm w-100">Change
+                                                Information</a>
                                         </div>
                                     </div>
                                 </div>

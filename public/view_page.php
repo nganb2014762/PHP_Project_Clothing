@@ -403,17 +403,20 @@ if (isset($_POST['send'])) {
                   if (isset($_GET['pid'])) {
                      $pid = $_GET['pid'];
 
-                     $select_comment = $pdo->prepare('SELECT reviews.comment, user.name FROM `reviews` 
+                     $select_comment = $pdo->prepare('SELECT reviews.comment, reviews.image, reviews.review_time, user.name FROM `reviews` 
                                     INNER JOIN `user` ON user.id = reviews.user_id 
                                     WHERE reviews.pid = ?');
                      $select_comment->execute([$pid]);
 
                      if ($select_comment && $select_comment->rowCount() > 0) {
-                        while ($fetch_comments = $select_comment->fetch(PDO::FETCH_ASSOC)) {
-                           ?>
-                           <div class="col-6 offset-3">
-                              <div class="card border-2">
-                                 <div class="card-body p-2">
+                        ?>
+                        <div class="col-8 offset-2">
+                           <div class="card border-2">
+                              <div class="card-body p-2">
+                                 <?php
+                                 while ($fetch_comments = $select_comment->fetch(PDO::FETCH_ASSOC)) {
+                                    ?>
+
                                     <div class="row">
                                        <div class="col-12 row">
                                           <div class="col-4 px-5 pb-3">
@@ -434,13 +437,16 @@ if (isset($_POST['send'])) {
 
                                           </div>
                                           <hr class="d-block mx-2">
+
                                        </div>
                                     </div>
-                                 </div>
+                                    <?php
+                                 }
+                                 ?>
                               </div>
                            </div>
-                           <?php
-                        }
+                        </div>
+                        <?php
                      } else {
                         echo '<div class="text-center pt-3">
                               <h6 class="position-relative d-inline-block">Chưa có đánh giá</h6>
