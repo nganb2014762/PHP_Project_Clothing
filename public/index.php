@@ -25,24 +25,15 @@ if (isset($_POST['add_to_wishlist'])) {
         $message[] = 'added to wishlist!';
     }
 
-};
+}
+;
 
 ?>
 <title>Fashion</title>
 </head>
 
 <body>
-    <?php
-    if (isset($message)) {
-        foreach ($message as $message) {
-            echo '<div class="alert alert-warning alert-dismissible fade show col-6 offset-3" role="alert" tabindex="-1">
-                            ' . htmlspecialchars($message) . '
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                          </div>';
-        }
-    }
-    ;
-    ?>
+
     <!-- slide -->
     <header id="header" class="vh-100 carousel slide" data-bs-ride="carousel" style="padding-top: 104px;">
         <div class="container h-100 d-flex align-items-center carousel-inner">
@@ -73,9 +64,18 @@ if (isset($_POST['add_to_wishlist'])) {
         <div class="container">
             <div class="title text-center">
                 <h2 class="position-relative d-inline-block">New Collection</h2>
-
             </div>
-
+            <?php
+            if (isset($message)) {
+                foreach ($message as $message) {
+                    echo '<div class="alert alert-warning alert-dismissible fade show col-6 offset-3" role="alert" tabindex="-1">
+                            ' . htmlspecialchars($message) . '
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                          </div>';
+                }
+            }
+            ;
+            ?>
             <div class="row g-0 justify-content-center">
                 <div class="d-flex flex-wrap justify-content-center mt-3 filter-button-group">
                     <button type="button" class="btn m-2 text-dark active-filter-btn"><a
@@ -263,7 +263,7 @@ if (isset($_POST['add_to_wishlist'])) {
         </div>
     </section>
     <!-- end of blogs -->
-    
+
     <button onclick="topFunction()" id="myBtn" title="Quay lại đầu trang"><i class="fa-solid fa-arrow-up"></i></button>
     <script>
         function addToWishllist() {
@@ -272,9 +272,9 @@ if (isset($_POST['add_to_wishlist'])) {
             if (!loggedIn) {
                 alert('You need to log in to add products to your wishlist.');
                 window.location.href = 'login.php';
-                return false; 
+                return false;
             }
-            return true; 
+            return true;
         }
     </script>
 
@@ -290,7 +290,7 @@ if (isset($_POST['add_to_wishlist'])) {
         }
 
         function topFunction() {
-            document.body.scrollTop = 0; 
+            document.body.scrollTop = 0;
             document.documentElement.scrollTop = 0;
         }
     </script>
