@@ -89,41 +89,41 @@ if (isset($message)) {
 
                         <form id="product-form" action="" method="POST" enctype="multipart/form-data"
                            class="text_center form-horizontal">
-                           <div class="form-group p-2">
+                           <div class="form-group">
                               <input class="form-control" type="text" name="name"
                                  value="<?= htmlspecialchars($fetch_profile['name']); ?>" placeholder="update username"
                                  required class="box">
                            </div>
 
-                           <div class="form-group p-2">
+                           <div class="form-group">
                               <input class="form-control" type="email" name="email"
                                  value="<?= htmlspecialchars($fetch_profile['email']); ?>" placeholder="update email"
                                  required class="box">
                            </div>
 
-                           <div class="form-group p-2">
+                           <div class="form-group">
                               <input type="hidden" name="old_pass"
                                  value="<?= htmlspecialchars($fetch_profile['password']); ?>">
                               <input class="form-control" type="password" name="update_pass"
                                  placeholder="enter previous password" class="box">
                            </div>
 
-                           <div class="form-group p-2">
+                           <div class="form-group">
                               <input class="form-control" type="password" name="new_pass"
                                  placeholder="enter new password" class="box">
                            </div>
 
-                           <div class="form-group p-2">
+                           <div class="form-group">
                               <input class="form-control" type="password" name="confirm_pass"
                                  placeholder="confirm new password" class="box">
                            </div>
-                           <div class="form-group p-2">
+                           <div class="form-group">
                               <div class="flex-btn">
                                  <input type="submit" class="btn w-100 btn-primary" value="Update Password" name="update_password">
                               </div>
                            </div>
 
-                           <div class="form-group p-2">
+                           <div class="form-group">
                               <div class="flex-btn">
                                  <a href="profile.php" class="btn w-100 text-decoration-none btn-primary">View Profile</a>
                               </div>
