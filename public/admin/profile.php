@@ -128,11 +128,16 @@ if (isset($message)) {
                                                 Information</a>
                                         </div>
                                     </div>
+                                    <div class="form-group">
+                                        <div class="flex-btn">
+                                            <a href="change_password.php" class="btn btn-primary shadow-sm w-100">Change
+                                                Password</a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
                 <!-- /.container-fluid -->
             </div>

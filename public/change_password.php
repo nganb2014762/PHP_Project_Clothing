@@ -97,7 +97,7 @@ if (isset($_POST['update_password'])) {
 
                <div class="form-group p-2">
                   <div class="flex-btn">
-                     <input type="submit" class="btn w-100" value="View Profile" name="view_profile">
+                     <a href="profile.php" class="btn w-100 text-decoration-none">View Profile</a>
                   </div>
                </div>
             </form>
@@ -109,7 +109,3 @@ if (isset($_POST['update_password'])) {
 
 <?php
 include_once __DIR__ . '/../partials/footer.php';
-?>
-</body>
-
-</html>
