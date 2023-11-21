@@ -22,9 +22,9 @@ if (isset($message)) {
 if (isset($_GET['delete'])) {
 
     $delete_id = $_GET['delete'];
-    $delete_message = $pdo->prepare("DELETE FROM `message` WHERE user_id = ?");
+    $delete_message = $pdo->prepare("DELETE FROM `message` WHERE id = ?");
     $delete_message->execute([$delete_id]);
-    header('location: index.php');
+    header('location: message.php');
 }
 
 ?>
@@ -125,9 +125,9 @@ if (isset($_GET['delete'])) {
                                                 </td>
 
                                                 <td class="pt-4">
-                                                    <a href="message.php?delete=<?= htmlspecialchars($fetch_message['message_id']); ?>"
-                                                        onclick="return confirm('delete this message?');"
-                                                        class="delete-btn">delete</a>
+                                                    <a class="btn btn-danger"
+                                                        data-id="<?= htmlspecialchars($fetch_message['message_id']); ?>"
+                                                        data-toggle="modal" data-target="#deleteConfirmationModal">Delete</a>
                                                 </td>
 
                                             </tr>

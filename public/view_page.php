@@ -352,7 +352,7 @@ if (isset($_POST['send'])) {
                         </div>
                         <?php
                      } else {
-                        echo '<div class="text-center pt-3">
+                        echo '<div class="col-8 text-center pt-3">
                                     <h6 class="position-relative d-inline-block">Chưa có đánh giá</h6>
                                  </div>';
                      }
@@ -377,7 +377,6 @@ if (isset($_POST['send'])) {
 
                               <label for="image" class="mx-1">Chọn ảnh:</label>
                               <input type="file" name="image" id="image">
-
                               <textarea name="comment" id="comment" class="form-control mt-3" placeholder="Type reviews"
                                  rows="7" oninput="checkComment()"></textarea>
                               <br>
