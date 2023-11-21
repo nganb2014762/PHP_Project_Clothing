@@ -1,9 +1,6 @@
 <?php
-
 include_once __DIR__ . '../../partials/boostrap.php';
-
 include_once __DIR__ . '../../partials/header.php';
-
 require_once __DIR__ . '../../partials/connect.php';
 
 if (isset($_POST['add_to_wishlist'])) {
@@ -28,37 +25,7 @@ if (isset($_POST['add_to_wishlist'])) {
         $message[] = 'added to wishlist!';
     }
 
-}
-
-if (isset($_POST['add_to_cart'])) {
-
-    $pid = $_POST['pid'];
-    $p_name = $_POST['p_name'];
-    $p_price = $_POST['p_price'];
-    $p_image = $_POST['p_image'];
-    $p_qty = $_POST['p_qty'];
-    $check_cart_numbers = $pdo->prepare("SELECT * FROM `cart` WHERE name = ? AND user_id = ?");
-    $check_cart_numbers->execute([$p_name, $user_id]);
-
-    if ($check_cart_numbers->rowCount() > 0) {
-        $message[] = 'already added to cart!';
-    } else {
-
-        $check_wishlist_numbers = $pdo->prepare("SELECT * FROM `wishlist` WHERE name = ? AND user_id = ?");
-        $check_wishlist_numbers->execute([$p_name, $user_id]);
-
-        if ($check_wishlist_numbers->rowCount() > 0) {
-            $delete_wishlist = $pdo->prepare("DELETE FROM `wishlist` WHERE name = ? AND user_id = ?");
-            $delete_wishlist->execute([$p_name, $user_id]);
-        }
-
-        $insert_cart = $pdo->prepare("INSERT INTO `cart`(user_id, pid, name, price, quantity, image) VALUES(?,?,?,?,?,?)");
-        $insert_cart->execute([$user_id, $pid, $p_name, $p_price, $p_qty, $p_image]);
-        $message[] = 'added to cart!';
-    }
-
-}
-;
+};
 
 ?>
 <title>Fashion</title>
@@ -196,13 +163,6 @@ if (isset($_POST['add_to_cart'])) {
                         ?>
                     </div>
 
-                    <nav aria-label="Page navigation example" class="pt-5">
-                        <ul class="pagination justify-content-center">
-                            <li class="page-item btn">
-                                <a class="text-decoration-none text-dark" href="shop.php">See All</a>
-                            </li>
-                        </ul>
-                    </nav>
                     <?php
                     } else {
                         echo '<p class="empty">no products added yet!</p>';
@@ -214,7 +174,7 @@ if (isset($_POST['add_to_cart'])) {
     <!-- end of shop -->
 
     <!-- offer -->
-    <section id="offers" class="py-5">
+    <section id="offers" class="py-5 my-5">
         <div class="container">
             <div
                 class="row d-flex align-items-center justify-content-center text-center justify-content-lg-start text-lg-start">
@@ -229,13 +189,13 @@ if (isset($_POST['add_to_cart'])) {
     <!-- end of offer -->
 
     <!-- about us -->
-    <section id="about" class="my-5">
+    <section id="about" class="my-5 py-5">
         <div class="container">
             <div class="title text-center">
                 <h2 class="position-relative d-inline-block ms-4">About Us</h2>
                 <hr class="mx-auto">
             </div>
-            <div class="row gy-lg-5 align-items-center">
+            <div class="row gy-lg-5 align-items-center mt-1">
                 <div class="col-lg-6 order-lg-1 text-center text-lg-start">
                     <div class="pt-3 pb-3">
                         <h2 class="position-relative d-inline-block">BORN IN VIETNAM</h2>
@@ -302,30 +262,23 @@ if (isset($_POST['add_to_cart'])) {
             </nav>
         </div>
     </section>
-    <button onclick="topFunction()" id="myBtn" title="Quay lại đầu trang"><i class="fa-solid fa-arrow-up"></i></button>
-
     <!-- end of blogs -->
+    
+    <button onclick="topFunction()" id="myBtn" title="Quay lại đầu trang"><i class="fa-solid fa-arrow-up"></i></button>
     <script>
         function addToWishllist() {
-            // Kiểm tra trạng thái đăng nhập ở phía client (trình duyệt)
             var loggedIn = <?= htmlspecialchars(isset($_SESSION['user_id']) ? 'true' : 'false'); ?>;
 
             if (!loggedIn) {
-                // Hiển thị thông báo hoặc chuyển hướng đến trang đăng nhập
-                alert('Bạn cần đăng nhập để thêm sản phẩm vào danh sách yêu thích.');
-                window.location.href = 'login.php'; // Chuyển hướng đến trang đăng nhập
-                return false; // Ngăn chặn gửi yêu cầu đến máy chủ
+                alert('You need to log in to add products to your wishlist.');
+                window.location.href = 'login.php';
+                return false; 
             }
-            return true; // Cho phép gửi yêu cầu đến máy chủ
+            return true; 
         }
     </script>
 
-    <!-- ... (mã HTML hiện tại) ... -->
-
-
-
     <script>
-        // Khi người dùng cuộn xuống 20px từ đỉnh trang, hiển thị nút
         window.onscroll = function () { scrollFunction() };
 
         function scrollFunction() {
@@ -336,9 +289,8 @@ if (isset($_POST['add_to_cart'])) {
             }
         }
 
-        // Khi người dùng nhấp vào nút, cuộn đầu trang
         function topFunction() {
-            document.body.scrollTop = 0; // Cho Safari
+            document.body.scrollTop = 0; 
             document.documentElement.scrollTop = 0;
         }
     </script>
@@ -352,7 +304,3 @@ if (isset($_POST['add_to_cart'])) {
 <?php
 
 include_once __DIR__ . '/../partials/footer.php';
-?>
-</body>
-
-</html>

@@ -1,15 +1,11 @@
 <?php
 include_once __DIR__ . '../../partials/boostrap.php';
-include_once __DIR__ . '/../partials/header.php';
+include_once __DIR__ . '../../partials/header.php';
 require_once __DIR__ . '../../partials/connect.php';
 
 if (isset($_POST['delete_wishlist'])) {
-    $user_id = $_SESSION['user_id']; // Assume that $_SESSION['user_id'] is set and valid
-
+    $user_id = $_SESSION['user_id'];
     $id = $_POST['id'];
-
-
-    // Use "DELETE FROM" instead of "delete * FROM"
     $check_wishlist_numbers = $pdo->prepare("DELETE FROM `wishlist` WHERE id = :id AND user_id = :user_id");
     $check_wishlist_numbers->execute([':id' => $id, ':user_id' => $user_id]);
     if ($check_wishlist_numbers->rowCount() > 0) {
@@ -17,15 +13,7 @@ if (isset($_POST['delete_wishlist'])) {
     }
 
 }
-
-if (isset($message)) {
-    foreach ($message as $msg) {
-        echo '<div class="alert alert-warning alert-dismissible fade show col-4 offset-4 alert_message" role="alert" tabindex="-1">
-                ' . htmlspecialchars($msg) . '
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-              </div>';
-    }
-}
+;
 ?>
 
 <title>Favorite list</title>
@@ -117,13 +105,12 @@ if (isset($message)) {
         </div>
     </section>
     <!-- end of shop -->
+
     <script>
         function addToWishlist() {
-            // Check the login status on the client side (browser)
             var loggedIn = <?= htmlspecialchars(isset($_SESSION['user_id']) ? 'true' : 'false'); ?>;
 
             if (!loggedIn) {
-                // Display a message or redirect to the login page
                 alert('You need to log in to add products to your wishlist.');
                 window.location.href = 'login.php';
                 return false;

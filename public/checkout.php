@@ -13,20 +13,17 @@ if (!isset($user_id)) {
 }
 ;
 
-// Đoạn mã để lấy thông tin hồ sơ người dùng từ cơ sở dữ liệu
 $user_profile_query = $pdo->prepare("SELECT * FROM `user` WHERE id = ?");
 $user_profile_query->execute([$user_id]);
 $fetch_profile = $user_profile_query->fetch(PDO::FETCH_ASSOC);
 
-// Tiếp theo, bạn có thể kiểm tra xem dữ liệu có tồn tại hay không
+
 if ($fetch_profile) {
-  // Hiển thị thông tin hồ sơ người dùng
   $user_name = isset($fetch_profile['name']) ? $fetch_profile['name'] : '';
   $user_phone = isset($fetch_profile['phone']) ? $fetch_profile['phone'] : '';
   $user_email = isset($fetch_profile['email']) ? $fetch_profile['email'] : '';
   $user_address = isset($fetch_profile['address']) ? $fetch_profile['address'] : '';
 } else {
-  // Xử lý trường hợp không tìm thấy thông tin hồ sơ người dùng
   echo htmlspecialchars("Không thể tìm thấy thông tin hồ sơ người dùng.");
 }
 
@@ -38,7 +35,7 @@ if (isset($_POST['order'])) {
   $placed_on = date('Y-m-d', strtotime('now'));
 
   $cart_grand_total = 0;
-  $orderDetails = array(); // Khởi tạo mảng để lưu thông tin sản phẩm trong giỏ hàng
+  $orderDetails = array();
 
   $cart_query = $pdo->prepare("SELECT * FROM `cart` WHERE user_id = ?");
   $cart_query->execute([$user_id]);
@@ -69,45 +66,47 @@ if (isset($_POST['order'])) {
     // Cập nhật địa chỉ trong bảng `user`
     $update_user_address = $pdo->prepare("UPDATE `user` SET address = ? WHERE id = ?");
     $update_user_address->execute([$address, $user_id]);
-    // Thêm đơn hàng vào bảng orders
-    $insert_order = $pdo->prepare("INSERT INTO `orders`(user_id, method, total_products, total_price, placed_on) VALUES(?,?,?,?,?)");
-    $insert_order->execute([$user_id, $method, $total_products, $cart_grand_total, $placed_on]);
-    // Lấy id của đơn hàng vừa chèn
-    $order_id = $pdo->lastInsertId();
+    if ($cart_grand_total > 0) {
+      // Thêm đơn hàng vào bảng orders
+      $insert_order = $pdo->prepare("INSERT INTO `orders`(user_id, method, total_products, total_price, placed_on) VALUES(?,?,?,?,?)");
+      $insert_order->execute([$user_id, $method, $total_products, $cart_grand_total, $placed_on]);
+      // Lấy id của đơn hàng vừa chèn
+      $order_id = $pdo->lastInsertId();
 
-    // Giảm số lượng sản phẩm trong bảng product
-    foreach ($orderDetails as $orderDetail) {
-      $product_id = $orderDetail['pid'];
-      $quantity = $orderDetail['quantity'];
+      // Giảm số lượng sản phẩm trong bảng product
+      foreach ($orderDetails as $orderDetail) {
+        $product_id = $orderDetail['pid'];
+        $quantity = $orderDetail['quantity'];
 
-      // Lấy số lượng sản phẩm hiện tại từ bảng product
-      $product_query = $pdo->prepare("SELECT quantity FROM `products` WHERE id = ?");
-      $product_query->execute([$product_id]);
-      $current_quantity = $product_query->fetchColumn();
+        // Lấy số lượng sản phẩm hiện tại từ bảng product
+        $product_query = $pdo->prepare("SELECT quantity FROM `products` WHERE id = ?");
+        $product_query->execute([$product_id]);
+        $current_quantity = $product_query->fetchColumn();
 
-      // Kiểm tra số lượng sản phẩm đủ để giảm không
-      if ($current_quantity >= $quantity) {
-        // Giảm số lượng sản phẩm trong bảng product
-        $update_product_quantity = $pdo->prepare("UPDATE `products` SET quantity = ? WHERE id = ?");
-        $update_product_quantity->execute([$current_quantity - $quantity, $product_id]);
-        $insert_orders_details = $pdo->prepare("INSERT INTO orders_details (order_id, pid, quantity) VALUES (?, ?, ?)");
-        $insert_orders_details->execute([$order_id, $orderDetail['pid'], $orderDetail['quantity']]);
-        // Xóa các sản phẩm trong giỏ hàng
-        $delete_cart = $pdo->prepare("DELETE FROM `cart` WHERE user_id = ?");
-        $delete_cart->execute([$user_id]);
+        // Kiểm tra số lượng sản phẩm đủ để giảm không
+        if ($current_quantity >= $quantity) {
+          // Giảm số lượng sản phẩm trong bảng product
+          $update_product_quantity = $pdo->prepare("UPDATE `products` SET quantity = ? WHERE id = ?");
+          $update_product_quantity->execute([$current_quantity - $quantity, $product_id]);
+          $insert_orders_details = $pdo->prepare("INSERT INTO orders_details (order_id, pid, quantity) VALUES (?, ?, ?)");
+          $insert_orders_details->execute([$order_id, $orderDetail['pid'], $orderDetail['quantity']]);
+          // Xóa các sản phẩm trong giỏ hàng
+          $delete_cart = $pdo->prepare("DELETE FROM `cart` WHERE user_id = ?");
+          $delete_cart->execute([$user_id]);
 
-        $message[] = 'Order placed successfully!';
-      } else {
-        // Xử lý trường hợp không đủ sản phẩm trong kho
-        $message[] = "Bạn đã đặt số lượng vượt quá số lượng sản phẩm trong kho.Số lượng sản phẩm trong kho còn $current_quantity";
-        $delete_order = $pdo->prepare("DELETE FROM `orders` WHERE id = ?");
-        $delete_order->execute([$user_id]);
-      }
-      // Kiểm tra xem cập nhật đã thành công hay không và hiển thị thông báo
-      if ($update_user_address->rowCount() > 0) {
-        echo "Địa chỉ đã được cập nhật thành công!";
-      } else {
-        echo "Có lỗi xảy ra khi cập nhật địa chỉ.";
+          $message[] = 'Order placed successfully!';
+        } else {
+          // Xử lý trường hợp không đủ sản phẩm trong kho
+          $message[] = "Bạn đã đặt số lượng vượt quá số lượng sản phẩm trong kho.Số lượng sản phẩm trong kho còn $current_quantity";
+          $delete_order = $pdo->prepare("DELETE FROM `orders` WHERE id = ?");
+          $delete_order->execute([$user_id]);
+        }
+        // Kiểm tra xem cập nhật đã thành công hay không và hiển thị thông báo
+        if ($update_user_address->rowCount() > 0) {
+          echo "Địa chỉ đã được cập nhật thành công!";
+        } else {
+          echo "Có lỗi xảy ra khi cập nhật địa chỉ.";
+        }
       }
     }
   } catch (PDOException $e) {
@@ -183,7 +182,7 @@ if (isset($_POST['order'])) {
             <?php
           }
         } else {
-          echo htmlspecialchars('<p class="empty"> Your bill is  empty!</p>');
+          echo '<p class="empty"> Your bill is  empty!</p>';
         }
         ?>
 
@@ -198,6 +197,9 @@ if (isset($_POST['order'])) {
         </button>
         <button class="w-100 btn btn-sm mt-3" name="Go to cart" type="submit"><a href="cart.php"
             class="text-decoration-none text-dark">Go to Cart</a>
+        </button>
+        <button class="w-100 btn btn-sm mt-3" name="Go to cart" type="submit"><a href="my_order.php"
+            class="text-decoration-none text-dark">My order</a>
         </button>
       </div>
 

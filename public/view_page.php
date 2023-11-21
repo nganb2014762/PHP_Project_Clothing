@@ -249,10 +249,10 @@ if (isset($_POST['send'])) {
 
                                  <h6>Care Instruction:</h6>
                                  <ul class="list-unstyled">
-                                    <li>do not bleach</li>
-                                    <li>tumble dry with low heat</li>
-                                    <li>iron on low heat</li>
-                                    <li>machine wash with cold water</li>
+                                    <li><img src="img/shop/care_instruction/do_not_bleach.png" alt="" width="25px" class="p-1"> do not bleach</li>
+                                    <li><img src="img/shop/care_instruction/iron_on_low_heat.png" alt="" width="25px" class="p-1"> iron on low heat</li>
+                                    <li><img src="img/shop/care_instruction/dry_flat.png" alt="" width="25px" class="p-1"> dry flat</li>
+                                    <li><img src="img/shop/care_instruction/handwash.png" alt="" width="25px" class="p-1"> handwash</li>
                                  </ul>
                                  <ul class="list-inline">
                                     <li class="list-inline-item text-right h6">
@@ -263,7 +263,7 @@ if (isset($_POST['send'])) {
                                     <button class="buy-btn text-capitalize" type="submit" name="add_to_cart">
                                        Add To Cart</button>
                                  </ul>
-                                 <ul class="list-inline">
+                                 <ul class="list-inline mt-3">
                                     <a href="shop.php"
                                        class="buy-btn text-capitalize col-5 text-decoration-none text-dark">Continue
                                        Shopping</a>
@@ -391,11 +391,8 @@ if (isset($_POST['send'])) {
 
 
                <!-- Hiển thị bình luận -->
-
                <?php
-               // Nếu chưa đăng nhập, chỉ hiển thị bình luận đã có
                if (!$loggedIn) {
-                  // Hiển thị bình luận đã có
                   if (isset($_GET['pid'])) {
                      $pid = $_GET['pid'];
 
@@ -521,7 +518,7 @@ if (isset($_POST['send'])) {
          var loggedIn = <?php echo htmlspecialchars(isset($_SESSION['user_id']) ? 'true' : 'false'); ?>;
 
          if (!loggedIn) {
-            alert('Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng.');
+            alert('You need to log in to add products to your wishlist.');
             window.location.href = 'login.php';
             return false;
          }
@@ -534,7 +531,7 @@ if (isset($_POST['send'])) {
          var loggedIn = <?php echo htmlspecialchars(isset($_SESSION['user_id']) ? 'true' : 'false'); ?>;
 
          if (!loggedIn) {
-            alert('Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng.');
+            alert('You need to log in to add products to your cart.');
             window.location.href = 'login.php';
             return false;
          }
