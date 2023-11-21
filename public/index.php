@@ -106,11 +106,12 @@ if (isset($_POST['add_to_cart'])) {
         <div class="container">
             <div class="title text-center">
                 <h2 class="position-relative d-inline-block">New Collection</h2>
+
             </div>
-            
+
             <div class="row g-0 justify-content-center">
-                <div class="d-flex flex-wrap justify-content-center mt-5 filter-button-group">
-                    <button type="button" class="btn m-2 text-dark active-filter-btn" data-filter="*"><a
+                <div class="d-flex flex-wrap justify-content-center mt-3 filter-button-group">
+                    <button type="button" class="btn m-2 text-dark active-filter-btn"><a
                             class="text-decoration-none text-dark" href="shop.php">
                             All</button>
                     <?php
@@ -119,7 +120,7 @@ if (isset($_POST['add_to_cart'])) {
                     if ($select_categorys->rowCount() > 0) {
                         while ($fetch_categorys = $select_categorys->fetch(PDO::FETCH_ASSOC)) {
                             ?>
-                            <button type="button" class="btn m-2" data-filter=".best"><a class="text-decoration-none text-dark"
+                            <button type="button" class="btn m-2"><a class="text-decoration-none text-dark"
                                     href="category.php?id=<?= htmlspecialchars($fetch_categorys['id']); ?>">
                                     <?= htmlspecialchars($fetch_categorys['name']); ?>
                                 </a>
@@ -132,6 +133,7 @@ if (isset($_POST['add_to_cart'])) {
                     ?>
                 </div>
             </div>
+
             <div class="row g-0 container">
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4 mt-3">
                     <?php

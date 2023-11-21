@@ -3,12 +3,6 @@ include_once __DIR__ . '../../partials/boostrap.php';
 include_once __DIR__ . '/../partials/header.php';
 require_once __DIR__ . '../../partials/connect.php';
 
-// $user_id = $_SESSION['user_id'];
-// if (!isset($user_id)) {
-//     header('location:login.php');
-// }
-// ;
-
 if (isset($_POST['add_to_wishlist'])) {
 
     $pid = $_POST['pid'];
@@ -33,37 +27,8 @@ if (isset($_POST['add_to_wishlist'])) {
     }
 
 }
-
-if (isset($_POST['add_to_cart'])) {
-
-    $pid = $_POST['pid'];
-    $p_name = $_POST['p_name'];
-    $p_price = $_POST['p_price'];
-    $p_image = $_POST['p_image'];
-    $p_qty = $_POST['p_qty'];
-
-    $check_cart_numbers = $pdo->prepare("SELECT * FROM `cart` WHERE name = ? AND user_id = ?");
-    $check_cart_numbers->execute([$p_name, $user_id]);
-
-    if ($check_cart_numbers->rowCount() > 0) {
-        $message[] = 'already added to cart!';
-    } else {
-
-        $check_wishlist_numbers = $pdo->prepare("SELECT * FROM `wishlist` WHERE name = ? AND user_id = ?");
-        $check_wishlist_numbers->execute([$p_name, $user_id]);
-
-        if ($check_wishlist_numbers->rowCount() > 0) {
-            $delete_wishlist = $pdo->prepare("DELETE FROM `wishlist` WHERE name = ? AND user_id = ?");
-            $delete_wishlist->execute([$p_name, $user_id]);
-        }
-
-        $insert_cart = $pdo->prepare("INSERT INTO `cart`(user_id, pid, name, price, quantity, image) VALUES(?,?,?,?,?,?)");
-        $insert_cart->execute([$user_id, $pid, $p_name, $p_price, $p_qty, $p_image]);
-        $message[] = 'added to cart!';
-    }
-
-}
 ;
+
 ?>
 
 
@@ -88,8 +53,8 @@ if (isset($_POST['add_to_cart'])) {
         ;
         ?>
         <div class="row g-0 justify-content-center">
-            <div class="d-flex flex-wrap justify-content-center mt-5 filter-button-group">
-                <button type="button" class="btn m-2 text-dark active-filter-btn" data-filter="*"><a
+            <div class="d-flex flex-wrap justify-content-center mt-3 filter-button-group">
+                <button type="button" class="btn m-2 text-dark active-filter-btn"><a
                         class="text-decoration-none text-dark" href="shop.php">
                         All</button>
                 <?php
@@ -98,7 +63,7 @@ if (isset($_POST['add_to_cart'])) {
                 if ($select_categorys->rowCount() > 0) {
                     while ($fetch_categorys = $select_categorys->fetch(PDO::FETCH_ASSOC)) {
                         ?>
-                        <button type="button" class="btn m-2" data-filter=".best"><a class="text-decoration-none text-dark"
+                        <button type="button" class="btn m-2"><a class="text-decoration-none text-dark"
                                 href="category.php?id=<?= htmlspecialchars($fetch_categorys['id']); ?>">
                                 <?= htmlspecialchars($fetch_categorys['name']); ?>
                             </a>
@@ -181,6 +146,19 @@ if (isset($_POST['add_to_cart'])) {
     </div>
 </section>
 <!-- end of shop -->
+
+<script>
+    function addToWishllist() {
+        var loggedIn = <?= htmlspecialchars(isset($_SESSION['user_id']) ? 'true' : 'false'); ?>;
+
+        if (!loggedIn) {
+            alert('Bạn cần đăng nhập để thêm sản phẩm vào danh sách yêu thích.');
+            window.location.href = 'login.php';
+            return false;
+        }
+        return true;
+    }
+</script>
 
 <?php
 include_once __DIR__ . '/../partials/footer.php';
