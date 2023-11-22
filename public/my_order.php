@@ -57,9 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_order'])) {
         <?php
         $total = 0.00;
         $sub_total = 0.00;
-
-        // Lấy danh sách đơn đặt hàng của người dùng
-        $sql = "SELECT DISTINCT orders.id as order_id, orders.total_products, orders.total_price, orders.placed_on, orders.check_date, orders.method, orders.payment_status
+        $sql = "SELECT DISTINCT orders.id as order_id, orders.total_products, orders.total_price, orders.placed_on, orders.cancel_date, orders.check_date, orders.received_date, orders.method, orders.payment_status
                 FROM orders
                 WHERE orders.user_id = :user_id";
 
@@ -68,12 +66,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_order'])) {
 
         if ($select_orders->rowCount() > 0) {
             while ($fetch_orders = $select_orders->fetch(PDO::FETCH_ASSOC)) {
-                // Hiển thị thông tin về đơn đặt hàng
                 ?>
                 <div class="row mt-5">
 
                     <div class="col-12">
-                        <!-- Hiển thị sản phẩm trong đơn đặt hàng -->
                         <table class="mt-5 pt-5">
                             <tr>
                                 <th class="col">Product Image</th>
@@ -83,7 +79,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_order'])) {
                             </tr>
 
                             <?php
-                            // Lấy danh sách sản phẩm trong đơn đặt hàng dựa trên mã đơn hàng
                             $order_id = $fetch_orders['order_id'];
                             $select_products = $pdo->prepare("SELECT products.image as product_image, products.name as product_name, products.price as product_price, orders_details.quantity as product_quantity
                                                              FROM orders_details
@@ -114,31 +109,68 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_order'])) {
 
                         </table>
                     </div>
+                    <div class="cart-total">
+                        <table>
+                            <tr>
+                                <td>Placed On</td>
+                                <td>
+                                    <?= htmlspecialchars($fetch_orders['placed_on']); ?>
+                                </td>
+                            </tr>
 
-                    <div class="mt-5 col-4 text-start offset-9">
-                        <p>Placed On:
-                            <?= htmlspecialchars($fetch_orders['placed_on']); ?>
-                        </p>
-                        <p>Total Price:
-                            $
-                            <?= htmlspecialchars($fetch_orders['total_price']); ?>
-                        </p>
-                        <p>Payment Method:
-                            <?= htmlspecialchars($fetch_orders['method']); ?>
-                        </p>
-                        <p>Payment Status:
-                            <?= htmlspecialchars($fetch_orders['payment_status']); ?>
-                        </p>
-                        <td>
-                            <form action="my_order.php" method="POST">
-                                <input type="hidden" name="order_id" value="<?= htmlspecialchars($fetch_orders['order_id']) ?>">
-                                <button type="submit" name="cancel_order"
-                                    class="buy-btn btn btn-primary mt-3 <?= ($fetch_orders['payment_status'] != 'pending') ? 'disabled' : ''; ?>"
-                                    <?= ($fetch_orders['payment_status'] != 'pending') ? 'disabled' : ''; ?>>Cancel</button>
-                            </form>
-                        </td>
+                            <tr class="<?= ($fetch_orders['cancel_date'] === '0000-00-00') ? 'd-none' : ''; ?>">
+                                <td>Cancel Date</td>
+                                <td>
+                                    <?= htmlspecialchars($fetch_orders['cancel_date']); ?>
+                                </td>
+                            </tr>
+
+                            <tr class="<?= ($fetch_orders['check_date'] === '0000-00-00') ? 'd-none' : ''; ?>">
+                                <td>Check Date</td>
+                                <td>
+                                    <?= htmlspecialchars($fetch_orders['check_date']); ?>
+                                </td>
+                            </tr>
+
+                            <tr class="<?= ($fetch_orders['received_date'] === '0000-00-00') ? 'd-none' : ''; ?>">
+                                <td>Received Date</td>
+                                <td>
+                                    <?= htmlspecialchars($fetch_orders['received_date']); ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Total Price</td>
+                                <td>$
+                                    <?= htmlspecialchars($fetch_orders['total_price']); ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Payment Method</td>
+                                <td>
+                                    <?= htmlspecialchars($fetch_orders['method']); ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Payment Status</td>
+                                <td class="text-capitalize <?= ($fetch_orders['payment_status'] == 'completed') ? 'text-primary' : 'text-danger'; ?>">
+                                    <?= htmlspecialchars($fetch_orders['payment_status']); ?>
+                                </td>
+                            </tr>
+                        </table>
                     </div>
-
+                    <div class="checkout-container">
+                        <tr>
+                            <td>
+                                <form action="my_order.php" method="POST">
+                                    <input type="hidden" name="order_id"
+                                        value="<?= htmlspecialchars($fetch_orders['order_id']) ?>">
+                                    <button type="submit" name="cancel_order"
+                                        class="buy-btn btn btn-primary mt-3 <?= ($fetch_orders['payment_status'] != 'pending') ? 'disabled' : ''; ?>"
+                                        <?= ($fetch_orders['payment_status'] != 'pending') ? 'disabled' : ''; ?>>Cancel</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </div>
                 </div>
 
                 <?php
@@ -149,7 +181,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_order'])) {
                 <h6 class="position-relative d-inline-block">No item found </h6>
                 <div>
                     <a type="submit" class="buy-btn text-capitalize text-decoration-none mt-3" name="order now"
-                        href="cart.php">order now</a>
+                        href="cart.php">Order now</a>
                 </div>
             </div>
             <?php
@@ -160,7 +192,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_order'])) {
 
 <?php
 include_once __DIR__ . '../../partials/footer.php';
-?>
-</body>
-
-</html>

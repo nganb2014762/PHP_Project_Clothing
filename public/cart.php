@@ -106,11 +106,7 @@ if (isset($_POST['update_qty'])) {
                                         </div>
                                     </div>
                                 </td>
-                                <!-- <td>
-                                    <div class="quantity">
-                                        <?= htmlspecialchars($fetch_cart['quantity']); ?>
-                                    </div>
-                                </td> -->
+                                
                                 <td>
                                     <div class="quantity">
                                         <input type="number" name="p_qty[<?= htmlspecialchars($fetch_cart['id']); ?>]"
@@ -175,7 +171,3 @@ if (isset($_POST['update_qty'])) {
     </section>
     <?php
     include_once __DIR__ . '../../partials/footer.php';
-    ?>
-</body>
-
-</html>
