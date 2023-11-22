@@ -45,7 +45,7 @@ if (isset($message)) {
 <title>Admin Login</title>
 </head>
 
-<body>
+<body class="bg-light" >
     
     <!-- Login -->
     <section class="my-5 py-5">

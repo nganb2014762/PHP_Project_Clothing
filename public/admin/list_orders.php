@@ -140,7 +140,8 @@ if (isset($message)) {
                                             <td class="pt-4">
                                                 <?= htmlspecialchars($row['method']); ?>
                                             </td>
-                                            <td class="pt-4 text-success">
+                                            <td
+                                                class="pt-4 <?= ($row['payment_status'] == 'completed') ? 'text-success' : (($row['payment_status'] == 'cancel') ? 'text-danger' : 'text-primary'); ?>">
                                                 <?= htmlspecialchars($row['payment_status']); ?>
                                             </td>
                                             <td class="pt-4">
