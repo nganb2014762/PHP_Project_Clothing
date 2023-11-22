@@ -40,7 +40,7 @@ if (isset($_POST['submit'])) {
 <title>Login</title>
 </head>
 
-<body>
+<body id="login">
 
     <!-- Login -->
     <section class="my-5 py-5">
@@ -59,7 +59,7 @@ if (isset($_POST['submit'])) {
         ;
         ?>
         <div class="mx-auto container mt-3">
-            <div class="card col-md-6 offset-md-3">
+            <div class="card col-md-6 offset-md-3 bg-transparent">
                 <div class="card-body">
                     <form action="login.php" id="login-form" method="post" class="text_center form-horizontal">
                         <div class="form-group">

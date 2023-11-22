@@ -37,6 +37,7 @@ body {
     background-color: #fff;
     color: rgb(85, 85, 85);
     padding: 10px 28px;
+    margin: 5px;
     border: 1px solid rgb(85, 85, 85);
 }
 
@@ -49,12 +50,6 @@ body {
 /* text color */
 .text-primary {
     color: #00b9b3 !important;
-}
-
-.alert.alert-warning.alert-dismissible.fade.show.col-4.offset-4 {
-    margin-top: 50px !important;
-    z-index: 100 !important;
-    position: absolute !important;
 }
 
 /* home page */
@@ -196,7 +191,7 @@ hr {
 
 .collection-img img {
     width: 100%;
-    height: 395px;
+    height: 350px;
     padding: 10px;
     -webkit-transition: all 0.3s ease;
     -o-transition: all 0.3s ease;
@@ -288,33 +283,8 @@ hr {
     background-color: rgba(179, 179, 179, 0.05);
 }
 
-/* newsletter */
-#newsletter {
-    background-color: rgba(179, 179, 179, 0.05);
-}
-
-#newsletter p {
-    max-width: 600px;
-}
-
-#newsletter .input-group {
-    max-width: 500px;
-}
-
-#newsletter .form-control {
-    border-top-left-radius: 25px;
-    border-bottom-left-radius: 25px;
-}
-
-#newsletter .btn {
-    background-color: var(--pink);
-    color: #00b9b3;
-    border-color: var(--pink);
-}
-
-#newsletter .btn:hover {
-    background-color: #000;
-    border-color: #000;
+#contact{
+    background: url(../img/poster/contact_us.jpg) center/cover no-repeat;
 }
 
 /* footer */
@@ -442,6 +412,11 @@ th:last-child {
 }
 
 /* login & register*/
+
+#register, #login{
+    background: url(../img/poster/neutral.jpg) center/cover no-repeat;
+}
+
 
 #login-form input,
 #register-form input,

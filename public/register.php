@@ -40,7 +40,7 @@ if (isset($_POST['submit'])) {
 <title>Register</title>
 </head>
 
-<body>
+<body id="register">
     <!-- Register -->
     <section class="my-5 py-5">
         <div class="container title text-center mt-3 pt-5">
@@ -58,7 +58,7 @@ if (isset($_POST['submit'])) {
         ;
         ?>
         <div class="mx-auto container mt-3">
-            <div class="card col-md-6 offset-md-3">
+            <div class="card col-md-6 offset-md-3 bg-transparent">
                 <div class="card-body">
                     <form action="register.php" id="register-form" method='post' class="text_center form-horizontal">
                         <div class="form-group">
@@ -96,10 +96,10 @@ if (isset($_POST['submit'])) {
                         <div class="form-group row">
                             <div class="form-check col-md-6">
                                 <input class="form-check-input" type="checkbox" id="agree" name="agree" value="agree" />
-                                <label class="form-check-label" for="agree">Agree to our regulations</label>
+                                <label class="form-check-label" for="agree"> Agree to our regulations</label>
                             </div>
                             <div class="col-md-6">
-                                <a href="login.php" id="login-url" class="">Do you have an account ? Login</a>
+                                <a href="login.php" id="login-url" class=""> Do you have an account ? Login</a>
                             </div>
                         </div>
                         <div class="form-group">

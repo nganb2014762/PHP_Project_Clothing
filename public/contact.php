@@ -36,45 +36,44 @@ if (isset($_POST['send'])) {
 <title>Contact</title>
 </head>
 
-<body>
-    <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm position-relative">
-        <div class="col d-none d-md-block d-lg-block mt-5">
-            <img width="250%" height="100%" src="img/poster/contact_us.jpg" class="rounded float-start" alt="">
-        </div>
+<body id="contact">
+    <!-- Contact -->
+    <section class="my-5 py-5">
 
-        <div class="col p-5 m-5 d-flex flex-column position-static">
-            <div class="container title mt-5 pt-5 pb-2 col-md-9 offset-md-3 ">
-                <h2 class="position-relative d-inline-block">Contact Us</h2>
-                <hr class="mx-auto">
-            </div>
-            <!-- <h3 class="mb-0 mt-5">Contact Us</h3> -->
-            <?php
-            if (isset($message)) {
-                foreach ($message as $message) {
-                    echo '<div class="alert alert-warning alert-dismissible fade show col-9" role="alert">
-                        ' . $message . '
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>';
-                }
+        <div class="container title text-center mt-5 pt-5 col-md-6 offset-md-6">
+            <h2 class="position-relative d-inline-block">Contact Us</h2>
+        </div>
+        <?php
+        if (isset($message)) {
+            foreach ($message as $message) {
+                echo '<div class="alert alert-warning alert-dismissible fade show col-4 offset-7" role="alert" tabindex="-1">
+                            ' . $message . '
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                          </div>';
             }
-            ;
-            ?>
-            <form id="register-form" class="text_center form-horizontal col-md-9" action="" method="POST">
+        }
+        ;
+        ?>
 
+        <div class="mx-auto container mt-3">
+            <div class="col-md-5 offset-md-7">
+                <div class="card-body">
+                    <form id="register-form" class="text_center form-horizontal" action="" method="post">
+                        <div class="form-group">
+                            <textarea name="msg" class="form-control rounded-3 fs-5" required
+                                placeholder="Enter your message" cols="30" rows="10"></textarea>
+                        </div>
 
-                <div class="form-group">
-                    <textarea name="msg" class="form-control rounded-3" required placeholder="Enter your message" cols="30"
-                        rows="10"></textarea>
+                        <div class="form-group">
+                            <input type="submit" value="Send message" class="btn w-100 mt-3 fs-5" name="send">
+                        </div>
+                    </form>
                 </div>
-
-                <div class="form-group">
-                    <input type="submit" value="send message" class="btn w-100 mt-3" name="send">
-                </div>
-            </form>
+            </div>
         </div>
 
-    </div>
-
+    </section>
+    <!-- End contact -->
 
     <?php
     include_once __DIR__ . '../../partials/footer.php';
