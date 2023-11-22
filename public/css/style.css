@@ -413,7 +413,7 @@ th:last-child {
 
 /* login & register*/
 
-#register, #login{
+#register, #login, #change_password{
     background: url(../img/poster/neutral.jpg) center/cover no-repeat;
 }
 

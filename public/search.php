@@ -63,7 +63,7 @@ if (isset($_POST['add_to_cart'])) {
     <div class="container title text-center mt-3 pt-5">
         <form action="" method="POST" class="d-flex justify-content-center">
             <div class="form-group p-2">
-                <input class="form-control" type="text" name="search_box" placeholder="search products...">
+                <input class="form-control" type="text" name="search_box" placeholder="Search products...">
 
             </div>
             <div class="form-group p-2">

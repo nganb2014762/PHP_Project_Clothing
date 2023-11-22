@@ -136,19 +136,19 @@ if (isset($message)) {
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <input type="text" class="form-control" name="name"
-                                                                placeholder="enter product name" required
+                                                                placeholder="Enter product name" required
                                                                 value="<?= htmlspecialchars($fetch_products['name']); ?>">
                                                         </div>
 
                                                         <div class="form-group">
                                                             <input class="form-control" type="number" name="quantity"
-                                                                placeholder="enter product quantity" required
+                                                                placeholder="Enter product quantity" required
                                                                 value="<?= htmlspecialchars($fetch_products['quantity']); ?>">
                                                         </div>
 
                                                         <div class="form-group">
                                                             <input class="form-control" type="text" name="price"
-                                                                placeholder="enter product price" required
+                                                                placeholder="Enter product price" required
                                                                 value="<?= htmlspecialchars($fetch_products['price']); ?>">
                                                         </div>
                                                         <?php

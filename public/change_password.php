@@ -42,70 +42,71 @@ if (isset($_POST['update_password'])) {
 <title>Change Password</title>
 </head>
 
-<section class="container my-5 pt-5">
-   <div class="container title text-center my-5 pt-5">
-      <h2 class="position-relative d-inline-block">Change Password</h2>
-   </div>
-   <?php
-   if (isset($message)) {
-      foreach ($message as $message) {
-         echo '<div class="alert alert-warning alert-dismissible fade show col-6 offset-3" role="alert" tabindex="-1">
+<body id="change_password">
+   <section class="container my-5 pt-5">
+      <div class="container title text-center my-5 pt-5">
+         <h2 class="position-relative d-inline-block">Change Password</h2>
+      </div>
+      <?php
+      if (isset($message)) {
+         foreach ($message as $message) {
+            echo '<div class="alert alert-warning alert-dismissible fade show col-6 offset-3" role="alert" tabindex="-1">
                             ' . htmlspecialchars($message) . '
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                           </div>';
+         }
       }
-   }
-   ;
-   ?>
-   <div class="mx-auto container">
-      <div class="card col-md-6 offset-md-3">
-         <div class="card-body">
-            <form id="product-form" action="" method="POST" enctype="multipart/form-data"
-               class="text_center form-horizontal">
-               <div class="form-group p-2">
-                  <input class="form-control" type="text" name="name"
-                     value="<?= htmlspecialchars($fetch_profile['name']); ?>" placeholder="update username" required
-                     class="box">
-               </div>
-
-               <div class="form-group p-2">
-                  <input class="form-control" type="email" name="email"
-                     value="<?= htmlspecialchars($fetch_profile['email']); ?>" placeholder="update email" required
-                     class="box">
-               </div>
-
-               <div class="form-group p-2">
-                  <input type="hidden" name="old_pass" value="<?= htmlspecialchars($fetch_profile['password']); ?>">
-                  <input class="form-control" type="password" name="update_pass" placeholder="enter previous password"
-                     class="box">
-               </div>
-
-               <div class="form-group p-2">
-                  <input class="form-control" type="password" name="new_pass" placeholder="enter new password"
-                     class="box">
-               </div>
-
-               <div class="form-group p-2">
-                  <input class="form-control" type="password" name="confirm_pass" placeholder="confirm new password"
-                     class="box">
-               </div>
-               <div class="form-group p-2">
-                  <div class="flex-btn">
-                     <input type="submit" class="btn w-100" value="Update Password" name="update_password">
+      ;
+      ?>
+      <div class="mx-auto container">
+         <div class="card col-md-6 offset-md-3 bg-transparent">
+            <div class="card-body">
+               <form id="product-form" action="" method="POST" enctype="multipart/form-data"
+                  class="text_center form-horizontal">
+                  <div class="form-group p-1">
+                     <input class="form-control" type="text" name="name"
+                        value="<?= htmlspecialchars($fetch_profile['name']); ?>" placeholder="update username" required
+                        >
                   </div>
-               </div>
 
-               <div class="form-group p-2">
-                  <div class="flex-btn">
-                     <a href="profile.php" class="btn w-100 text-decoration-none">View Profile</a>
+                  <div class="form-group p-1">
+                     <input class="form-control" type="email" name="email"
+                        value="<?= htmlspecialchars($fetch_profile['email']); ?>" placeholder="Update email" required
+                        >
                   </div>
-               </div>
-            </form>
+
+                  <div class="form-group p-1">
+                     <input type="hidden" name="old_pass" value="<?= htmlspecialchars($fetch_profile['password']); ?>">
+                     <input class="form-control" type="password" name="update_pass"
+                        placeholder="Enter previous password" >
+                  </div>
+
+                  <div class="form-group p-1">
+                     <input class="form-control" type="password" name="new_pass" placeholder="Enter new password"
+                        >
+                  </div>
+
+                  <div class="form-group p-1">
+                     <input class="form-control" type="password" name="confirm_pass" placeholder="Confirm new password"
+                        >
+                  </div>
+                  <div class="form-group p-1">
+                     <div class="flex-btn">
+                        <input type="submit" class="btn w-100" value="Update Password" name="update_password">
+                     </div>
+                  </div>
+
+                  <div class="form-group p-1">
+                     <div class="flex-btn">
+                        <a href="profile.php" class="btn w-100 text-decoration-none">View Profile</a>
+                     </div>
+                  </div>
+               </form>
+            </div>
          </div>
       </div>
-   </div>
 
-</section>
+   </section>
 
-<?php
-include_once __DIR__ . '/../partials/footer.php';
+   <?php
+   include_once __DIR__ . '../../partials/footer.php';

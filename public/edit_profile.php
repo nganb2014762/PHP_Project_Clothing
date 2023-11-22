@@ -126,7 +126,12 @@ if (isset($_POST['update_profile'])) {
                                     <input class="form-control" type="file" name="image"
                                         accept="image/jpg, image/jpeg, image/png">
                                 </div>
+                            </div>
 
+                            <div class="form-group p-2">
+                                <div class="flex-btn">
+                                    <a href="profile.php" class="btn text-decoration-none w-100">View Profile</a>
+                                </div>
                             </div>
                         </div>
 
@@ -134,7 +139,7 @@ if (isset($_POST['update_profile'])) {
                             <div class="form-group d-flex p-2">
                                 <div class="col-md-3 col-12 p-2 fw-bold">Name</div>
                                 <div class="col-md-9 col-10">
-                                    <input type="text" class="form-control" name="name" placeholder="update name"
+                                    <input type="text" class="form-control" name="name" placeholder="Update name"
                                         required value="<?= htmlspecialchars($fetch_profile['name']); ?>">
                                 </div>
                             </div>
@@ -160,7 +165,7 @@ if (isset($_POST['update_profile'])) {
                             <div class="form-group d-flex p-2">
                                 <div class="col-md-3 col-12 p-2 fw-bold">Born</div>
                                 <div class="col-md-9 col-10">
-                                    <input class="form-control" type="date" name="born" placeholder="update born"
+                                    <input class="form-control" type="date" name="born" placeholder="Update born"
                                         required value="<?= htmlspecialchars($fetch_profile['born']); ?>">
                                 </div>
                             </div>
@@ -168,7 +173,7 @@ if (isset($_POST['update_profile'])) {
                             <div class="form-group d-flex p-2">
                                 <div class="col-md-3 col-12 p-2 fw-bold">Address</div>
                                 <div class="col-md-9 col-10">
-                                    <textarea class="form-control" name="address" required placeholder="update address"
+                                    <textarea class="form-control" name="address" required placeholder="Update address"
                                         cols="30"
                                         rows="2"><?= htmlspecialchars($fetch_profile['address']); ?></textarea>
                                 </div>
@@ -177,7 +182,7 @@ if (isset($_POST['update_profile'])) {
                             <div class="form-group d-flex p-2">
                                 <div class="col-md-3 col-12 p-2 fw-bold">Phone</div>
                                 <div class="col-md-9 col-10">
-                                    <input class="form-control" type="tel" name="phone" placeholder="update phone"
+                                    <input class="form-control" type="tel" name="phone" placeholder="Update phone"
                                         required value="<?= htmlspecialchars($fetch_profile['phone']); ?>">
                                 </div>
                             </div>
@@ -185,26 +190,20 @@ if (isset($_POST['update_profile'])) {
                             <div class="form-group d-flex p-2">
                                 <div class="col-md-3 col-12 p-2 fw-bold">Email</div>
                                 <div class="col-md-9 col-10">
-                                    <input class="form-control" type="email" name="email" placeholder="update email"
+                                    <input class="form-control" type="email" name="email" placeholder="Update email"
                                         required value="<?= htmlspecialchars($fetch_profile['email']); ?>">
+                                </div>
+                            </div>
+
+                            <div class="form-group p-2">
+                                <div class="flex-btn">
+                                    <input type="submit" class="btn  btn-primary shadow-sm w-100" value="Update profile"
+                                        name="update_profile">
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="form-group p-2">
-                        <div class="flex-btn">
-                            <input type="submit" class="btn  btn-primary shadow-sm w-100" value="Update profile"
-                                name="update_profile">
-                        </div>
-                    </div>
-                    <div class="form-group p-2">
-                        <div class="flex-btn">
-                            <a href="profile.php" class="btn w-100 text-decoration-none">View profile</a>
-                        </div>
-                    </div>
                 </form>
-
-
             </div>
         </div>
     </div>

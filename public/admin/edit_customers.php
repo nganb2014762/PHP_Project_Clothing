@@ -150,7 +150,7 @@ if (isset($message)) {
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <input type="text" class="form-control" name="name"
-                                                                placeholder="enter customer name" required
+                                                                placeholder="Enter customer name" required
                                                                 value="<?= htmlspecialchars($fetch_customers['name']); ?>">
                                                         </div>
 
@@ -171,7 +171,7 @@ if (isset($message)) {
 
                                                         <div class="form-group">
                                                             <input class="form-control" type="date" name="born"
-                                                                placeholder="enter customer born" required
+                                                                placeholder="Enter customer born" required
                                                                 value="<?= htmlspecialchars($fetch_customers['born']); ?>">
                                                         </div>
 
@@ -183,13 +183,13 @@ if (isset($message)) {
 
                                                         <div class="form-group">
                                                             <input class="form-control" type="tel" name="phone"
-                                                                placeholder="enter customer phone" required
+                                                                placeholder="Enter customer phone" required
                                                                 value="<?= htmlspecialchars($fetch_customers['phone']); ?>">
                                                         </div>
 
                                                         <div class="form-group">
                                                             <input class="form-control" type="email" name="email"
-                                                                placeholder="enter customer email" required
+                                                                placeholder="Enter customer email" required
                                                                 value="<?= htmlspecialchars($fetch_customers['email']); ?>">
                                                         </div>
 

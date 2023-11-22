@@ -158,7 +158,7 @@ if (isset($message)) {
                                                 <div class="col-md-3 col-12 p-2 fw-bold">Name</div>
                                                 <div class="col-md-9 col-10">
                                                     <input type="text" class="form-control" name="name"
-                                                        placeholder="update name" required
+                                                        placeholder="Update name" required
                                                         value="<?= htmlspecialchars($fetch_profile['name']); ?>">
                                                 </div>
                                             </div>
@@ -185,7 +185,7 @@ if (isset($message)) {
                                                 <div class="col-md-3 col-12 p-2 fw-bold">Born</div>
                                                 <div class="col-md-9 col-10">
                                                     <input class="form-control" type="date" name="born"
-                                                        placeholder="update born" required
+                                                        placeholder="Update born" required
                                                         value="<?= htmlspecialchars($fetch_profile['born']); ?>">
                                                 </div>
                                             </div>
@@ -194,7 +194,7 @@ if (isset($message)) {
                                                 <div class="col-md-3 col-12 p-2 fw-bold">Address</div>
                                                 <div class="col-md-9 col-10">
                                                     <textarea class="form-control" name="address" required
-                                                        placeholder="update address" cols="30"
+                                                        placeholder="Update address" cols="30"
                                                         rows="2"><?= htmlspecialchars($fetch_profile['address']); ?></textarea>
                                                 </div>
                                             </div>
@@ -203,7 +203,7 @@ if (isset($message)) {
                                                 <div class="col-md-3 col-12 p-2 fw-bold">Phone</div>
                                                 <div class="col-md-9 col-10">
                                                     <input class="form-control" type="tel" name="phone"
-                                                        placeholder="update phone" required
+                                                        placeholder="Update phone" required
                                                         value="<?= htmlspecialchars($fetch_profile['phone']); ?>">
                                                 </div>
                                             </div>
@@ -212,7 +212,7 @@ if (isset($message)) {
                                                 <div class="col-md-3 col-12 p-2 fw-bold">Email</div>
                                                 <div class="col-md-9 col-10">
                                                     <input class="form-control" type="email" name="email"
-                                                        placeholder="update email" required
+                                                        placeholder="Update email" required
                                                         value="<?= htmlspecialchars($fetch_profile['email']); ?>">
                                                 </div>
                                             </div>

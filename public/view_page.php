@@ -385,7 +385,7 @@ if (isset($_POST['send'])) {
 
                               <label for="image" class="mx-1">Chọn ảnh:</label>
                               <input type="file" name="image" id="image">
-                              <textarea name="comment" id="comment" class="form-control mt-3" placeholder="Type reviews"
+                              <textarea name="comment" id="comment" class="form-control mt-3" placeholder="Content reviews"
                                  rows="7" oninput="checkComment()"></textarea>
                               <br>
                               <button value="send" id="sendButton" name="send" type="submit" class="btn"

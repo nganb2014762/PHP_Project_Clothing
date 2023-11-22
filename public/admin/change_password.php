@@ -92,31 +92,31 @@ if (isset($message)) {
                            class="text_center form-horizontal">
                            <div class="form-group">
                               <input class="form-control" type="text" name="name"
-                                 value="<?= htmlspecialchars($fetch_profile['name']); ?>" placeholder="update username"
-                                 required class="box">
+                                 value="<?= htmlspecialchars($fetch_profile['name']); ?>" placeholder="Update username"
+                                 required >
                            </div>
 
                            <div class="form-group">
                               <input class="form-control" type="email" name="email"
-                                 value="<?= htmlspecialchars($fetch_profile['email']); ?>" placeholder="update email"
-                                 required class="box">
+                                 value="<?= htmlspecialchars($fetch_profile['email']); ?>" placeholder="Update email"
+                                 required >
                            </div>
 
                            <div class="form-group">
                               <input type="hidden" name="old_pass"
                                  value="<?= htmlspecialchars($fetch_profile['password']); ?>">
                               <input class="form-control" type="password" name="update_pass"
-                                 placeholder="enter previous password" class="box">
+                                 placeholder="Enter previous password" >
                            </div>
 
                            <div class="form-group">
                               <input class="form-control" type="password" name="new_pass"
-                                 placeholder="enter new password" class="box">
+                                 placeholder="Enter new password" >
                            </div>
 
                            <div class="form-group">
                               <input class="form-control" type="password" name="confirm_pass"
-                                 placeholder="confirm new password" class="box">
+                                 placeholder="Confirm new password" >
                            </div>
                            <div class="form-group">
                               <div class="flex-btn">
