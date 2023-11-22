@@ -32,6 +32,7 @@ if (isset($_POST['update_password'])) {
          $update_pass_query = $pdo->prepare("UPDATE `user` SET password = ? WHERE id = ?");
          $update_pass_query->execute([$confirm_pass, $admin_id]);
          $message[] = 'Mật khẩu đã được cập nhật thành công!';
+         header('location:profile.php');
       }
    }
 
@@ -120,12 +121,6 @@ if (isset($message)) {
                            <div class="form-group">
                               <div class="flex-btn">
                                  <input type="submit" class="btn w-100 btn-primary" value="Update Password" name="update_password">
-                              </div>
-                           </div>
-
-                           <div class="form-group">
-                              <div class="flex-btn">
-                                 <a href="profile.php" class="btn w-100 text-decoration-none btn-primary">View Profile</a>
                               </div>
                            </div>
                         </form>
