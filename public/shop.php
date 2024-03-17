@@ -45,6 +45,9 @@ if (isset($_POST['add_to_wishlist'])) {
             ?>
             <div class="row g-0 justify-content-center">
                 <div class="d-flex flex-wrap justify-content-center mt-3 filter-button-group">
+                <button type="button" class="btn m-2 text-dark "><a
+                        class="text-decoration-none text-dark" href="shop.php">
+                        All</button>
                     <?php
                     $select_categorys = $pdo->prepare("SELECT * FROM `category`");
                     $select_categorys->execute();

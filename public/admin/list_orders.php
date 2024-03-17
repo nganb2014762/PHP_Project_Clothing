@@ -117,14 +117,13 @@ if (isset($message)) {
                                             </td>
                                             <td class="pt-4">
                                                 <?= htmlspecialchars($row['address']); ?>
-                                            <td>
+                                            <td class="pt-4">
                                                 <?= htmlspecialchars($row['total_products']); ?>
                                             </td>
-                                            <td>
+                                            <td class="pt-4">
                                                 <?= htmlspecialchars($row['total_price']); ?>$
                                             </td>
 
-                                            </td>
                                             <td class="pt-4">
                                                 <?= htmlspecialchars($row['placed_on']); ?>
                                             </td>
@@ -207,7 +206,7 @@ if (isset($message)) {
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="/logout">Logout</a>
+                    <a class="btn btn-primary" href="logout.php">Logout</a>
                 </div>
             </div>
         </div>
